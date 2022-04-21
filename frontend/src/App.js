@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import Layout from './elements/Layout';
 import Home from './elements/Home';
-import NewDish from './elements/NewDish';
+import AddDish from './elements/AddDish';
 import Menu from './elements/Menu';
 import Login from './elements/Login';
 import Logout from './elements/Logout';
@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home/>}/>
-          <Route path='add' element={<NewDish/>}/>
+          <Route path='add' element={<AddDish/>}/>
           <Route path='menu' element={<Menu/>} />
           <Route path='login' element={<Login/>} />
           <Route path='logout' element={<Logout/>} />
