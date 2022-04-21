@@ -19,32 +19,26 @@ mongoose.connect(dbUrl,{
 })
 
 const Dish=require('./models/dish');
-const catchAsync=require('./utils/catchAsync');
-const myError=require('../utils/myError');
 
-//ROUTES for when we need to interact with DB
+
+//ROUTES 
+app.use("/", require('./routes/dishRoutes'));
 
 //crud
 //create: add a dish to DB via post
-app.post('/add', catchAsync(async(req,res)=>{
-    //validate using Joi first
-
-    //const dish=new Dish(req.body);
-    // console.log(dish);
-    // dish.save()
-    // .then(data=>{
-    //     //console.log(data);
-    //     // return res.status(200).send('dish added successfully');
-    //     return res.status(200).json({success:true,data:dish});
-    // })
-    // .catch(err=>{
-    //     return res.status(500).send({message: err.message || "Some went wrong while saving the dish."});
-    // })
-
-    const dish=await Dish.create(req.body);
-    
-
-}))
+// app.post('/add', catchAsync(async(req,res)=>{
+//     const dish=new Dish(req.body);
+//     console.log(dish);
+//     dish.save()
+//     .then(data=>{
+//         //console.log(data);
+//         // return res.status(200).send('dish added successfully');
+//         return res.status(200).json({success:true,data:dish});
+//     })
+//     .catch(err=>{
+//         return res.status(500).send({message: err.message || "Some went wrong while saving the dish."});
+//     })
+// }))
 
 //read-get all the dishes from DB
 app.get('/menu',(req,res)=>{

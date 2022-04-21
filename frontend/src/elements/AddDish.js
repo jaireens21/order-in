@@ -16,7 +16,7 @@ import axios from "axios";
         
         //console.log('dish',dish);
         //send data to node for saving to db
-        axios.post('http://localhost:8010/add',dish)
+        axios.post('http://localhost:8010/',dish)
         .then(res=>{
             //console.log(res.data);
             //FLASH a success message
@@ -26,8 +26,7 @@ import axios from "axios";
         .catch(err=>{
             console.log(err);
             //FLASH an error message
-            //redirect to add a dish page
-            navigate('/add');
+            //handle the error!!!!!!!!!!!!!
         });
     }
 
