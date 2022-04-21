@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 const cors=require('cors');
 
 app.use(express.json());
-app.use(express.urlencoded);
+app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 const dbUrl='mongodb://127.0.0.1:27017/order-in';
