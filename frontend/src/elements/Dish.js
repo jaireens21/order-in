@@ -1,6 +1,6 @@
 import React from "react";
 import useToggleState from "../hooks/useToggleState";
-import EditFormDish from "./EditFormDish";
+import EditDish from "./EditDish";
 
 export default function Dish(props){
     const{dish, saveDish, removeDish}=props;
@@ -14,7 +14,7 @@ export default function Dish(props){
     
     return(isEditing?
         //if editing, show a form to edit the dish
-        <EditFormDish dish={dish} toggleIsEditing={toggleIsEditing} saveEditedDish={saveEditedDish}/>
+        <EditDish dish={dish} toggleIsEditing={toggleIsEditing} saveEditedDish={saveEditedDish}/>
         :
         //if not editing, simply display the dish
         <div className="Dish">
@@ -25,7 +25,7 @@ export default function Dish(props){
                 <li>Price (CAD): {dish.price}</li>
                 <li>Description: {dish.description}</li>
                 <li><button onClick={toggleIsEditing}><i className="material-icons">edit</i></button></li>
-                <li><button onClick={()=>removeDish(dish.id)}><i className="material-icons">delete</i></button></li>
+                <li><button onClick={()=>removeDish(dish._id)}><i className="material-icons">delete</i></button></li>
             </ul>
          
         </div>

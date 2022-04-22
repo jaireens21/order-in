@@ -11,32 +11,33 @@ exports.getAllDishes=catchAsync(async(req,res,next)=>{
 });
 
 exports.addNewDish=catchAsync(async(req,res,next)=>{
-    // res.send("adding a new dish");
-
     //validate incoming data using Joi first
-    const dish=await Dish.create(req.body);
+    const dish=new Dish(req.body);
+    await dish.save();
     return res.status(201).json({
         success: true,
-        data: dish,
+        data:dish
     });
 });
 
 exports.updateDishById=catchAsync(async(req,res,next)=>{
-    //res.send("updating a dish by id");
     const dish=await Dish.findById(req.params.id);
     if(!dish){
-        return res.status(500).json({
-            success:false,
-            data:"Error! Could not find that dish!"
-        })
+        //throw error with message: "Error! Could not find that dish!"
     }
     return res.status(201).json({
         success: true,
         data: dish,
     });
-
 })
 
 exports.deleteDishById=catchAsync(async(req,res,next)=>{
-    res.send("deleting a dish by id");
+    const dish=await Dish.findByIdAndDelete(req.params.id);
+    if(!dish){
+        //throw error with message: "Error! Could not find that dish!"
+    }
+    return res.status(201).json({
+        success: true,
+        data: dish,
+    });
 })

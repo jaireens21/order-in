@@ -5,6 +5,5 @@ const dishSchema= new mongoose.Schema({
     category:String,
     description:String,
     price:Number,
-    _id: false,
 });
 module.exports=mongoose.model('Dish', dishSchema);
