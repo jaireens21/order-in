@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express=require('express');
 const app=express();
 const mongoose=require('mongoose');
@@ -7,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
-const dbUrl='mongodb://127.0.0.1:27017/order-in';
+const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
 mongoose.connect(dbUrl,{
     useNewUrlParser: true, 
     useUnifiedTopology: true 
@@ -22,7 +23,7 @@ const Dish=require('./models/dish');
 
 
 //ROUTES 
-app.use("/", require('./routes/dishRoutes'));
+app.use("/api", require('./routes/dishRoutes'));
 
 //crud
 //create: add a dish to DB via post
@@ -64,7 +65,7 @@ app.use((err,req,res,next)=>{
 })
 
 
-const port=8010;
+const port=process.env.PORT || 8010;
 app.listen(port, ()=>{
     console.log(`listening on port ${port}`);
 })

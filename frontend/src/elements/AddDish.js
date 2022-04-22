@@ -1,44 +1,30 @@
 import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
- export default function AddDish(){
-    let navigate = useNavigate();
+export default function AddDish(props){
+    const {saveNewDish}=props;
 
-    const [dish,setDish]=useState({name:"",category:"",description:"",price:0});
+    const initialState={name:"",category:"",description:"",price:0};
+    const [newDish,setNewDish]=useState(initialState);
 
     const handleChange=(e)=>{
-        setDish({...dish, [e.target.id]: e.target.value});
+        setNewDish({...newDish, [e.target.id]: e.target.value});
     }
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        
-        //console.log('dish',dish);
-        //send data to node for saving to db
-        axios.post('http://localhost:8010/',dish)
-        .then(res=>{
-            //console.log(res.data);
-            //FLASH a success message
-            //redirect to menu page
-            navigate('/menu');
-        })
-        .catch(err=>{
-            console.log(err);
-            //FLASH an error message
-            //handle the error!!!!!!!!!!!!!
-        });
+        saveNewDish(newDish);
+        setNewDish(initialState);
     }
 
      return(
-         <div className="newDish w-50 mx-auto my-5">
+         <div className="w-50 mx-auto my-5">
             <h1>Add a new dish</h1>
             <form onSubmit={handleSubmit}>
                 <label className="form-label" htmlFor="name">Enter name of dish:</label>
-                <input className="form-control mb-3" type="text" id="name" required onChange={handleChange}/>
+                <input className="form-control mb-3" type="text" id="name" value={newDish.name} required onChange={handleChange}/>
 
                 <label className="form-label" htmlFor="category">Select a category:</label>
-                <select className="form-control mb-3" id="category" required onChange={handleChange}>
+                <select className="form-control mb-3" id="category" required value={newDish.category} onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     <option value="appetizer">Appetizer</option>
                     <option value="mainCourse">Main Course</option>
@@ -47,13 +33,13 @@ import axios from "axios";
                     <option value="dessert">Dessert</option>
                 </select>
                 
+                <label className="form-label" htmlFor="price">Enter price of dish (CAD):</label>
+                <input className="form-control mb-3" type="number" id="price" min="0" max="99" step="0.01" required value={newDish.price} onChange={handleChange}/>
 
                 <label className="form-label" htmlFor="description">Enter Description of dish:</label>
-                <input className="form-control mb-3" type="text" id="description" required onChange={handleChange}/>
+                <input className="form-control mb-3" type="text" id="description" value={newDish.description} required onChange={handleChange}/>
 
-                <label className="form-label" htmlFor="price">Enter price of dish (CAD):</label>
-                <input className="form-control mb-3" type="number" id="price" min="0" max="99" step="0.01" required onChange={handleChange}/>
-                <button type="submit" className="btn btn-primary">Save</button>
+                <button type="submit" className="btn btn-primary">Add dish</button>
             </form>
             
          </div>
