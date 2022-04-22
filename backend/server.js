@@ -24,10 +24,10 @@ mongoose.connect(dbUrl,{
 app.use("/api", require('./routes/dishRoutes'));
 
 
-//custom error handler
+//custom error handler (called whenever there is an error or when next(error) is encountered)
 app.use((err,req,res,next)=>{
     //giving defaults
-    res.status(err.statusCode||500).json({
+    return res.status(err.statusCode||500).json({
         success:false, 
         error: err.message || 'Oh No! Something went wrong!' 
     });
