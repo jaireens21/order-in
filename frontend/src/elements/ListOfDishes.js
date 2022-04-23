@@ -1,19 +1,25 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 // import { v4 as uuidv4 } from 'uuid';
 import Dish from "./Dish";
 import AddDish from "./AddDish";
 
  export default function Menu(){
-    const [dishes,setDishes]=useState([]);
-
+    const [dishes,setDishes]=useState(null);
+    const [error, setError] = useState(null);//for showing error details to user
+    const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
+    
     //get existing data from server/db
-    useState(()=>{
-        axios.get('http://localhost:8010/api')
-        .then(res=>setDishes(res.data.data))
+    const loadData=()=>{
+        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        .then(res=>{
+            setDishes(res.data.data);
+            setError(null);
+        })
         .catch(err=>{
             //if the server sent a status code in 400s or 500s, it is treated as an error(rejected promise)
-            console.log("axios detected error while fetching all dishes");
+            setError(err);//for displaying error to user
+            console.log("error while fetching all the dishes");
             if (err.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
@@ -30,7 +36,50 @@ import AddDish from "./AddDish";
                 console.log('Error', err.message);
             }
         })
+
+    }
+    //run on load
+    useEffect(()=>{
+        loadData();
     },[])
+
+    //show error to user
+    const getErrorView = () => {
+        if (error.message.includes('timeout')) {
+            return (
+            <div className="text-center ">
+                <p>This is taking too long. Please try again later.</p>
+            </div>);
+        }else{ 
+            return (
+            <div className="text-center ">
+                <p>Oh no! Something went wrong. {error.message}! </p>
+                <button className="btn btn-primary" onClick={loadData}>
+                Try again
+                </button>
+            </div>
+            )
+        }
+    }
+
+    //show a spinner while data is being fetched thru axios
+    const getDishes = () => {
+        if(dishes) {
+          return (
+            <div className="DishList">
+                {dishes.map(dish=>( <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+            </div>
+          )
+        }else {
+          return (
+            <div className="text-center">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+          )
+        }
+    }
 
     const saveNewDish=(newDish)=>{
         //send to server for updating DB
@@ -119,9 +168,11 @@ import AddDish from "./AddDish";
                       
             <AddDish saveNewDish={saveNewDish}/>
 
-            <div className="DishList">
+            {/* <div className="DishList">
                 {dishes.map(dish=>( <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-            </div>
+            </div> */}
+
+            {error? getErrorView() : getDishes()}
             
         </div>
         </div>
