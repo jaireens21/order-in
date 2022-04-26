@@ -10,9 +10,10 @@ export default function MenuApp(){
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [error,setError]=useState(null); //for showing loading error to user with button to try reloading
 
-    
     const [order,setOrder]=useState([]);//capturing the order details
+    const[total,setTotal]=useState(0);//total price of order
     const [isCheckingOut, toggleIsCheckingOut]=useToggleState(false);
+
 
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
@@ -64,10 +65,22 @@ export default function MenuApp(){
         loadData();
     },[loadData])
 
+    //find total price of order, as and when order changes
+    useEffect(()=>{
+        let res=0;
+       setTotal(order.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
+    },[order])
+
+   
+    //remove item from cart if user clicked on X next to item in cart
+    const handleXClick=(id)=>{
+        setOrder(order.filter(item=>item._id!==id));
+    }
+
     const handleCheckoutClick=()=>{
         toggleIsCheckingOut();
     }
-
+    
     //show a spinner while initial data is being loaded/fetched thru axios
     const getItems = () => {
         if(!success) {
@@ -80,7 +93,7 @@ export default function MenuApp(){
             )
         }else {
             return (
-                <div className="ItemList text-center mx-auto">
+                <div className="ItemList ms-3">
                     <h2>Appetizers</h2>
                     {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} setOrder={setOrder}  />))}
                     <h2>Main Course</h2>
@@ -91,8 +104,9 @@ export default function MenuApp(){
                     {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} setOrder={setOrder} />))}
                     <h2>Desserts</h2>
                     {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} setOrder={setOrder} />))}
-                    <button className="btn btn-danger" onClick={handleCheckoutClick}>Checkout</button>
-                    {isCheckingOut && <Cart order={order}/>}
+                    <Cart order={order} total={total} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
+                    
+                    {/* {isCheckingOut && } */}
                 </div>
             )
         }

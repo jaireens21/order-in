@@ -4,7 +4,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
 import DishApp from "./elements/DishApp";
 import Navbar from './elements/Navbar';
-import Menu from './elements/Menu';
+import MenuApp from './elements/MenuApp';
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <Navbar/>
       <Routes>
         <Route path='/' element={<DishApp/>}/>
-        <Route path='/order' element={<Menu/>}/>
+        <Route path='/order' element={<MenuApp/>}/>
         
       </Routes>
     </BrowserRouter>

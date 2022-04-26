@@ -23,12 +23,12 @@ export default function MenuItem(props){
     useEffect(()=>{
         setOrder(prevOrder=>prevOrder.map(orderItem=>orderItem._id===item._id?{...orderItem,qty:qty}:orderItem));
     },[qty])
-    //update order whenever an item's qty changes
+    //update order (parent state) whenever an item's qty changes
         
     return(
         <div className="MenuItem">
            
-            <div className="card mb-3 mx-auto" style={{width: 18 + 'rem'}}>
+            <div className="card mb-3 ms-3" style={{width: 18 + 'rem'}}>
                 <div className="card-body">
                     <h5 className="card-title">{item.name}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">$ {item.price}</h6>
