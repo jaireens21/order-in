@@ -3,16 +3,33 @@ import React, {useState,useEffect,useCallback} from "react";
 import MenuItem from "./MenuItem";
 import Cart from "./Cart";
 import useToggleState from "../hooks/useToggleState";
+import OrderPreferences from "./OrderPreferences";
 
 export default function MenuApp(){
 
     const [items,setItems]=useState(null);
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
-    const [error,setError]=useState(null); //for showing loading error to user with button to try reloading
+    const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
 
-    const [order,setOrder]=useState([]);//capturing the order details
     const[total,setTotal]=useState(0);//total price of order
     const [isCheckingOut, toggleIsCheckingOut]=useToggleState(false);
+
+    const[order,setOrder]=useState([]);//saving entire order in a state called 'order' after user clicks the checkout button
+
+    let today=new Date();   let currentTimeInHours=today.getHours();
+    today=today.toLocaleDateString("en-CA");
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate()+1);
+    tomorrow=tomorrow.toLocaleDateString("en-CA");
+
+    let openingTime=11; //time in 24 hours format
+    let closingTime=22; //time in 24 hrs format
+    let slots=[]; let duration=0.5;
+    for (let i=openingTime;i<closingTime;i=i+duration){
+        slots.push(i);
+    };
+
+   
 
 
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
@@ -35,7 +52,7 @@ export default function MenuApp(){
             console.log('Error', err.message);
         }
     }
-    //function to display initial loading error to user, with button to try reloading data
+    //function to display initial loading error to user, with a button to try reloading data
     const getErrorView = (err) => {
         return (
         <div className="text-center text-danger">
@@ -45,42 +62,75 @@ export default function MenuApp(){
         )
         
     }
+
     //get all items from server/db
-    const loadData=useCallback(()=>{ //useCallback used to resolve a warning of missing dependencies in useEffect
+    const loadData=()=>{ 
+        //useCallback may be used to resolve warning of missing dependencies in useEffect
         axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
             setError(null);
-            setItems(res.data.data); //show menu items 
+            let dishes=res.data.data;
+            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item, this will help creating the order later
+            
         })
         .catch(err=>{
             setError(err);
             console.log("error while fetching menu items");
             displayError(err); //show error on console
         })
-    },[TIMEOUT_INTERVAL])
+    }
 
     //fetch initial data on load
     useEffect(()=>{
         loadData();
-    },[loadData])
+    },[])
 
-    //find total price of order, as and when order changes
-    useEffect(()=>{
-        let res=0;
-       setTotal(order.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
-    },[order])
-
-   
-    //remove item from cart if user clicked on X next to item in cart
-    const handleXClick=(id)=>{
-        setOrder(order.filter(item=>item._id!==id));
+       
+    //update item qty to 1 when user clicks on "add to order" button
+    const handleAddToOrder=(id)=>{
+        setItems(items.map(item=>item._id===id?({...item,qty:1}):item));
+    }
+    //increase item qty when user click on + button
+    const handleIncreaseButton=(id)=>{
+        setItems(items.map(item=>item._id===id?({...item,qty:item.qty+1}):item));
+    }
+    //decrease item qty when user clicks on - button
+    const handleDecreaseButton=(id)=>{
+        setItems(items.map(item=>item._id===id?({...item,qty:item.qty-1}):item));
     }
 
+    //set item qty to 0 if user clicks on X next to item in cart
+    const handleXClick=(id)=>{
+        setItems(items.map(item=>item._id===id?({...item,qty:0}):item));
+    }
+
+    //find total price of cart, as and when the items in the cart change.
+    useEffect(()=>{
+        if(items){
+            setTotal(items.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
+        }
+    },[items])
+
+    //when user clicks checkout button, save all items with qty>0 to a state called 'order'
     const handleCheckoutClick=()=>{
         toggleIsCheckingOut();
+        setOrder({items:items.filter(item=>item.qty>0) });
     }
-    
+       
+
+    //save order details to db
+    const saveOrdertoDB=(order)=>{
+        axios.post('http://localhost:8010/orders', order)
+        .then(res=>{
+            //SHOW success message, saying that the order is placed
+            
+        })
+        .catch(err=>{
+            //FLASH error message
+        })
+    }
+
     //show a spinner while initial data is being loaded/fetched thru axios
     const getItems = () => {
         if(!success) {
@@ -95,31 +145,33 @@ export default function MenuApp(){
             return (
                 <div className="ItemList ms-3">
                     <h2>Appetizers</h2>
-                    {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} setOrder={setOrder}  />))}
+                    {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+
                     <h2>Main Course</h2>
-                    {items.map(item=>(item.category==="mainCourse" && <MenuItem key={item._id} item={item} setOrder={setOrder}  />))}
+                    {items.map(item=>(item.category==="mainCourse" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+
                     <h2>Breads</h2>
-                    {items.map(item=>(item.category==="breads" && <MenuItem key={item._id} item={item} setOrder={setOrder} />))}
+                    {items.map(item=>(item.category==="breads" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+
                     <h2>Drinks</h2>
-                    {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} setOrder={setOrder} />))}
+                    {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+
                     <h2>Desserts</h2>
-                    {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} setOrder={setOrder} />))}
-                    <Cart order={order} total={total} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
+                    {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+
+                    <Cart items={items} total={total} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                     
-                    {/* {isCheckingOut && } */}
+                    {isCheckingOut && <OrderPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} tomorrow={tomorrow} currentTimeInHours={currentTimeInHours} slots={slots}/>}
                 </div>
             )
         }
     }
     return(
         <div>
-            
-            
             {error? getErrorView(error) : getItems()} 
             {/* if there is an error while loading data, show that error */}
             {/* else show the loaded data */}
             
-
         </div>
         
     )

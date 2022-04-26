@@ -1,29 +1,15 @@
-import React, {useEffect, useState} from "react";
-import useToggleState from "../hooks/useToggleState";
+import React, {useState} from "react";
 
 
 export default function MenuItem(props){
-    const{item,setOrder}=props;
-    const [qty, setQty]=useState(0);
-    const [isAdding, toggleIsAdding]=useToggleState(false);
+    const{item,handleIncreaseButton,handleDecreaseButton,handleAddToOrder}=props;
+    
+    const [isAdding, setIsAdding]=useState(false);
 
-    const handleIncreaseButton=()=>{
-        setQty(prevQty=>prevQty+1);
+    const handleClick=(id)=>{
+        setIsAdding(true);
+        handleAddToOrder(id);
     }
-    const handleDecreaseButton=()=>{
-        setQty(prevQty=>prevQty-1);
-    }
-
-    const handleAddToOrder=()=>{
-        toggleIsAdding();
-        setQty(1);
-        setOrder(prevOrder=>[...prevOrder,{...item,qty:1}]);
-    }
-
-    useEffect(()=>{
-        setOrder(prevOrder=>prevOrder.map(orderItem=>orderItem._id===item._id?{...orderItem,qty:qty}:orderItem));
-    },[qty])
-    //update order (parent state) whenever an item's qty changes
         
     return(
         <div className="MenuItem">
@@ -33,12 +19,12 @@ export default function MenuItem(props){
                     <h5 className="card-title">{item.name}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">$ {item.price}</h6>
                     <p className="card-text">{item.description}</p>
-                    {(!isAdding || qty===0)? //do not show + - buttons if qty=0
-                        <button className="btn btn-success" onClick={handleAddToOrder}>Add to Order</button>
+                    {(!isAdding || item.qty===0)? //do not show + - buttons if qty=0
+                        <button className="btn btn-success" onClick={()=>handleClick(item._id)}>Add to Order</button>
                         :<div>
-                            <button className="btn btn-dark me-3" onClick={handleIncreaseButton}>+</button>
-                            {qty}
-                            <button className="btn btn-dark ms-3" onClick={handleDecreaseButton}>-</button>
+                            <button className="btn btn-dark me-3" onClick={()=>handleIncreaseButton(item._id)}>+</button>
+                            {item.qty}
+                            <button className="btn btn-dark ms-3" onClick={()=>handleDecreaseButton(item._id)}>-</button>
                         </div>
                     }
                 </div>

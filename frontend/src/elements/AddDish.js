@@ -12,8 +12,8 @@ export default function AddDish(props){
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        saveNewDish(newDish);
-        setNewDish(initialState);
+        saveNewDish(newDish);//save data in parent state
+        setNewDish(initialState);//reset input fields
     }
 
     const handleCancel=(e)=>{

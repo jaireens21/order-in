@@ -128,7 +128,6 @@ import AddDish from "./AddDish";
             setSuccess(true);//alert success to user
             setError(null);
             setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
-            
         })
         .catch(err=>{
             setError(err);//alert failure to user
