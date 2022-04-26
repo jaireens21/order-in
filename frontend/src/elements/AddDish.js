@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 export default function AddDish(props){
-    const {saveNewDish}=props;
+    const {saveNewDish,toggleIsAdding}=props;
 
     const initialState={name:"",category:"",description:"",price:0};
     const [newDish,setNewDish]=useState(initialState);
@@ -14,6 +14,12 @@ export default function AddDish(props){
         e.preventDefault();
         saveNewDish(newDish);
         setNewDish(initialState);
+    }
+
+    const handleCancel=(e)=>{
+        e.preventDefault();
+        toggleIsAdding();
+        
     }
 
      return(
@@ -39,7 +45,8 @@ export default function AddDish(props){
                 <label className="form-label" htmlFor="description">Enter Description of dish:</label>
                 <input className="form-control mb-3" type="text" id="description" value={newDish.description} required onChange={handleChange}/>
 
-                <button type="submit" className="btn btn-primary">Add dish</button>
+                <button type="submit" className="btn btn-primary me-3">Add dish</button>
+                <button onClick={handleCancel} className="btn btn-danger">Cancel</button>
             </form>
             
          </div>

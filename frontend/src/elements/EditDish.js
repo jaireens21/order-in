@@ -12,9 +12,13 @@ export default function EditDish(props){
     const handleSubmit=(e)=>{
         e.preventDefault();
         console.log("submitting edited dish");
-        saveEditedDish(editedDish, editedDish._id); //send data upto parent to update state
-        //SEND DATA TO SERVER TO UPDATE DB
+        saveEditedDish(editedDish, editedDish._id); //send data upto parent 
         toggleIsEditing();
+    }
+    const handleCancel=(e)=>{
+        e.preventDefault();
+        toggleIsEditing();
+        
     }
     return(
         <div className="w-50 mx-auto my-5">
@@ -39,7 +43,8 @@ export default function EditDish(props){
                 <label className="form-label" htmlFor="description">Description:</label>
                 <input className="form-control mb-3" type="text" id="description" value={editedDish.description} required onChange={handleChange}/>
                 
-                <button type="submit" className="btn btn-primary">Save</button>
+                <button type="submit" className="btn btn-primary me-3">Save</button>
+                <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
             </form>
             
         </div>

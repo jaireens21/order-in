@@ -1,31 +1,20 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
-import ListOfDishes from "./elements/ListOfDishes";
-// import Layout from './elements/Layout';
-// import Home from './elements/Home';
-// import AddDish from './elements/AddDish';
-// import EditDish from './elements/EditDish';
-// import Menu from './elements/Menu';
-// import Login from './elements/Login';
-// import Logout from './elements/Logout';
-// import Signup from './elements/Signup';
-// import Account from './elements/Account';
+import DishApp from "./elements/DishApp";
+import Navbar from './elements/Navbar';
+import Menu from './elements/Menu';
+
 
 function App() {
   return (
     <BrowserRouter>
+    <Navbar/>
       <Routes>
-        <Route path='/' element={<ListOfDishes/>}>
-          {/* <Route index element={<Home/>}/>
-          <Route path='add' element={<AddDish/>}/>
-          <Route path='menu' element={<Menu/>} />
-          <Route path='edit/:id' element={<EditDish/>} />
-          <Route path='login' element={<Login/>} />
-          <Route path='logout' element={<Logout/>} />
-          <Route path='signup' element={<Signup/>} />
-          <Route path='users/:id' element={<Account/>} /> */}
-        </Route>
+        <Route path='/' element={<DishApp/>}/>
+        <Route path='/order' element={<Menu/>}/>
+        
       </Routes>
     </BrowserRouter>
     

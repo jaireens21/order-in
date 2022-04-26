@@ -3,7 +3,6 @@ const catchAsync=require('../utils/catchAsync');
 const myError=require('../utils/myError');
 
 exports.getAllDishes=catchAsync(async(req,res,next)=>{
- //res.send("getting all dishes");
  const dishes=await Dish.find({});
  if(!dishes){
     return next (new myError(404,"Error! No dishes found!")); //calling the custom error handler defined in server.js

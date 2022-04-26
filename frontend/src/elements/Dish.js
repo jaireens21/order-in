@@ -8,9 +8,16 @@ export default function Dish(props){
     const [isEditing, toggleIsEditing]=useToggleState(false);
 
     const saveEditedDish=(editedDish,id)=>{
-        saveDish(editedDish,id);
+        saveDish(editedDish,id);//send data upto parent again
     }
-
+    const confirmDeleteDish=(id,e)=>{
+        let result= window.confirm ('Are you sure you want to delete this dish?');//popup to confirm user intention
+        if(!result){
+            e.preventDefault();
+        }else{
+            removeDish(id);
+        }
+    }
     
     return(isEditing?
         //if editing, show a form to edit the dish
@@ -19,14 +26,17 @@ export default function Dish(props){
         //if not editing, simply display the dish
         <div className="Dish">
             
-            <ul>
-                <li>Name: {dish.name}</li>
-                <li>Category: {dish.category}</li>
-                <li>Price (CAD): {dish.price}</li>
-                <li>Description: {dish.description}</li>
-                <li><button onClick={toggleIsEditing}><i className="material-icons">edit</i></button></li>
-                <li><button onClick={()=>removeDish(dish._id)}><i className="material-icons">delete</i></button></li>
-            </ul>
+            
+
+            <div className="card mb-3" style={{width: 18 + 'rem'}}>
+                <div className="card-body">
+                    <h5 className="card-title">{dish.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">{dish.price}</h6>
+                    <p className="card-text">{dish.description}</p>
+                    <button className="me-3" onClick={toggleIsEditing}><i className="material-icons">edit</i></button>
+                    <button onClick={(e)=>confirmDeleteDish(dish._id,e)}><i className="material-icons">delete</i></button>
+                </div>
+            </div>
          
         </div>
     )

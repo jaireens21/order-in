@@ -8,23 +8,12 @@ export default function Navbar(){
 
             <div className="navbar-nav ms-auto">
                 <li className="nav-item">
-                    <NavLink to={"/add"} className="nav-link">Add a dish</NavLink>
+                    <NavLink to={"/"} className="nav-link">Owner login</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to={"/menu"} className="nav-link">Menu</NavLink>
+                    <NavLink to={"/order"} className="nav-link">Order</NavLink>
                 </li>
-                <li className="nav-item">
-                    <NavLink to={"/signup"} className="nav-link">SignUp</NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink to={"/login"} className="nav-link">Login</NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink to={"/users/:id"} className="nav-link">User Account</NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink to={"/logout"} className="nav-link">Logout</NavLink>
-                </li>
+                
             </div>
         </nav>
     )
