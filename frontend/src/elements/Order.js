@@ -20,7 +20,7 @@ export default function Order(props){
                 <li className="list-group-item fw-bold">ITEMS</li>
                 
                 {order.items.map(item=><li className="list-group-item" key={item.name}>{item.qty} x {item.name}</li>)}
-                {/* ALSO DISPLAY ORDER TOTAL */}
+                
             </ul>
             
         </div>

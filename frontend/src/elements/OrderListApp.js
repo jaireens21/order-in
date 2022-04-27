@@ -1,14 +1,26 @@
 
 import axios from "axios";
 import React, {useState,useEffect} from "react";
-import Order from "./Order";
+import useToggleState from "../hooks/useToggleState";
+import OrderList from "./OrderList";
 
-export default function ListOfOrdersApp(){
+export default function OrderListApp(){
 
-    const [orderList,setOrderList]=useState([]);
+    const [allOrders,setAllOrders]=useState([]);
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
 
+    const[upcoming,toggleUpcoming]=useToggleState(false);
+    const [upcomingOrders,setUpcomingOrders]=useState([]);
+    const[todays,toggleTodays]=useToggleState(false);
+    const [todaysOrders,setTodaysOrders]=useState([]);
+    const[past,togglePast]=useToggleState(false);
+    const [pastOrders,setPastOrders]=useState([]);
+
+    const today=new Date();today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
+    const todayStr=today.toLocaleDateString("en-CA");
+
+    
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
     //function to display error details on console
@@ -48,10 +60,17 @@ export default function ListOfOrdersApp(){
             setSuccess(true);//to decide whether to show spinning loader or data
             setError(null);
             let orders=res.data.data;
-            //incoming data has typeof(order.date) as a string
-            //so we first convert order.date back to a Date object and then sort based on dates
-            let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>(a.date-b.date));
-            setOrderList(sortedOrders); //store all orders in a state called 'orderList'             
+            //incoming data has typeof(order.date)= string, that looks like a date object but is not!
+            //so we first convert order.date back to a Date object and then sort based on dates & time
+            let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>a.date.toString().localeCompare(b.date.toString()) || a.time - b.time);
+            //localeCompare needs a string to work on,hence toString()
+
+            setAllOrders(sortedOrders); //store all orders in a state called 'allOrders'
+
+            setUpcomingOrders(sortedOrders.filter(order=>order.date.valueOf()>today.valueOf())); //compare date objects using value in milliseconds
+            
+            setTodaysOrders(sortedOrders.filter(order=>order.date.valueOf()===today.valueOf()));   
+            setPastOrders(sortedOrders.filter(order=>order.date.valueOf()<today.valueOf()));   
         })
         .catch(err=>{
             setError(err);
@@ -65,6 +84,15 @@ export default function ListOfOrdersApp(){
         loadData();
     },[])
 
+    const handleUpcomingClick=()=>{
+        toggleUpcoming();
+    }
+    const handleTodaysClick=()=>{
+        toggleTodays();
+    }
+    const handlePastClick=()=>{
+        togglePast();
+    }
     //show a spinner while initial data is being loaded/fetched thru axios
     const getItems = () => {
         if(!success) {
@@ -79,14 +107,15 @@ export default function ListOfOrdersApp(){
             
             return (
                 <div className="ms-3">
-                    <h2>List of orders</h2>
-                    {orderList.length>0?
-                        <div className="ItemList d-flex">
-                            {orderList.map(order=><Order key={order._id} order={order} />)}
-                        </div>
-                        :<h3>No Orders yet!</h3>
-                    }
+                    <h1>ORDERS</h1>
                     
+                    <button className="btn btn-dark me-3" onClick={handleTodaysClick}>Today's orders</button>
+                    <button className="btn btn-dark me-3" onClick={handleUpcomingClick}>Upcoming orders</button>
+                    <button className="btn btn-dark me-3" onClick={handlePastClick}>Past orders</button>
+                    
+                    {todays && <OrderList orders={todaysOrders} heading="Today's" />}
+                    {upcoming && <OrderList orders={upcomingOrders} heading="Upcoming" />}
+                    {past && <OrderList orders={pastOrders} heading="Past" />}
     
                 </div>
             )
