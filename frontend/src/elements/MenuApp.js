@@ -2,7 +2,7 @@ import axios from "axios";
 import React, {useState,useEffect} from "react";
 import MenuItem from "./MenuItem";
 import Cart from "./Cart";
-import OrderPreferences from "./OrderPreferences";
+import CartPreferences from "./CartPreferences";
 
 export default function MenuApp(){
 
@@ -18,10 +18,13 @@ export default function MenuApp(){
 
     const[order,setOrder]=useState([]);//saving entire order in a state called 'order' after user clicks the checkout button
 
-    let today=new Date();   let currentTimeInHours=today.getHours();
+    let today=new Date();   let currentTimeInHours=today.getHours(); let currentMinutes=today.getMinutes();
+    // today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
     let todayStr=today.toLocaleDateString("en-CA");
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate()+1);
+    // tomorrow.setUTCHours(10);tomorrow.setUTCMinutes(0);tomorrow.setUTCSeconds(0);tomorrow.setUTCMilliseconds(0);
+    //setting time of today & tomorrow as the same time so that we can sort based on dates
     let tomorrowStr=tomorrow.toLocaleDateString("en-CA");
 
     let openingTime=11; //time in 24 hours format
@@ -172,7 +175,7 @@ export default function MenuApp(){
 
                     <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                     
-                    {isCheckingOut && <OrderPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} slots={slots}/>}
+                    {isCheckingOut && <CartPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots}/>}
                 </div>
             )
         }

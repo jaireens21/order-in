@@ -47,7 +47,11 @@ export default function ListOfOrdersApp(){
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
             setError(null);
-            setOrderList(res.data.data); //store all orders in a state called 'orderList'             
+            let orders=res.data.data;
+            //incoming data has typeof(order.date) as a string
+            //so we first convert order.date back to a Date object and then sort based on dates
+            let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>(a.date-b.date));
+            setOrderList(sortedOrders); //store all orders in a state called 'orderList'             
         })
         .catch(err=>{
             setError(err);
@@ -72,10 +76,17 @@ export default function ListOfOrdersApp(){
                 </div>
             )
         }else {
+            
             return (
-                <div className="ItemList ms-3">
+                <div className="ms-3">
                     <h2>List of orders</h2>
-                    {orderList.map(order=><Order key={order._id} order={order} />)}
+                    {orderList.length>0?
+                        <div className="ItemList d-flex">
+                            {orderList.map(order=><Order key={order._id} order={order} />)}
+                        </div>
+                        :<h3>No Orders yet!</h3>
+                    }
+                    
     
                 </div>
             )

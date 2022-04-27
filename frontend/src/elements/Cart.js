@@ -11,7 +11,7 @@ export default function Cart(props){
         <div className="Cart">
             <div className="card" style={{width: 18+'rem'}}>
                 <div className="card-header">
-                    Order Details
+                    Cart
                 </div>
                 <ul className="list-group list-group-flush">
                     {items.some(item=>item.qty>0)?

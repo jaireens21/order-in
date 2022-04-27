@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function OrderPreferences(props){
-    const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, slots}=props;
+export default function CartPreferences(props){
+    const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots}=props;
 
     //add details of the person ordering the food to 'order'
     const handleChange=(e)=>{
@@ -16,22 +16,26 @@ export default function OrderPreferences(props){
        //redirect to 'order placed' page
     }
     let options=[];
-    if(order.date===today){
-        options=slots.map(slot=>(slot>currentTimeInHours+0.6 ? 
+    let orderDateStr=new Date(order.date).toLocaleDateString("en-CA");
+    if(orderDateStr===todayStr){
+        options=slots.map(slot=>(slot>=(currentTimeInHours + currentMinutes/60 + 0.5))?
+        // assuming restaurant  needs 30 minutes (0.5 hours)to prepare a meal
             <option key={slot}value={slot}>
-                { slot>12? ((slot-12)%1===0?(slot-12):(slot-12.5)): (slot%1===0?slot:slot-0.5)}:{slot%1===0? "00":"30"} {slot>=12?"pm":"am"}
+                { slot>12.5? ((slot-12)%1===0?(slot-12):(slot-12.5)): (slot%1===0?slot:slot-0.5)}:{slot%1===0? "00":"30"} {slot>=12?"pm":"am"}
             </option>
-            :null));
+            :null
+        );
     }else{
         options=slots.map(slot=>(<option key={slot}value={slot}>
                 { slot>12.5? ((slot-12)%1===0?(slot-12):(slot-12.5)): (slot%1===0?slot:slot-0.5)}:{slot%1===0? "00":"30"} {slot>=12?"pm":"am"}
             </option>));
-    }
+    };
+    
     
 
 return(
-    <div className="w-50 ms-3 OrderPreferences">
-        <h1>Order-in</h1>
+    <div className="w-50 ms-3 CartPreferences">
+        <h2>Please fill in details & preferences</h2>
         <form  onSubmit={handleSubmit} >
             <label className="form-label" htmlFor="name">Name:</label>
             <input className="form-control mb-3" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
