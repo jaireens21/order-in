@@ -5,6 +5,8 @@ import './App.css';
 import DishApp from "./elements/DishApp";
 import Navbar from './elements/Navbar';
 import MenuApp from './elements/MenuApp';
+import ListOfOrdersApp from './elements/ListOfOrdersApp';
+import Home from './pages/Home';
 
 
 function App() {
@@ -12,8 +14,10 @@ function App() {
     <BrowserRouter>
     <Navbar/>
       <Routes>
-        <Route path='/' element={<DishApp/>}/>
-        <Route path='/order' element={<MenuApp/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path='/owner/dishes' element={<DishApp/>}/>
+        <Route path='/owner/orders' element={<ListOfOrdersApp/>} />
+        <Route path='/menu/order' element={<MenuApp/>}/>
         
       </Routes>
     </BrowserRouter>

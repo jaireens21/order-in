@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function OrderPreferences(props){
-    const {order,setOrder,saveOrdertoDB, today, tomorrow, currentTimeInHours, slots}=props;
+    const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, slots}=props;
 
     //add details of the person ordering the food to 'order'
     const handleChange=(e)=>{
@@ -31,7 +31,7 @@ export default function OrderPreferences(props){
 
 return(
     <div className="w-50 ms-3 OrderPreferences">
-        <h1>Contact</h1>
+        <h1>Order-in</h1>
         <form  onSubmit={handleSubmit} >
             <label className="form-label" htmlFor="name">Name:</label>
             <input className="form-control mb-3" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
@@ -54,8 +54,8 @@ return(
             <label className="form-label" htmlFor="date">Date</label>
             <select className="form-control mb-3" id="date" required onChange={handleChange}>
                 <option value="">--Please choose an option--</option>
-                <option value={today}>Today</option>
-                <option value={tomorrow}>Tomorrow</option>
+                <option value={today}>Today: {todayStr}</option>
+                <option value={tomorrow}>Tomorrow: {tomorrowStr}</option>
                 
             </select>
             <label className="form-label" htmlFor="time">Time</label>

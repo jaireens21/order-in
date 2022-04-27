@@ -1,8 +1,7 @@
 import axios from "axios";
-import React, {useState,useEffect,useCallback} from "react";
+import React, {useState,useEffect} from "react";
 import MenuItem from "./MenuItem";
 import Cart from "./Cart";
-import useToggleState from "../hooks/useToggleState";
 import OrderPreferences from "./OrderPreferences";
 
 export default function MenuApp(){
@@ -11,16 +10,19 @@ export default function MenuApp(){
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
 
-    const[total,setTotal]=useState(0);//total price of order
-    const [isCheckingOut, toggleIsCheckingOut]=useToggleState(false);
+    
+    const[subtotal,setSubtotal]=useState(0);//subtotal price of order
+    
+    let taxes=0.13; //current taxes in ontario,Canada
+    const [isCheckingOut, setIsCheckingOut]=useState(false);
 
     const[order,setOrder]=useState([]);//saving entire order in a state called 'order' after user clicks the checkout button
 
     let today=new Date();   let currentTimeInHours=today.getHours();
-    today=today.toLocaleDateString("en-CA");
+    let todayStr=today.toLocaleDateString("en-CA");
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate()+1);
-    tomorrow=tomorrow.toLocaleDateString("en-CA");
+    let tomorrowStr=tomorrow.toLocaleDateString("en-CA");
 
     let openingTime=11; //time in 24 hours format
     let closingTime=22; //time in 24 hrs format
@@ -108,25 +110,34 @@ export default function MenuApp(){
     //find total price of cart, as and when the items in the cart change.
     useEffect(()=>{
         if(items){
-            setTotal(items.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
+            setSubtotal(items.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
+            if(!items.some(item=>item.qty>0)){
+                setIsCheckingOut(false); //hide order preferenece form if there is no item in the cart
+            }
         }
+        
     },[items])
 
     //when user clicks checkout button, save all items with qty>0 to a state called 'order'
     const handleCheckoutClick=()=>{
-        toggleIsCheckingOut();
-        setOrder({items:items.filter(item=>item.qty>0) });
+        if(items.some(item=>item.qty>0)){
+            setIsCheckingOut(true);
+        }
+        setOrder({items:items.filter(item=>item.qty>0)});
+        
     }
        
 
     //save order details to db
     const saveOrdertoDB=(order)=>{
-        axios.post('http://localhost:8010/orders', order)
+        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2))})
         .then(res=>{
+            console.log(success,res.data.data);
             //SHOW success message, saying that the order is placed
             
         })
         .catch(err=>{
+            console.log(err);
             //FLASH error message
         })
     }
@@ -159,9 +170,9 @@ export default function MenuApp(){
                     <h2>Desserts</h2>
                     {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
 
-                    <Cart items={items} total={total} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
+                    <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                     
-                    {isCheckingOut && <OrderPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} tomorrow={tomorrow} currentTimeInHours={currentTimeInHours} slots={slots}/>}
+                    {isCheckingOut && <OrderPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} slots={slots}/>}
                 </div>
             )
         }

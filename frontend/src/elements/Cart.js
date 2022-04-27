@@ -3,7 +3,7 @@ import React from "react";
 
 
 export default function Cart(props){
-    const {items,handleCheckoutClick,handleXClick,total}=props;
+    const {items,handleCheckoutClick,handleXClick,subtotal}=props;
    
   
 
@@ -20,9 +20,9 @@ export default function Cart(props){
                                 item.qty>0 && //donot show item if qty=0
                                 <li className="list-group-item" key={item._id}>{item.name} ({item.qty}) : $ {(item.price * item.qty).toFixed(2)}<button onClick={()=>handleXClick(item._id)} className="btn">X</button></li>
                             ))}
-                            <li className="list-group-item" key="subtotal">Sub-total : $ {total}</li>
-                            <li className="list-group-item" key="taxes">Taxes (13%) : $ {(total*0.13).toFixed(2)}</li>
-                            <li className="list-group-item" key="total">Total : $ {(total*1.13).toFixed(2)}</li>
+                            <li className="list-group-item" key="subtotal">Sub-total : $ {subtotal}</li>
+                            <li className="list-group-item" key="taxes">Taxes (13%) : $ {(subtotal*0.13).toFixed(2)}</li>
+                            <li className="list-group-item" key="total">Total : $ {(subtotal*1.13).toFixed(2)}</li>
                         </div>
                         
                         :<li className="list-group-item">Cart is empty!</li>

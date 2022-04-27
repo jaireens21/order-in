@@ -22,6 +22,7 @@ mongoose.connect(dbUrl,{
 
 //ROUTES 
 app.use("/api", require('./routes/dishRoutes'));
+app.use("/orders", require('./routes/orderRoutes'));
 
 
 //custom error handler (called whenever there is an error or when next(error) is encountered)
