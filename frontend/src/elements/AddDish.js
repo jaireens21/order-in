@@ -14,12 +14,12 @@ export default function AddDish(props){
         e.preventDefault();
         saveNewDish(newDish);//save data in parent state
         setNewDish(initialState);//reset input fields
+        toggleIsAdding();
     }
 
     const handleCancel=(e)=>{
         e.preventDefault();
         toggleIsAdding();
-        
     }
 
      return(

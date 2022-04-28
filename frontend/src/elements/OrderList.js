@@ -5,7 +5,7 @@ export default function OrderList(props){
     const{orders,heading}=props;
 
     return (
-    <div>
+    <div className="mt-3">
         <h2>{heading} Orders</h2>
         {orders.length>0?
             <div className="d-flex">

@@ -7,20 +7,21 @@ import OrderList from "./OrderList";
 export default function OrderListApp(){
 
     const [allOrders,setAllOrders]=useState([]);
+
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
 
-    const[upcoming,toggleUpcoming]=useToggleState(false);
     const [upcomingOrders,setUpcomingOrders]=useState([]);
-    const[todays,toggleTodays]=useToggleState(false);
-    const [todaysOrders,setTodaysOrders]=useState([]);
-    const[past,togglePast]=useToggleState(false);
-    const [pastOrders,setPastOrders]=useState([]);
-
-    const today=new Date();today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
-    const todayStr=today.toLocaleDateString("en-CA");
-
+    const[showUpcoming,toggleShowUpcoming]=useToggleState(false);
     
+    const [todaysOrders,setTodaysOrders]=useState([]);
+    const[showTodays,toggleShowTodays]=useToggleState(false);
+    
+    const [pastOrders,setPastOrders]=useState([]);
+    const[showPast,toggleShowPast]=useToggleState(false);
+    
+    const today=new Date();today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
+        
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
     //function to display error details on console
@@ -44,21 +45,20 @@ export default function OrderListApp(){
     //function to display initial loading error to user, with a button to try reloading data
     const getErrorView = (err) => {
         return (
-        <div className="text-center text-danger">
-            <p>Oh no! Something went wrong. {err.message}! </p>
-            <button className="btn btn-primary" onClick={loadData}> Try again </button>
+        <div >
+            <p className="text-danger">Oh no! Something went wrong. ( {err.message} )</p>
+            <p>Please try again later!</p>
         </div>
         )
-        
     }
 
-    //get all items from server/db
-    const loadData=()=>{ 
-        //useCallback may be used to resolve warning of missing dependencies in useEffect
+    
+    //fetch data using axios on initial page load
+    useEffect(()=>{
         axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
-            setError(null);
+            setError(null);//explicitly set error to null to make sure user sees the data & not errorView
             let orders=res.data.data;
             //incoming data has typeof(order.date)= string, that looks like a date object but is not!
             //so we first convert order.date back to a Date object and then sort based on dates & time
@@ -73,61 +73,52 @@ export default function OrderListApp(){
             setPastOrders(sortedOrders.filter(order=>order.date.valueOf()<today.valueOf()));   
         })
         .catch(err=>{
-            setError(err);
-            console.log("error while fetching order list");
-            displayError(err); //show error on console
+            setError(err);//to display error to user
+            console.log("error while fetching orders");
+            displayError(err); //show error details on console
         })
-    }
-
-    //fetch initial data on load
-    useEffect(()=>{
-        loadData();
-    },[])
+    },[TIMEOUT_INTERVAL])
 
     const handleUpcomingClick=()=>{
-        toggleUpcoming();
+        toggleShowUpcoming();
     }
     const handleTodaysClick=()=>{
-        toggleTodays();
+        toggleShowTodays();
     }
     const handlePastClick=()=>{
-        togglePast();
+        toggleShowPast();
     }
+
     //show a spinner while initial data is being loaded/fetched thru axios
     const getItems = () => {
-        if(!success) {
+        if(!success) {//show spinning loader
             return (
-                <div className="text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>
             )
-        }else {
-            
+        }else {//show the data
             return (
-                <div className="ms-3">
+                <div>
                     <h1>ORDERS</h1>
                     
                     <button className="btn btn-dark me-3" onClick={handleTodaysClick}>Today's orders</button>
                     <button className="btn btn-dark me-3" onClick={handleUpcomingClick}>Upcoming orders</button>
                     <button className="btn btn-dark me-3" onClick={handlePastClick}>Past orders</button>
                     
-                    {todays && <OrderList orders={todaysOrders} heading="Today's" />}
-                    {upcoming && <OrderList orders={upcomingOrders} heading="Upcoming" />}
-                    {past && <OrderList orders={pastOrders} heading="Past" />}
+                    {showTodays && <OrderList orders={todaysOrders} heading="Today's" />}
+                    {showUpcoming && <OrderList orders={upcomingOrders} heading="Upcoming" />}
+                    {showPast && <OrderList orders={pastOrders} heading="Past" />}
     
                 </div>
             )
         }
     }
     return(
-        <div>
+        // if there is an error while loading data, show that error
+        // else show the loaded data
+        <div className="w-50 mx-auto my-5 text-center">
             {error? getErrorView(error) : getItems()} 
-            {/* if there is an error while loading data, show that error */}
-            {/* else show the loaded data */}
-            
         </div>
-        
     )
 }

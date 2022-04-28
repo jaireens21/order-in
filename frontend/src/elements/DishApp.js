@@ -6,6 +6,7 @@ import AddDish from "./AddDish";
 
  export default function DishApp(){
     const [dishes,setDishes]=useState(null);
+
     const [successLoad,setSuccessLoad]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
@@ -35,21 +36,15 @@ import AddDish from "./AddDish";
         }
     }
 
-    //function to display initial loading error to user, with button to try reloading data
+    //function to display initial loading error to user
     const getErrorView = (err) => {
-        if (err.message.includes('timeout')) {
-            return (
-            <div className="text-center text-danger">
-                <p>This is taking too long. Please try again later.</p>
-            </div>);
-        }else{ 
-            return (
-            <div className="text-center text-danger">
-                <p>Oh no! Something went wrong. {err.message}! </p>
-                <button className="btn btn-primary" onClick={loadData}> Try again </button>
+        return (
+            <div className="text-danger">
+                <p>Oh no! Something went wrong. ( {err.message} ) </p>
+                <p> Please try again later.</p>
+                
             </div>
-            )
-        }
+        );
     }
 
     //function to alert success to user
@@ -95,7 +90,7 @@ import AddDish from "./AddDish";
 
     //show a spinner while initial data is being loaded/fetched thru axios
     const getDishes = () => {
-        if(!successLoad) {
+        if(!successLoad) {//show a spinner
             return (
                 <div className="text-center">
                     <div className="spinner-border" role="status">
@@ -104,7 +99,7 @@ import AddDish from "./AddDish";
                 </div>
             )
         }else {
-            return (
+            return (//show data
                 <div className="DishList">
                     <h2>Appetizers</h2>
                     {dishes.map(dish=>(dish.category==="appetizer"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
@@ -174,17 +169,17 @@ import AddDish from "./AddDish";
     
     
     return(
-        <div>
+        <div className="w-50 mx-auto mt-5">
             
             {error && alertFailure(error) }  
             {success && alertSuccess('Sucess!')}
 
-            <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>           
+            <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>         
             {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
             {loadError? getErrorView(loadError) : getDishes()} 
             {/* if there is an error while loading data, show that error */}
-            {/* else show the loaded data */}
+            {/* else show the loaded data & button to add a new dish */}
             
 
         </div>
