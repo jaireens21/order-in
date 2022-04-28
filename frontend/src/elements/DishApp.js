@@ -4,17 +4,19 @@ import useToggleState from "../hooks/useToggleState";
 import Dish from "./Dish";
 import AddDish from "./AddDish";
 
+
  export default function DishApp(){
     const [dishes,setDishes]=useState(null);
 
     const [successLoad,setSuccessLoad]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
+    const [error, setError] = useState(false);//for showing error message to user
     const [success,setSuccess]=useState(false);//for showing success message to user
-    const [error, setError] = useState(null);//for showing error details to user
+    const[message,setMessage]=useState("");//to flash a different message for success/error
 
-    const[message,setMessage]=useState("");//to display a different success message everytime
-
+    
+    
     const [isAdding, toggleIsAdding]=useToggleState(false);
     
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
@@ -38,61 +40,46 @@ import AddDish from "./AddDish";
         }
     }
 
-    //function to display initial loading error to user
-    const getErrorView = (err) => {
-        return (
-            <div className="text-danger">
-                <p>Oh no! Something went wrong. ( {err.message} ) </p>
-                <p> Please try again later.</p>
-                
-            </div>
-        );
-    }
-
-    //function to alert success to user
-    const alertSuccess = () => {
-        return (
-            <div className="w-50 alert alert-success alert-dismissible fade show" role="alert">
-                <p><strong>Yay! </strong> {message}</p>
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        );
-    }
-
-    //function to alert failure to user
-    const alertFailure = (err) => {
-        return (
-            <div className="w-50 alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Oh no!</strong> Something went wrong: {err.message}
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        );
-    }
-
-    //get existing data from server/db
-    const loadData=useCallback(()=>{ //useCallback used to resolve a warning of missing dependencies in useEffect
+    
+    //read existing data from server/db
+    const loadData=useCallback(()=>{ 
         axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setSuccessLoad(true);//to decide whether to show spinning loader or data
             setLoadError(null);
-            setDishes(res.data.data); //show dishes 
+            setDishes(res.data.data); //save all fetched dishes into state called "dishes"
+            //setState will cause a re-render
         })
         .catch(err=>{
             setLoadError(err);
+            setSuccessLoad(false);
             console.log("error while fetching all the dishes");
             displayError(err); //show error on console
         })
     },[TIMEOUT_INTERVAL])
 
-    //fetch initial data on load
+    
+    //useEffect runs on first render & every update
     useEffect(()=>{
-        loadData();
-    },[loadData])
+        loadData(); //read data from db
+    },[loadData]) 
+    //loadData is a dependency for this useEffect hook
+    //But, the 'loadData' function makes the dependency (loadData) change on every render. To fix this, wrap the definition of 'loadData' in its own useCallback() Hook that will return a memoized function
 
     
-    //show a spinner while initial data is being loaded/fetched thru axios
     const getDishes = () => {
-        if(!successLoad) {//show a spinner
+        if(loadError){//if there was an error in reading data using axios, show the error
+            return (
+                <div className="text-danger">
+                    <p>Oh no! Something went wrong. ( {loadError.message} ) </p>
+                    <p> Please try again later.</p>
+                </div>
+            );
+        }
+        else if(!successLoad) {
+            //if there is no error but successLoad is not true yet
+            //means we are still waiting for data
+            //so we show a spinner to the user
             return (
                 <div className="text-center">
                     <div className="spinner-border" role="status">
@@ -101,8 +88,13 @@ import AddDish from "./AddDish";
                 </div>
             )
         }else{
-            return (//show data
-                <div className="DishList">
+            //there is no error, & successLoad is true
+            //we show the data
+            return (
+                <div>
+                    <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>         
+                    {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
+
                     <h2>Appetizers</h2>
                     {dishes.map(dish=>(dish.category==="appetizer" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
 
@@ -122,17 +114,43 @@ import AddDish from "./AddDish";
         }
     }
 
+    const flashMessage=()=>{
+        if(error){
+            return(
+                <div className=" alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Oh no!</strong> Something went wrong. ( {message} ! )
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            );
+        } 
+        if(success){
+            return (
+                <div className=" alert alert-success alert-dismissible fade show" role="alert">
+                    <p><strong>Yay! </strong> {message}</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            );
+        }
+    }
+
+
+
     const saveNewDish=(newDish)=>{
         //send to server for updating DB
         axios.post('http://localhost:8010/api',newDish)
         .then(res=>{
             setSuccess(true);//alert success to user
             setMessage("The dish was added successfully!");//success message
-            setError(null);
-            setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
+            setError(false);
+            //setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
+            //do NOT do this
+            //if multiple users add dishes to the db at the same time, user may see stale data
+            //better to fetch data again using loadData()
+            loadData();
         })
         .catch(err=>{
-            setError(err);//alert failure to user
+            setError(true);//alert failure to user
+            setMessage(err.message);
             setSuccess(false);
             console.log("axios detected error while saving a new dish");
             displayError(err);//show error details in console
@@ -144,11 +162,16 @@ import AddDish from "./AddDish";
         .then(res=>{
             setSuccess(true);//alert success to user
             setMessage("The dish was deleted!");//success message
-            setError(null);
-            setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
+            setError(false);
+            //setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
+            //do NOT do this
+            //if multiple users add dishes to the db at the same time, user may see stale data
+            //better to fetch data again using loadData()
+            loadData();
         })
         .catch(err=>{
-            setError(err);//alert failure to user
+            setError(true);//alert failure to user
+            setMessage(err.message); //error message
             setSuccess(false);
             console.log("axios detected error while deleting a dish");
             displayError(err);//show error details in console
@@ -161,11 +184,16 @@ import AddDish from "./AddDish";
         .then(res=>{
             setSuccess(true);//alert success to user
             setMessage("The dish was updated successfully!");//success message
-            setError(null);
-            setDishes(dishes.map(dish=>dish._id===id?editedDish :dish));//update local state to re render list with new data
+            setError(false);
+            //setDishes(dishes.map(dish=>dish._id===id?editedDish :dish));//update local state to re render list with new data
+            //do NOT do this
+            //if multiple users add dishes to the db at the same time, user may see stale data
+            //better to fetch data again using loadData()
+            loadData();
         })
         .catch(err=>{
-            setError(err);//alert failure to user
+            setError(true);//alert failure to user
+            setMessage(err.message);
             setSuccess(false);
             console.log("axios detected error while updating a dish");
             displayError(err);//show error details in console
@@ -175,15 +203,10 @@ import AddDish from "./AddDish";
     return(
         <div className="w-50 mx-auto mt-5">
             
-            {error && alertFailure(error) }  
-            {success && alertSuccess()}
+            {flashMessage()}
 
-            <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>         
-            {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
-
-            {loadError? getErrorView(loadError) : getDishes()} 
-            {/* if there is an error while loading data, show that error */}
-            {/* else show the loaded data & button to add a new dish */}
+            {getDishes()} 
+            
         
         </div>
     );

@@ -8,7 +8,7 @@ export default function Dish(props){
     const [isEditing, toggleIsEditing]=useToggleState(false);
 
     const saveEditedDish=(editedDish,id)=>{
-        saveDish(editedDish,id);//send data upto parent again
+        saveDish(editedDish,id);//send data upto parent -dish app
     }
     const confirmDeleteDish=(id,e)=>{
         let result= window.confirm ('Are you sure you want to delete this dish?');//popup to confirm user intention

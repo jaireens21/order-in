@@ -19,18 +19,18 @@ exports.addNewDish=catchAsync(async(req,res,next)=>{
     await dish.save();
     return res.status(201).json({
         success: true,
-        data:dish
+        data:dish//the new dish
     });
 });
 
 exports.updateDishById=catchAsync(async(req,res,next)=>{
-    const dish=await Dish.findById(req.params.id);// Find the dish with the given `id`, or `null` if not found
+    const dish=await Dish.findByIdAndUpdate(req.params.id, req.body);// Find the dish with the given `id`, or `null` if not found
     if(!dish){
         return next(new myError(404,"Error! Could not find that dish!"));
     }
     return res.status(201).json({
         success: true,
-        data: dish,
+        //data:dish //the found,unmodified dish
     });
 })
 
@@ -41,6 +41,6 @@ exports.deleteDishById=catchAsync(async(req,res,next)=>{
     }
     return res.status(201).json({
         success: true,
-        data: dish,
+        data: dish,//the found dish
     });
 })

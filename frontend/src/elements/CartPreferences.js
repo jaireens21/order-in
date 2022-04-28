@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function CartPreferences(props){
     const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots}=props;

@@ -12,13 +12,12 @@ export default function EditDish(props){
     const handleSubmit=(e)=>{
         e.preventDefault();
         console.log("submitting edited dish");
-        saveEditedDish(editedDish, editedDish._id); //send data upto parent 
+        saveEditedDish(editedDish, editedDish._id); //send data upto parent-dish
         toggleIsEditing();
     }
     const handleCancel=(e)=>{
         e.preventDefault();
         toggleIsEditing();
-        
     }
     return(
         <div className="w-50 mx-auto my-5">
