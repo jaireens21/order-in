@@ -5,17 +5,17 @@ import Dish from "./Dish";
 import AddDish from "./AddDish";
 
 
+
  export default function DishApp(){
     const [dishes,setDishes]=useState(null);
 
-    const [successLoad,setSuccessLoad]=useState(false); //to decide whether to show spinning loader or data
+    const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
     const [error, setError] = useState(false);//for showing error message to user
     const [success,setSuccess]=useState(false);//for showing success message to user
-    const[message,setMessage]=useState("");//to flash a different message for success/error
-
-    
+    const [message,setMessage]=useState("");//to flash a different message for success/error
+       
     
     const [isAdding, toggleIsAdding]=useToggleState(false);
     
@@ -45,18 +45,18 @@ import AddDish from "./AddDish";
     const loadData=useCallback(()=>{ 
         axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
-            setSuccessLoad(true);//to decide whether to show spinning loader or data
+            setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
             setDishes(res.data.data); //save all fetched dishes into state called "dishes"
             //setState will cause a re-render
         })
         .catch(err=>{
             setLoadError(err);
-            setSuccessLoad(false);
+            setLoadSuccess(false);
             console.log("error while fetching all the dishes");
             displayError(err); //show error on console
         })
-    },[TIMEOUT_INTERVAL])
+    },[TIMEOUT_INTERVAL]);
 
     
     //useEffect runs on first render & every update
@@ -65,75 +65,6 @@ import AddDish from "./AddDish";
     },[loadData]) 
     //loadData is a dependency for this useEffect hook
     //But, the 'loadData' function makes the dependency (loadData) change on every render. To fix this, wrap the definition of 'loadData' in its own useCallback() Hook that will return a memoized function
-
-    
-    const getDishes = () => {
-        if(loadError){//if there was an error in reading data using axios, show the error
-            return (
-                <div className="text-danger">
-                    <p>Oh no! Something went wrong. ( {loadError.message} ) </p>
-                    <p> Please try again later.</p>
-                </div>
-            );
-        }
-        else if(!successLoad) {
-            //if there is no error but successLoad is not true yet
-            //means we are still waiting for data
-            //so we show a spinner to the user
-            return (
-                <div className="text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-            )
-        }else{
-            //there is no error, & successLoad is true
-            //we show the data
-            return (
-                <div>
-                    <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>         
-                    {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
-
-                    <h2>Appetizers</h2>
-                    {dishes.map(dish=>(dish.category==="appetizer" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-
-                    <h2>Main Course</h2>
-                    {dishes.map(dish=>(dish.category==="mainCourse" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-
-                    <h2>Breads</h2>
-                    {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-
-                    <h2>Drinks</h2>
-                    {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-
-                    <h2>Desserts</h2>
-                    {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
-                </div>
-            )
-        }
-    }
-
-    const flashMessage=()=>{
-        if(error){
-            return(
-                <div className=" alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Oh no!</strong> Something went wrong. ( {message} ! )
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            );
-        } 
-        if(success){
-            return (
-                <div className=" alert alert-success alert-dismissible fade show" role="alert">
-                    <p><strong>Yay! </strong> {message}</p>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            );
-        }
-    }
-
-
 
     const saveNewDish=(newDish)=>{
         //send to server for updating DB
@@ -199,11 +130,93 @@ import AddDish from "./AddDish";
             displayError(err);//show error details in console
         })
     }
+    
+    const getDishes = () => {
+        if(loadError){//if there was an error in reading data using axios, show the error
+            return (
+                <div className="text-danger">
+                    <p>Oh no! Something went wrong. ( {loadError.message} ) </p>
+                    <p> Please try again later.</p>
+                </div>
+            );
+        }
+        else if(!loadSuccess) {
+            //if there is no error but loadSuccess is not true yet
+            //means we are still waiting for data
+            //so we show a spinner to the user
+            return (
+                <div className="text-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            )
+        }else{
+            //there is no error, & loadSuccess is true
+            //we show the data
+            return (
+                <div>
+                    <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
+                    {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
+
+                    <h2>Appetizers</h2>
+                    <div className="d-flex flex-wrap">
+                    {dishes.map(dish=>(dish.category==="appetizer" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    </div>
+                    
+
+                    <h2>Main Course</h2>
+                    <div className="d-flex flex-wrap">
+                    {dishes.map(dish=>(dish.category==="mainCourse" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    </div>
+
+                    <h2>Breads</h2>
+                    <div className="d-flex flex-wrap">
+                    {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    </div>
+
+                    <h2>Drinks</h2>
+                    <div className="d-flex flex-wrap">
+                    {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    </div>
+
+                    <h2>Desserts</h2>
+                    <div className="d-flex flex-wrap">
+                    {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    const viewMessage=()=>{
+        if(error){
+            
+            return(
+                <div className=" alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Oh no !</strong> Something went wrong. ( {message} ! )
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+            );
+           
+        }
+        if(success){
+            
+            return (
+                <div className=" alert alert-success alert-dismissible fade show" role="alert">
+                    <p><strong>Yay ! </strong> {message}</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            );
+        }
+        
+    }
 
     return(
-        <div className="w-50 mx-auto mt-5">
+        <div className="DishApp w-75 ms-5 mt-5">
             
-            {flashMessage()}
+            {viewMessage()}
 
             {getDishes()} 
             

@@ -1,17 +1,13 @@
 import React from "react";
 
-
-
 export default function Cart(props){
     const {items,handleCheckoutClick,handleXClick,subtotal}=props;
    
-  
-
     return(
-        <div className="Cart">
-            <div className="card" style={{width: 18+'rem'}}>
-                <div className="card-header">
-                    Cart
+        <div className="Cart mb-5 w-100">
+            <div className="card">
+                <div className="card-header text-center fw-bold fs-5">
+                    CART
                 </div>
                 <ul className="list-group list-group-flush">
                     {items.some(item=>item.qty>0)?

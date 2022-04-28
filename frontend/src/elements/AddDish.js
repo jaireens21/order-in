@@ -23,8 +23,8 @@ export default function AddDish(props){
     }
 
      return(
-         <div className="w-50 mx-auto my-5">
-            <h1>Add a new dish</h1>
+         <div className="AddDish my-3 w-50">
+            <h2>Add a new dish</h2>
             <form onSubmit={handleSubmit}>
                 <label className="form-label" htmlFor="name">Enter name of dish:</label>
                 <input className="form-control mb-3" type="text" id="name" value={newDish.name} required onChange={handleChange}/>
@@ -45,7 +45,7 @@ export default function AddDish(props){
                 <label className="form-label" htmlFor="description">Enter Description of dish:</label>
                 <input className="form-control mb-3" type="text" id="description" value={newDish.description} required onChange={handleChange}/>
 
-                <button type="submit" className="btn btn-primary me-3">Add dish</button>
+                <button type="submit" className="btn btn-success me-3">Add dish</button>
                 <button onClick={handleCancel} className="btn btn-danger">Cancel</button>
             </form>
             

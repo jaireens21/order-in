@@ -20,7 +20,8 @@ export default function EditDish(props){
         toggleIsEditing();
     }
     return(
-        <div className="w-50 mx-auto my-5">
+        <div className="w-50 my-5">
+            <h2>Edit dish</h2>
             
             <form onSubmit={handleSubmit}>
                 <label className="form-label" htmlFor="name">Name:</label>
@@ -42,7 +43,7 @@ export default function EditDish(props){
                 <label className="form-label" htmlFor="description">Description:</label>
                 <input className="form-control mb-3" type="text" id="description" value={editedDish.description} required onChange={handleChange}/>
                 
-                <button type="submit" className="btn btn-primary me-3">Save</button>
+                <button type="submit" className="btn btn-success me-3">Save</button>
                 <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
             </form>
             

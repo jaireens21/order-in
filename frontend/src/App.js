@@ -7,6 +7,7 @@ import Navbar from './elements/Navbar';
 import MenuApp from './elements/MenuApp';
 import OrderListApp from './elements/OrderListApp';
 import Home from './pages/Home';
+import OrderPlacedSuccess from './elements/OrderPlacedSuccess';
 
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/owner/dishes' element={<DishApp/>}/>
         <Route path='/owner/orders' element={<OrderListApp/>} />
-        <Route path='/menu/order' element={<MenuApp/>}/>
+        <Route path='/menu/orderonline' element={<MenuApp/>}/>
+        <Route path='/menu/orderonline/success' element={<OrderPlacedSuccess/>}/>
         
       </Routes>
     </BrowserRouter>

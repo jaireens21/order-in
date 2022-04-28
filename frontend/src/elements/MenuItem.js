@@ -14,7 +14,7 @@ export default function MenuItem(props){
     return(
         <div className="MenuItem">
            
-            <div className="card mb-3 ms-3" style={{width: 18 + 'rem'}}>
+            <div className="card mb-3 me-3" style={{width: 15 + 'rem'}}>
                 <div className="card-body">
                     <h5 className="card-title">{item.name}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">$ {item.price}</h6>

@@ -28,13 +28,13 @@ export default function Dish(props){
             
             
 
-            <div className="card mb-3" style={{width: 18 + 'rem'}}>
+            <div className="card mb-3 me-3" style={{width: 18 + 'rem'}}>
                 <div className="card-body">
                     <h5 className="card-title">{dish.name}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">{dish.price}</h6>
+                    <h6 className="card-subtitle mb-2 text-muted">$ {dish.price}</h6>
                     <p className="card-text">{dish.description}</p>
-                    <button className="me-3" onClick={toggleIsEditing}><i className="material-icons">edit</i></button>
-                    <button onClick={(e)=>confirmDeleteDish(dish._id,e)}><i className="material-icons">delete</i></button>
+                    <button className="btn btn-primary me-3" onClick={toggleIsEditing}>Edit</button>
+                    <button className="btn btn-danger" onClick={(e)=>confirmDeleteDish(dish._id,e)}>Delete</button>
                 </div>
             </div>
          

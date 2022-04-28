@@ -20,7 +20,7 @@ export default function Navbar(){
                     <NavLink to={"/menu"} className="nav-link">Menu</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to={"/menu/order"} className="nav-link">Order Online</NavLink>
+                    <NavLink to={"/menu/orderonline"} className="nav-link">Order Online</NavLink>
                 </li>
                 
             </div>

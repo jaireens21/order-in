@@ -10,10 +10,8 @@ export default function CartPreferences(props){
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        //clear the form fields
-        console.log(order);
-        saveOrdertoDB(order); //save order details to DB via parent
-       //redirect to 'order placed' page
+        //console.log(order);
+        saveOrdertoDB(order); //save order details to DB via parent-menuapp
     }
     let options=[];
     let orderDateStr=new Date(order.date).toLocaleDateString("en-CA");
@@ -34,7 +32,7 @@ export default function CartPreferences(props){
     
 
 return(
-    <div className="w-50 ms-3 CartPreferences">
+    <div className="CartPreferences w-100">
         <h2>Please fill in details & preferences</h2>
         <form  onSubmit={handleSubmit} >
             <label className="form-label" htmlFor="name">Name:</label>
@@ -69,7 +67,7 @@ return(
                 
             </select>
 
-            <button type="submit" className="btn btn-primary me-3">Place Order</button>
+            <button type="submit" className="btn btn-primary">Place Order</button>
             
         </form>
         
