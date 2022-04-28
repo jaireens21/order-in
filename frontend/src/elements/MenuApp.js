@@ -24,12 +24,13 @@ export default function MenuApp(){
 
     let navigate = useNavigate();
 
-    let today=new Date();   let currentTimeInHours=today.getHours(); let currentMinutes=today.getMinutes();
-    today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
+    let day=new Date();   let currentTimeInHours=day.getHours(); let currentMinutes=day.getMinutes();
+    day.setUTCHours(10); day.setUTCMinutes(0); day.setUTCSeconds(0); day.setUTCMilliseconds(0);
+    const today=new Date(day);
     let todayStr=today.toLocaleDateString("en-CA");
-    let tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate()+1);
-    tomorrow.setUTCHours(10);tomorrow.setUTCMinutes(0);tomorrow.setUTCSeconds(0);tomorrow.setUTCMilliseconds(0);
+    let tmrw = new Date(); tmrw.setDate(day.getDate()+1);
+    tmrw.setUTCHours(10);tmrw.setUTCMinutes(0);tmrw.setUTCSeconds(0);tmrw.setUTCMilliseconds(0);
+    const tomorrow=new Date(tmrw);
     //setting time of today & tomorrow as the same time so that we can sort/compare based on dates
     let tomorrowStr=tomorrow.toLocaleDateString("en-CA");
 

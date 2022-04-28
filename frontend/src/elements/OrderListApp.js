@@ -15,12 +15,13 @@ export default function OrderListApp(){
     const[showUpcoming,toggleShowUpcoming]=useToggleState(false);
     
     const [todaysOrders,setTodaysOrders]=useState([]);
-    const[showTodays,toggleShowTodays]=useToggleState(false);
+    const[showTodays,toggleShowTodays]=useToggleState(true);//setting default to true so we always show todays' orders by default
     
     const [pastOrders,setPastOrders]=useState([]);
     const[showPast,toggleShowPast]=useToggleState(false);
     
-    const today=new Date();today.setUTCHours(10); today.setUTCMinutes(0); today.setUTCSeconds(0); today.setUTCMilliseconds(0);
+    let day=new Date();day.setUTCHours(10); day.setUTCMinutes(0); day.setUTCSeconds(0); day.setUTCMilliseconds(0);
+    const today=new Date(day);
         
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
@@ -53,7 +54,7 @@ export default function OrderListApp(){
     }
 
     
-    //fetch data using axios on initial page load
+    //read data using axios on every render
     useEffect(()=>{
         axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
@@ -102,8 +103,8 @@ export default function OrderListApp(){
                 <div>
                     <h1>ORDERS</h1>
                     
-                    <button className="btn btn-dark me-3" onClick={handleTodaysClick}>Today's orders</button>
-                    <button className="btn btn-dark me-3" onClick={handleUpcomingClick}>Upcoming orders</button>
+                    <button className="btn btn-primary me-3" onClick={handleTodaysClick}>Today's orders</button>
+                    <button className="btn btn-success me-3" onClick={handleUpcomingClick}>Upcoming orders</button>
                     <button className="btn btn-dark me-3" onClick={handlePastClick}>Past orders</button>
                     
                     {showTodays && <OrderList orders={todaysOrders} heading="Today's" />}
