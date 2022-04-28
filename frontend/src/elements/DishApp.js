@@ -13,6 +13,8 @@ import AddDish from "./AddDish";
     const [success,setSuccess]=useState(false);//for showing success message to user
     const [error, setError] = useState(null);//for showing error details to user
 
+    const[message,setMessage]=useState("");//to display a different success message everytime
+
     const [isAdding, toggleIsAdding]=useToggleState(false);
     
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
@@ -48,14 +50,15 @@ import AddDish from "./AddDish";
     }
 
     //function to alert success to user
-    const alertSuccess = (message) => {
+    const alertSuccess = () => {
         return (
             <div className="w-50 alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Yay!</strong> {message}
+                <p><strong>Yay! </strong> {message}</p>
                 <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         );
     }
+
     //function to alert failure to user
     const alertFailure = (err) => {
         return (
@@ -87,7 +90,6 @@ import AddDish from "./AddDish";
     },[loadData])
 
     
-
     //show a spinner while initial data is being loaded/fetched thru axios
     const getDishes = () => {
         if(!successLoad) {//show a spinner
@@ -98,19 +100,23 @@ import AddDish from "./AddDish";
                     </div>
                 </div>
             )
-        }else {
+        }else{
             return (//show data
                 <div className="DishList">
                     <h2>Appetizers</h2>
-                    {dishes.map(dish=>(dish.category==="appetizer"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
+                    {dishes.map(dish=>(dish.category==="appetizer" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+
                     <h2>Main Course</h2>
-                    {dishes.map(dish=>(dish.category==="mainCourse"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
+                    {dishes.map(dish=>(dish.category==="mainCourse" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+
                     <h2>Breads</h2>
-                    {dishes.map(dish=>(dish.category==="breads"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
+                    {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+
                     <h2>Drinks</h2>
-                    {dishes.map(dish=>(dish.category==="drinks"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
+                    {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+
                     <h2>Desserts</h2>
-                    {dishes.map(dish=>(dish.category==="dessert"?<Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>:null))}
+                    {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
                 </div>
             )
         }
@@ -121,6 +127,7 @@ import AddDish from "./AddDish";
         axios.post('http://localhost:8010/api',newDish)
         .then(res=>{
             setSuccess(true);//alert success to user
+            setMessage("The dish was added successfully!");//success message
             setError(null);
             setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
         })
@@ -136,16 +143,15 @@ import AddDish from "./AddDish";
         axios.delete(`http://localhost:8010/api/${id}`)
         .then(res=>{
             setSuccess(true);//alert success to user
+            setMessage("The dish was deleted!");//success message
             setError(null);
             setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
-           
         })
         .catch(err=>{
             setError(err);//alert failure to user
             setSuccess(false);
             console.log("axios detected error while deleting a dish");
             displayError(err);//show error details in console
-            
         })
     }
 
@@ -154,9 +160,9 @@ import AddDish from "./AddDish";
         axios.put(`http://localhost:8010/api/${id}`,editedDish)
         .then(res=>{
             setSuccess(true);//alert success to user
+            setMessage("The dish was updated successfully!");//success message
             setError(null);
             setDishes(dishes.map(dish=>dish._id===id?editedDish :dish));//update local state to re render list with new data
-            
         })
         .catch(err=>{
             setError(err);//alert failure to user
@@ -166,13 +172,11 @@ import AddDish from "./AddDish";
         })
     }
 
-    
-    
     return(
         <div className="w-50 mx-auto mt-5">
             
             {error && alertFailure(error) }  
-            {success && alertSuccess('Sucess!')}
+            {success && alertSuccess()}
 
             <button className="btn btn-success" onClick={toggleIsAdding} >Add A New Dish</button>         
             {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
@@ -180,9 +184,7 @@ import AddDish from "./AddDish";
             {loadError? getErrorView(loadError) : getDishes()} 
             {/* if there is an error while loading data, show that error */}
             {/* else show the loaded data & button to add a new dish */}
-            
-
-        </div>
         
-    )
- }
+        </div>
+    );
+}
