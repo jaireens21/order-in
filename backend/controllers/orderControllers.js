@@ -22,3 +22,15 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
         data:order
     });
 });
+
+exports.updateOrderById=catchAsync(async(req,res,next)=>{
+    console.log(req.body);
+    const order=await Order.findByIdAndUpdate(req.params.id, req.body);
+    if(!order){
+        return next (new myError(404,"Error! Order not found!")); 
+    }
+    return res.status(201).json({
+        success:true,
+        //data:order//the found,unmodified order
+    });
+});

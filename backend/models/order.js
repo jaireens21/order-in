@@ -9,6 +9,7 @@ const orderSchema=new mongoose.Schema({
     date:Date,
     time:Number,
     total:Number,
+    completed:Boolean,
     items:[{
         name:String,
         category:String,

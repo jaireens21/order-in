@@ -24,6 +24,7 @@ exports.addNewDish=catchAsync(async(req,res,next)=>{
 });
 
 exports.updateDishById=catchAsync(async(req,res,next)=>{
+    console.log(req.body);
     const dish=await Dish.findByIdAndUpdate(req.params.id, req.body);// Find the dish with the given `id`, or `null` if not found
     if(!dish){
         return next(new myError(404,"Error! Could not find that dish!"));

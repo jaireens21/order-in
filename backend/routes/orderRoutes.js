@@ -6,4 +6,6 @@ router.route('/')
     .get(orderControllers.getAllOrders)
     .post(orderControllers.addNewOrder);
 
+router.route('/:id').put(orderControllers.updateOrderById);
+
 module.exports=router;

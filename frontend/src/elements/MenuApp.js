@@ -24,14 +24,9 @@ export default function MenuApp(){
 
     let navigate = useNavigate();
 
-    let day=new Date();   let currentTimeInHours=day.getHours(); let currentMinutes=day.getMinutes();
-    day.setUTCHours(10); day.setUTCMinutes(0); day.setUTCSeconds(0); day.setUTCMilliseconds(0);
-    const today=new Date(day);
+    const today=new Date();   let currentTimeInHours=today.getHours(); let currentMinutes=today.getMinutes();
     let todayStr=today.toLocaleDateString("en-CA");
-    let tmrw = new Date(); tmrw.setDate(day.getDate()+1);
-    tmrw.setUTCHours(10);tmrw.setUTCMinutes(0);tmrw.setUTCSeconds(0);tmrw.setUTCMilliseconds(0);
-    const tomorrow=new Date(tmrw);
-    //setting time of today & tomorrow as the same time so that we can sort/compare based on dates
+    let tomorrow = new Date(); tomorrow.setDate(today.getDate()+1);
     let tomorrowStr=tomorrow.toLocaleDateString("en-CA");
 
     const openingTime=11; //time in 24 hours format
@@ -125,7 +120,7 @@ export default function MenuApp(){
 
     //save order details to db
     const saveOrdertoDB=(order)=>{//add total to the order before saving to db
-        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2))})
+        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
             setSuccess(true);//alert success to user
@@ -142,13 +137,13 @@ export default function MenuApp(){
         })
     }
 
-    //reading data from db using axios
+    //display the data (readingfrom db using axios)
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
             return (
                 <div className="text-center text-danger">
                     <p>Oh no! Something went wrong. {loadError.message}! </p>
-                    <button className="btn btn-primary" onClick={loadData}> Try again </button>
+                    <p> Please try again later.</p>
                 </div>
             );
         }

@@ -1,12 +1,13 @@
 
 import axios from "axios";
-import React, {useState,useEffect} from "react";
+import React, {useState,useEffect, useCallback} from "react";
 import useToggleState from "../hooks/useToggleState";
 import OrderList from "./OrderList";
 
 export default function OrderListApp(){
 
     const [allOrders,setAllOrders]=useState([]);
+    
 
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
@@ -20,8 +21,8 @@ export default function OrderListApp(){
     const [pastOrders,setPastOrders]=useState([]);
     const[showPast,toggleShowPast]=useToggleState(false);
     
-    let day=new Date();day.setUTCHours(10); day.setUTCMinutes(0); day.setUTCSeconds(0); day.setUTCMilliseconds(0);
-    const today=new Date(day);
+    const today=new Date();
+    
         
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
@@ -43,19 +44,11 @@ export default function OrderListApp(){
             console.log('Error', err.message);
         }
     }
-    //function to display initial loading error to user, with a button to try reloading data
-    const getErrorView = (err) => {
-        return (
-        <div >
-            <p className="text-danger">Oh no! Something went wrong. ( {err.message} )</p>
-            <p>Please try again later!</p>
-        </div>
-        )
-    }
+    
 
     
     //read data using axios on every render
-    useEffect(()=>{
+    const loadData=useCallback(()=>{
         axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
@@ -65,61 +58,135 @@ export default function OrderListApp(){
             //so we first convert order.date back to a Date object and then sort based on dates & time
             let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>a.date.toString().localeCompare(b.date.toString()) || a.time - b.time);
             //localeCompare needs a string to work on,hence toString()
-
+            //console.log(today);
             setAllOrders(sortedOrders); //store all orders in a state called 'allOrders'
 
-            setUpcomingOrders(sortedOrders.filter(order=>order.date.valueOf()>today.valueOf())); //compare date objects using value in milliseconds
+            setUpcomingOrders(sortedOrders.filter(order=>order.date>today)); //comparing date objects (this will use their value in milliseconds)
             
-            setTodaysOrders(sortedOrders.filter(order=>order.date.valueOf()===today.valueOf()));   
-            setPastOrders(sortedOrders.filter(order=>order.date.valueOf()<today.valueOf()));   
+            setTodaysOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")===today.toLocaleDateString("en-CA"))); //since objects can not be equal, we check equality by converting to date strings 
+            setPastOrders(sortedOrders.filter(order=>order.date<today));   
         })
         .catch(err=>{
             setError(err);//to display error to user
             console.log("error while fetching orders");
             displayError(err); //show error details on console
         })
-    },[TIMEOUT_INTERVAL])
+    },[TIMEOUT_INTERVAL]);
 
-    const handleUpcomingClick=()=>{
+    //read data from db
+    useEffect(()=>{
+        loadData();
+    },[loadData]);
+
+    const handleUpcomingClick=(e)=>{
         toggleShowUpcoming();
+        e.target.innerText= e.target.innerText.includes("Show")?"Hide Upcoming Orders":"Show Upcoming Orders";
     }
-    const handleTodaysClick=()=>{
+    const handleTodaysClick=(e)=>{
         toggleShowTodays();
+        e.target.innerText= e.target.innerText.includes("Show")?"Hide Today's Orders":"Show Today's Orders";
     }
-    const handlePastClick=()=>{
+    const handlePastClick=(e)=>{
         toggleShowPast();
+        e.target.innerText= e.target.innerText.includes("Show")?"Hide Past Orders":"Show Past Orders";
     }
 
-    //show a spinner while initial data is being loaded/fetched thru axios
+    const markOrderCompleted=(id)=>{
+        let odr=allOrders.find(order=>order._id===id);
+        let completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
+        console.log("in orderlistapp, order details:",completedOrder);
+        //WRITE TO DB TO UPDATE DB
+        axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
+        .then(res=>{
+            // // console.log(res.data.data);
+            // setSuccess(true);//alert success to user
+            // setMessage("The order was marked as completed!");//success message
+            // setError(false);
+            window.alert("marked as completed!");
+            loadData();//RELOAD DATA from db to have the most updated data in state
+        })
+        .catch(err=>{
+            // setError(true);//alert failure to user
+            // setMessage(err.message);
+            // setSuccess(false);
+            window.alert("try again!");
+            console.log("error while marking order as completed");
+            displayError(err);//show error details in console
+        })
+        
+        
+    }
+    const toggleTick=(id)=>{
+        let odr=allOrders.find(order=>order._id===id);//find the order we want to toggle completed status of
+        let completedOrder={};
+        if(odr.completed){
+            completedOrder={...odr,completed:false}
+        }
+        else completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
+        console.log("in orderlistapp, order details:",completedOrder);
+        //WRITE TO DB TO UPDATE DB
+        axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
+        .then(res=>{
+            // // console.log(res.data.data);
+            // setSuccess(true);//alert success to user
+            // setMessage("The order was marked as completed!");//success message
+            // setError(false);
+            //window.alert("marked as completed!");
+            loadData();//RELOAD DATA from db to have the most updated data in state
+        })
+        .catch(err=>{
+            // setError(true);//alert failure to user
+            // setMessage(err.message);
+            // setSuccess(false);
+            window.alert("Error! Please try again later!");
+            console.log("error while marking order as completed");
+            displayError(err);//show error details in console
+        })
+        
+        
+    }
+
+    //display data (read from db using axios)
     const getItems = () => {
-        if(!success) {//show spinning loader
+        if(error){ //if there was an error in reading data using axios, show the error
+            return (
+                <div >
+                    <p className="text-danger">Oh no! Something went wrong. ( {error.message} )</p>
+                    <p>Please try again later!</p>
+                </div>
+                )
+        }
+        else if(!success) {
+            //if there is no error but success is not true yet
+            //means we are still waiting for data
+            //so we show a spinner to the user
             return (
                 <div className="spinner-border" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div>
             )
-        }else {//show the data
+        }else {
+            //no error, success is true->display the data
             return (
                 <div>
                     <h1>ORDERS</h1>
                     
-                    <button className="btn btn-primary me-3" onClick={handleTodaysClick}>Today's orders</button>
-                    <button className="btn btn-success me-3" onClick={handleUpcomingClick}>Upcoming orders</button>
-                    <button className="btn btn-dark me-3" onClick={handlePastClick}>Past orders</button>
+                    <button className="btn btn-primary me-3" onClick={handleTodaysClick}>Hide Today's orders</button>
+                    <button className="btn btn-success me-3" onClick={handleUpcomingClick}>Show Upcoming orders</button>
+                    <button className="btn btn-dark me-3" onClick={handlePastClick}>Show Past orders</button>
                     
-                    {showTodays && <OrderList orders={todaysOrders} heading="Today's" />}
-                    {showUpcoming && <OrderList orders={upcomingOrders} heading="Upcoming" />}
-                    {showPast && <OrderList orders={pastOrders} heading="Past" />}
+                    {showTodays && <OrderList orders={todaysOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Today's" />}
+                    {showUpcoming && <OrderList orders={upcomingOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Upcoming" />}
+                    {showPast && <OrderList orders={pastOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Past" />}
     
                 </div>
             )
         }
     }
     return(
-        // if there is an error while loading data, show that error
-        // else show the loaded data
-        <div className="w-50 mx-auto my-5 text-center">
-            {error? getErrorView(error) : getItems()} 
+       
+        <div className="w-75 mx-auto my-5 text-center">
+            {getItems()} 
         </div>
     )
 }
