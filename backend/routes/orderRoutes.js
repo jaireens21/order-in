@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const orderControllers=require("../controllers/orderControllers");
-const {validateNewOrderData, validateEditOrderData} =require("../middleware");
+const {validateNewOrderData, validateEditOrderData} =require("../middleware/joiValidations");
 
 router.route('/')
     .get(orderControllers.getAllOrders)

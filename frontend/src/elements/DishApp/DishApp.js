@@ -69,7 +69,7 @@ import { useAlert } from 'react-alert';
         axios.post('http://localhost:8010/api',newDish)
         .then(res=>{
             // window.alert("The dish was added successfully!");
-            alert.success("The dish was added successfully!");
+            alert.success("Dish added successfully!");
             
             //setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
             //do NOT do this
@@ -87,7 +87,7 @@ import { useAlert } from 'react-alert';
     const removeDish=(id)=>{
         axios.delete(`http://localhost:8010/api/${id}`)
         .then(res=>{
-            alert.success("The dish was deleted!");
+            alert.success("Dish deleted!");
             //setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
             //do NOT do this
             //if multiple users add dishes to the db at the same time, user may see stale data
@@ -105,7 +105,7 @@ import { useAlert } from 'react-alert';
     const saveDish=(editedDish,id)=>{
         axios.put(`http://localhost:8010/api/${id}`,editedDish)
         .then(res=>{
-            alert.success("The dish was updated successfully!");
+            alert.success("Dish updated!");
 
             //setDishes(dishes.map(dish=>dish._id===id?editedDish :dish));//update local state to re render list with new data
             //do NOT do this

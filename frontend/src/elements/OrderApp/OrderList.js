@@ -5,11 +5,11 @@ export default function OrderList(props){
     const{orders,heading,markOrderCompleted,toggleTick}=props;
 
     const markOrderC=(id)=>{
-        console.log("going to orderlistapp from order-list");
+        // console.log("going to orderlistapp from order-list");
         markOrderCompleted(id);
     }
     const toggleB=(id)=>{
-        console.log("going to orderlistapp from order-list");
+        // console.log("going to orderlistapp from order-list");
         toggleTick(id);
     }
 

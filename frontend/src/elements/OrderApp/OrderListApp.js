@@ -64,10 +64,10 @@ export default function OrderListApp(){
             //console.log(today);
             setAllOrders(sortedOrders); //store all orders in a state called 'allOrders'
 
-            setUpcomingOrders(sortedOrders.filter(order=>order.date>today)); //comparing date objects (this will use their value in milliseconds)
+            setUpcomingOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")>today.toLocaleDateString("en-CA"))); //comparing strings of same format
             
             setTodaysOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")===today.toLocaleDateString("en-CA"))); //since objects can not be equal, we check equality by converting to date strings 
-            setPastOrders(sortedOrders.filter(order=>order.date<today));   
+            setPastOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")<today.toLocaleDateString("en-CA")));   
         })
         .catch(err=>{
             setError(err);//to display error to user
@@ -97,13 +97,13 @@ export default function OrderListApp(){
     const markOrderCompleted=(id)=>{
         let odr=allOrders.find(order=>order._id===id);
         let completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
-        console.log("in orderlistapp, order details:",completedOrder);
-        //WRITE TO DB TO UPDATE DB
+        // console.log("in orderlistapp, order details:",completedOrder);
+        //update DB
         axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
         .then(res=>{
             //window.alert("marked as completed!");
-            alert.success("Marked as Completed!");
-            loadData();//RELOAD DATA from db to have the most updated data in state
+            alert.success("Order Completed!");
+            loadData();//reload data from db to have the most updated data in state
         })
         .catch(err=>{
             //window.alert("try again!");
@@ -121,11 +121,11 @@ export default function OrderListApp(){
             completedOrder={...odr,completed:false}
         }
         else completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
-        console.log("in orderlistapp, order details:",completedOrder);
-        //WRITE TO DB TO UPDATE DB
+        // console.log("in orderlistapp, order details:",completedOrder);
+        //update DB
         axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
         .then(res=>{
-            loadData();//RELOAD DATA from db to have the most updated data in state
+            loadData();//reload data from db to have the most updated data in state
         })
         .catch(err=>{
             //window.alert("Error! Please try again later!");

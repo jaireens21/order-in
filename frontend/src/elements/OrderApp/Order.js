@@ -8,11 +8,11 @@ export default function Order(props){
     let displayTime=  (time>12.5? ((time-12)%1===0?(time-12):(time-12.5)): (time%1===0?time:time-0.5))+":"+ (time%1===0? "00":"30") +" "+ (time>=12?"pm":"am");
 
     const handleMarkBtn=(id)=>{
-        console.log("going to order-list from order");
+        // console.log("going to order-list from order");
         markOrderC(id);
     };
     const toggleBtn=(id)=>{
-        console.log("going to order-list from order");
+        // console.log("going to order-list from order");
         toggleB(id);
     };
     let name="Order card my-2 mx-2";

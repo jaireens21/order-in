@@ -122,7 +122,7 @@ export default function MenuApp(){
         axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
-            alert.success("The order was placed successfully!")
+            alert.success("Order placed successfully!")
             navigate('/menu/orderonline/success');
         })
         .catch(err=>{

@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const dishControllers=require("../controllers/dishControllers");
-const {validateNewDishData,validateEditDishData}=require("../middleware");
+const {validateNewDishData,validateEditDishData}=require("../middleware/joiValidations");
 
 router.route('/').get(dishControllers.getAllDishes).post(validateNewDishData, dishControllers.addNewDish);
 

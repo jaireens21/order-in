@@ -14,7 +14,7 @@ exports.getAllOrders=catchAsync(async(req,res,next)=>{
 });
 
 exports.addNewOrder=catchAsync(async(req,res,next)=>{
-    //validating req.body using joi (see orderRoutes.js,middleware.js)
+    //validating req.body using joi (see orderRoutes.js,middleware/joiValidations.js)
     const order=new Order(req.body);
     await order.save();
     return res.status(201).json({
@@ -24,7 +24,7 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
 });
 
 exports.updateOrderById=catchAsync(async(req,res,next)=>{
-    //validating req.body using joi (see dishRoutes.js,middleware.js)
+    //validating req.body using joi (see dishRoutes.js,middleware/joiValidations.js)
     // console.log(req.body);
     const order=await Order.findByIdAndUpdate(req.params.id, req.body);
     if(!order){
