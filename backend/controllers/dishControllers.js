@@ -14,7 +14,7 @@ exports.getAllDishes=catchAsync(async(req,res,next)=>{
 });
 
 exports.addNewDish=catchAsync(async(req,res,next)=>{
-    //VALIDATE incoming data using Joi first
+    //validating req.body using joi (see dishRoutes.js,middleware.js)
     const dish=new Dish(req.body);
     await dish.save();
     return res.status(201).json({
@@ -24,7 +24,7 @@ exports.addNewDish=catchAsync(async(req,res,next)=>{
 });
 
 exports.updateDishById=catchAsync(async(req,res,next)=>{
-    console.log(req.body);
+    //validating req.body using joi (see dishRoutes.js,middleware.js)
     const dish=await Dish.findByIdAndUpdate(req.params.id, req.body);// Find the dish with the given `id`, or `null` if not found
     if(!dish){
         return next(new myError(404,"Error! Could not find that dish!"));

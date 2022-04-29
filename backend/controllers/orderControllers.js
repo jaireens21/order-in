@@ -14,7 +14,7 @@ exports.getAllOrders=catchAsync(async(req,res,next)=>{
 });
 
 exports.addNewOrder=catchAsync(async(req,res,next)=>{
-    //VALIDATE incoming data using Joi first
+    //validating req.body using joi (see orderRoutes.js,middleware.js)
     const order=new Order(req.body);
     await order.save();
     return res.status(201).json({
@@ -24,7 +24,8 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
 });
 
 exports.updateOrderById=catchAsync(async(req,res,next)=>{
-    console.log(req.body);
+    //validating req.body using joi (see dishRoutes.js,middleware.js)
+    // console.log(req.body);
     const order=await Order.findByIdAndUpdate(req.params.id, req.body);
     if(!order){
         return next (new myError(404,"Error! Order not found!")); 

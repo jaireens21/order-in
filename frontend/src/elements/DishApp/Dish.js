@@ -1,5 +1,5 @@
 import React from "react";
-import useToggleState from "../hooks/useToggleState";
+import useToggleState from "../../hooks/useToggleState";
 import EditDish from "./EditDish";
 
 export default function Dish(props){

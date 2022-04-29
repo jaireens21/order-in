@@ -2,12 +2,13 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
-import DishApp from "./elements/DishApp";
+import DishApp from "./elements/DishApp/DishApp";
 import Navbar from './elements/Navbar';
-import MenuApp from './elements/MenuApp';
-import OrderListApp from './elements/OrderListApp';
+import MenuApp from './elements/MenuApp/MenuApp';
+import OrderListApp from './elements/OrderApp/OrderListApp';
 import Home from './pages/Home';
-import OrderPlacedSuccess from './elements/OrderPlacedSuccess';
+import OrderPlacedSuccess from './elements/OrderApp/OrderPlacedSuccess';
+
 
 
 function App() {

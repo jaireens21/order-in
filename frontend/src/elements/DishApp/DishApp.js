@@ -1,22 +1,20 @@
 import axios from "axios";
 import React, {useState,useEffect, useCallback} from "react";
-import useToggleState from "../hooks/useToggleState";
+import useToggleState from "../../hooks/useToggleState";
 import Dish from "./Dish";
 import AddDish from "./AddDish";
+import { useAlert } from 'react-alert';
 
 
 
  export default function DishApp(){
+    const alert = useAlert();
+
     const [dishes,setDishes]=useState(null);
 
     const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
-    const [error, setError] = useState(false);//for showing error message to user
-    const [success,setSuccess]=useState(false);//for showing success message to user
-    const [message,setMessage]=useState("");//to flash a different message for success/error
-       
-    
     const [isAdding, toggleIsAdding]=useToggleState(false);
     
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
@@ -70,9 +68,9 @@ import AddDish from "./AddDish";
         //send to server for updating DB
         axios.post('http://localhost:8010/api',newDish)
         .then(res=>{
-            setSuccess(true);//alert success to user
-            setMessage("The dish was added successfully!");//success message
-            setError(false);
+            // window.alert("The dish was added successfully!");
+            alert.success("The dish was added successfully!");
+            
             //setDishes([...dishes,res.data.data]); //update local state to re-render list of dishes
             //do NOT do this
             //if multiple users add dishes to the db at the same time, user may see stale data
@@ -80,10 +78,8 @@ import AddDish from "./AddDish";
             loadData();
         })
         .catch(err=>{
-            setError(true);//alert failure to user
-            setMessage(err.message);
-            setSuccess(false);
-            console.log("axios detected error while saving a new dish");
+            alert.error(`Oh no! Could not save the dish! ${err.message}`);
+            console.log("error while saving new dish");
             displayError(err);//show error details in console
         })
     }
@@ -91,9 +87,7 @@ import AddDish from "./AddDish";
     const removeDish=(id)=>{
         axios.delete(`http://localhost:8010/api/${id}`)
         .then(res=>{
-            setSuccess(true);//alert success to user
-            setMessage("The dish was deleted!");//success message
-            setError(false);
+            alert.success("The dish was deleted!");
             //setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
             //do NOT do this
             //if multiple users add dishes to the db at the same time, user may see stale data
@@ -101,10 +95,8 @@ import AddDish from "./AddDish";
             loadData();
         })
         .catch(err=>{
-            setError(true);//alert failure to user
-            setMessage(err.message); //error message
-            setSuccess(false);
-            console.log("axios detected error while deleting a dish");
+            alert.error(`Oh no! Could not delete that dish! ${err.message}`);
+            console.log("error while deleting dish");
             displayError(err);//show error details in console
         })
     }
@@ -113,9 +105,8 @@ import AddDish from "./AddDish";
     const saveDish=(editedDish,id)=>{
         axios.put(`http://localhost:8010/api/${id}`,editedDish)
         .then(res=>{
-            setSuccess(true);//alert success to user
-            setMessage("The dish was updated successfully!");//success message
-            setError(false);
+            alert.success("The dish was updated successfully!");
+
             //setDishes(dishes.map(dish=>dish._id===id?editedDish :dish));//update local state to re render list with new data
             //do NOT do this
             //if multiple users add dishes to the db at the same time, user may see stale data
@@ -123,10 +114,8 @@ import AddDish from "./AddDish";
             loadData();
         })
         .catch(err=>{
-            setError(true);//alert failure to user
-            setMessage(err.message);
-            setSuccess(false);
-            console.log("axios detected error while updating a dish");
+            alert.error(`Oh no! Could not update the dish! ${err.message}`);
+            console.log("error while updating dish");
             displayError(err);//show error details in console
         })
     }
@@ -134,9 +123,10 @@ import AddDish from "./AddDish";
     const getDishes = () => {
         if(loadError){//if there was an error in reading data using axios, show the error
             return (
-                <div className="text-danger">
-                    <p>Oh no! Something went wrong. ( {loadError.message} ) </p>
-                    <p> Please try again later.</p>
+                <div className="text-center mx-auto">
+                    <h1 className="text-danger mb-5">Oh no! Something went wrong. ( {loadError.message} ) </h1>
+                    
+                    <h2> Please try refreshing the page.</h2>
                 </div>
             );
         }
@@ -145,7 +135,7 @@ import AddDish from "./AddDish";
             //means we are still waiting for data
             //so we show a spinner to the user
             return (
-                <div className="text-center">
+                <div className="text-center mx-auto">
                     <div className="spinner-border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
@@ -155,7 +145,7 @@ import AddDish from "./AddDish";
             //there is no error, & loadSuccess is true
             //we show the data
             return (
-                <div>
+                <div className="ms-5">
                     <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
@@ -189,38 +179,12 @@ import AddDish from "./AddDish";
         }
     }
 
-    const viewMessage=()=>{
-        if(error){
-            
-            return(
-                <div className=" alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Oh no !</strong> Something went wrong. ( {message} ! )
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                
-            );
-           
-        }
-        if(success){
-            
-            return (
-                <div className=" alert alert-success alert-dismissible fade show" role="alert">
-                    <p><strong>Yay ! </strong> {message}</p>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            );
-        }
-        
-    }
-
+    
     return(
-        <div className="DishApp w-75 ms-5 mt-5">
+        <div className="DishApp w-75 mt-5">
             
-            {viewMessage()}
-
             {getDishes()} 
             
-        
         </div>
     );
 }

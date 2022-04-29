@@ -4,16 +4,15 @@ import MenuItem from "./MenuItem";
 import Cart from "./Cart";
 import CartPreferences from "./CartPreferences";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from 'react-alert';
+
 
 export default function MenuApp(){
+    const alert = useAlert();
 
     const [items,setItems]=useState(null);
     const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
-
-    const [error, setError] = useState(false);//for showing error message to user
-    const [success,setSuccess]=useState(false);//for showing success message to user
-    const [message,setMessage]=useState("");//to flash a different message for success/error
 
     const[subtotal,setSubtotal]=useState(0);//subtotal price of order
     
@@ -123,16 +122,12 @@ export default function MenuApp(){
         axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
-            setSuccess(true);//alert success to user
-            setMessage("The order was placed successfully!");//success message
-            setError(false);
+            alert.success("The order was placed successfully!")
             navigate('/menu/orderonline/success');
         })
         .catch(err=>{
-            setError(true);//alert failure to user
-            setMessage(err.message);
-            setSuccess(false);
-            console.log("error while saving cart/order to db");
+            alert.error(`Oh No! Order could not be placed. ${err.message}`)
+            console.log("error while saving cart/order details to db");
             displayError(err);//show error details in console
         })
     }
@@ -141,9 +136,9 @@ export default function MenuApp(){
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
             return (
-                <div className="text-center text-danger">
-                    <p>Oh no! Something went wrong. {loadError.message}! </p>
-                    <p> Please try again later.</p>
+                <div className="text-center ">
+                    <h1 className="text-danger mb-5">Oh no! Something went wrong. {loadError.message}! </h1>
+                    <h2> Please try refreshing the page.</h2>
                 </div>
             );
         }
@@ -202,36 +197,13 @@ export default function MenuApp(){
         }
     }
 
-    const viewMessage=()=>{
-        if(error){
-            return(
-                <div className=" alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Oh no !</strong> Something went wrong. ( {message} ! )
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                
-            );
-        }
-        if(success){
-            return (
-                <div className=" alert alert-success alert-dismissible fade show" role="alert">
-                    <p><strong>Yay ! </strong> {message}</p>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            );
-        }
-    }
-
-
+    
     return(
         <div className="MenuApp mx-5 mt-5">
             
-            {viewMessage()}
             <h1 className="text-center">Order Online</h1>
             {getItems()} 
             
-            
         </div>
-        
     )
 }

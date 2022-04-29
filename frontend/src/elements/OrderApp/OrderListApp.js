@@ -1,16 +1,19 @@
 
 import axios from "axios";
 import React, {useState,useEffect, useCallback} from "react";
-import useToggleState from "../hooks/useToggleState";
+import useToggleState from "../../hooks/useToggleState";
 import OrderList from "./OrderList";
+import { useAlert } from 'react-alert';
+
 
 export default function OrderListApp(){
+    const alert = useAlert();
 
     const [allOrders,setAllOrders]=useState([]);
     
 
     const [success,setSuccess]=useState(false); //to decide whether to show spinning loader or data
-    const [error,setError]=useState(null); //for showing loading error to user with a button to try reloading
+    const [error,setError]=useState(null); //for showing loading error to user 
 
     const [upcomingOrders,setUpcomingOrders]=useState([]);
     const[showUpcoming,toggleShowUpcoming]=useToggleState(false);
@@ -98,18 +101,13 @@ export default function OrderListApp(){
         //WRITE TO DB TO UPDATE DB
         axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
         .then(res=>{
-            // // console.log(res.data.data);
-            // setSuccess(true);//alert success to user
-            // setMessage("The order was marked as completed!");//success message
-            // setError(false);
-            window.alert("marked as completed!");
+            //window.alert("marked as completed!");
+            alert.success("Marked as Completed!");
             loadData();//RELOAD DATA from db to have the most updated data in state
         })
         .catch(err=>{
-            // setError(true);//alert failure to user
-            // setMessage(err.message);
-            // setSuccess(false);
-            window.alert("try again!");
+            //window.alert("try again!");
+            alert.error("Error! Could not mark order as completed.")
             console.log("error while marking order as completed");
             displayError(err);//show error details in console
         })
@@ -127,18 +125,11 @@ export default function OrderListApp(){
         //WRITE TO DB TO UPDATE DB
         axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
         .then(res=>{
-            // // console.log(res.data.data);
-            // setSuccess(true);//alert success to user
-            // setMessage("The order was marked as completed!");//success message
-            // setError(false);
-            //window.alert("marked as completed!");
             loadData();//RELOAD DATA from db to have the most updated data in state
         })
         .catch(err=>{
-            // setError(true);//alert failure to user
-            // setMessage(err.message);
-            // setSuccess(false);
-            window.alert("Error! Please try again later!");
+            //window.alert("Error! Please try again later!");
+            alert.error(`Error! Could not mark order as completed.${err.message}`)
             console.log("error while marking order as completed");
             displayError(err);//show error details in console
         })
@@ -150,9 +141,10 @@ export default function OrderListApp(){
     const getItems = () => {
         if(error){ //if there was an error in reading data using axios, show the error
             return (
-                <div >
-                    <p className="text-danger">Oh no! Something went wrong. ( {error.message} )</p>
-                    <p>Please try again later!</p>
+                <div className="text-center mx-auto" >
+                    <h1 className="text-danger mb-5">Oh no! Something went wrong. ( {error.message} )</h1>
+                    
+                    <h2>Please try refreshing the page!</h2>
                 </div>
                 )
         }
@@ -161,8 +153,10 @@ export default function OrderListApp(){
             //means we are still waiting for data
             //so we show a spinner to the user
             return (
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
+                <div className="text-center mx-auto">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
                 </div>
             )
         }else {
