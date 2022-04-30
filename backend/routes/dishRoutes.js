@@ -1,5 +1,5 @@
 const express=require('express');
-const router=express.Router();
+const router=express.Router({mergeParams: true});
 const dishControllers=require("../controllers/dishControllers");
 const {validateNewDishData,validateEditDishData}=require("../middleware/joiValidations");
 

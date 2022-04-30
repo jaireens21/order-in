@@ -1,5 +1,5 @@
 const express=require('express');
-const router=express.Router();
+const router=express.Router({mergeParams: true});
 const orderControllers=require("../controllers/orderControllers");
 const {validateNewOrderData, validateEditOrderData} =require("../middleware/joiValidations");
 
