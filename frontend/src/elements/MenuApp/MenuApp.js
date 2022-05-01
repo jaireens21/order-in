@@ -126,7 +126,11 @@ export default function MenuApp(){
             navigate('/menu/orderonline/success');
         })
         .catch(err=>{
-            alert.error(`Oh No! Order could not be placed. ${err.message}`)
+            let message=err.message;
+            if(err.response){
+                message=err.response.data.error;
+            }
+            alert.error(`Oh No! Order could not be placed. ${message}`)
             console.log("error while saving cart/order details to db");
             displayError(err);//show error details in console
         })

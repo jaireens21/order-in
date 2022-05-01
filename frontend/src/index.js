@@ -8,7 +8,7 @@ import AlertTemplate from 'react-alert-template-basic';
 // optional configuration for react-alert
 const options = {
   position: positions.TOP_CENTER,
-  timeout: 10000,//10 seconds
+  // timeout: 10000,//10 seconds
   offset: '30px',
   transition: transitions.FADE
 };

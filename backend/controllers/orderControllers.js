@@ -35,7 +35,7 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
     for(let i=0;i<order.items.length;++i){
         messageList+=('• '+ order.items[i].qty + ' x ' + order.items[i].name+'\n' );
     }
-   let requests=order.comments.length>0?order.comments:"--";
+   let requests=order.comments?order.comments:"--";
     const mailOptions = {
         to: [order.email, 'jaireen.s21@gmail.com'],//send email to user & to the restaurant email id
         from: 'jaireen.s21@gmail.com',
@@ -43,12 +43,9 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
         text: `Hello ${order.name},\n\n` +
         `This is a confirmation email. The following order has been placed successfully:\n\n`+ `Method: ${order.method.toUpperCase()} | ${order.name.toUpperCase()} | ${order.phone}\n`+ `Date: ${displayDate}\n` + `Time: ${displayTime}\n\n` + `Items:\n ${messageList}`+ `TOTAL: $ ${order.total}\n\n` + `Special Requests: ${requests.toUpperCase()}\n\n`+'Enjoy!\n' + 'Team Order-In\n'
     };
-    transporter.sendMail(mailOptions,(err)=>{
-        if(err){
-            return next (new myError(500,"Error sending confirmation email! Please contact restaurant at (123) 456-7890 to confirm your order!")); //calling the custom error handler defined in server.js
-        }
-    });
-
+    
+    await transporter.sendMail(mailOptions);
+    
     return res.status(201).json({
         success: true,
         data:order
