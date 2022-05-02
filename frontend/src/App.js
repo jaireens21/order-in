@@ -7,7 +7,7 @@ import Navbar from './elements/Navbar';
 import MenuApp from './elements/MenuApp/MenuApp';
 import OrderListApp from './elements/OrderApp/OrderListApp';
 import Home from './pages/Home';
-import OrderPlacedSuccess from './elements/OrderApp/OrderPlacedSuccess';
+import OrderPlacedSuccess from './elements/MenuApp/OrderPlacedSuccess';
 
 
 

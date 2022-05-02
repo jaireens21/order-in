@@ -44,10 +44,20 @@ exports.addNewOrder=catchAsync(async(req,res,next)=>{
         `This is a confirmation email. The following order has been placed successfully:\n\n`+ `Method: ${order.method.toUpperCase()} | ${order.name.toUpperCase()} | ${order.phone}\n`+ `Date: ${displayDate}\n` + `Time: ${displayTime}\n\n` + `Items:\n ${messageList}`+ `TOTAL: $ ${order.total}\n\n` + `Special Requests: ${requests.toUpperCase()}\n\n`+'Enjoy!\n' + 'Team Order-In\n'
     };
     
-    await transporter.sendMail(mailOptions);
+    try{
+        await transporter.sendMail(mailOptions);
+    }catch(err){
+        return res.status(201).json({
+            success: true,
+            emailSent:false,//to indicate that although order was placed, email could not be sent
+            data:order
+        });
+    }
     
+        
     return res.status(201).json({
         success: true,
+        emailSent:true,
         data:order
     });
 });

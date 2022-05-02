@@ -27,14 +27,10 @@ app.use("/orders", require('./routes/orderRoutes'));
 
 //custom error handler (called whenever there is an error or when next(error) is encountered)
 app.use((err,req,res,next)=>{
-    let text=err.message|| "Oh No! Something went wrong!";
-    if(err.message.includes("google")){ //google/gmail error while sending email
-        text="Please contact resto at (123) 456-7890 to place your order.";
-    }
-    
+           
     return res.status(err.statusCode||500).json({
         success:false, 
-        error: text 
+        error: err.message|| "Oh No! Something went wrong!"
     });
 })
 

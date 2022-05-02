@@ -122,15 +122,15 @@ export default function MenuApp(){
         axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
-            alert.success("Order placed successfully!")
-            navigate('/menu/orderonline/success');
+            alert.success("Order placed!")
+            navigate('/menu/orderonline/success',{state: {emailSent:res.data.emailSent}});//passing data through
         })
         .catch(err=>{
-            let message=err.message;
-            if(err.response){
-                message=err.response.data.error;
-            }
-            alert.error(`Oh No! Order could not be placed. ${message}`)
+            // let message=err.message;
+            // if(err.response){
+            //     message=err.response.data.error;
+            // }
+            alert.error(`Oh No! Order could not be placed. ${err.message}`)
             console.log("error while saving cart/order details to db");
             displayError(err);//show error details in console
         })

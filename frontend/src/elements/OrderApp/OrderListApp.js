@@ -59,8 +59,8 @@ export default function OrderListApp(){
             let orders=res.data.data;
             //incoming data has typeof(order.date)= string, that looks like a date object but is not!
             //so we first convert order.date back to a Date object and then sort based on dates & time
-            let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>a.date.toString().localeCompare(b.date.toString()) || a.time - b.time);
-            //localeCompare needs a string to work on,hence toString()
+            let sortedOrders=orders.map(order=>({...order,date:new Date(order.date)})).sort((a,b)=>a.date.toLocaleDateString("en-CA").localeCompare(b.date.toLocaleDateString("en-CA")) || a.time - b.time);
+            //localeCompare needs a string to work on,hence toLocaleDateString()
             //console.log(today);
             setAllOrders(sortedOrders); //store all orders in a state called 'allOrders'
 
@@ -94,26 +94,6 @@ export default function OrderListApp(){
         e.target.innerText= e.target.innerText.includes("Show")?"Hide Past Orders":"Show Past Orders";
     }
 
-    const markOrderCompleted=(id)=>{
-        let odr=allOrders.find(order=>order._id===id);
-        let completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
-        // console.log("in orderlistapp, order details:",completedOrder);
-        //update DB
-        axios.put(`http://localhost:8010/orders/${id}`,completedOrder)
-        .then(res=>{
-            //window.alert("marked as completed!");
-            alert.success("Order Completed!");
-            loadData();//reload data from db to have the most updated data in state
-        })
-        .catch(err=>{
-            //window.alert("try again!");
-            alert.error("Error! Could not mark order as completed.")
-            console.log("error while marking order as completed");
-            displayError(err);//show error details in console
-        })
-        
-        
-    }
     const toggleTick=(id)=>{
         let odr=allOrders.find(order=>order._id===id);//find the order we want to toggle completed status of
         let completedOrder={};
@@ -133,8 +113,6 @@ export default function OrderListApp(){
             console.log("error while marking order as completed");
             displayError(err);//show error details in console
         })
-        
-        
     }
 
     //display data (read from db using axios)
@@ -169,9 +147,9 @@ export default function OrderListApp(){
                     <button className="btn btn-success me-3" onClick={handleUpcomingClick}>Show Upcoming orders</button>
                     <button className="btn btn-dark me-3" onClick={handlePastClick}>Show Past orders</button>
                     
-                    {showTodays && <OrderList orders={todaysOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Today's" />}
-                    {showUpcoming && <OrderList orders={upcomingOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Upcoming" />}
-                    {showPast && <OrderList orders={pastOrders} markOrderCompleted={markOrderCompleted} toggleTick={toggleTick} heading="Past" />}
+                    {showTodays && <OrderList id="todays" orders={todaysOrders} toggleTick={toggleTick} heading="Today's" />}
+                    {showUpcoming && <OrderList id="upcoming" orders={upcomingOrders} toggleTick={toggleTick} heading="Upcoming" />}
+                    {showPast && <OrderList id="past" orders={pastOrders} toggleTick={toggleTick} heading="Past" />}
     
                 </div>
             )
