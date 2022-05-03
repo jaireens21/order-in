@@ -8,12 +8,12 @@ export default function Navbar(){
                 <NavLink to="/" className="navbar-brand ms-3">Home Brand</NavLink>
 
                 <div className="navbar-nav ms-auto">
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <NavLink to={"/owner/login"} className="nav-link">Owner login</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to={"/owner/register"} className="nav-link">Owner register</NavLink>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                         <NavLink to={"/menu"} className="nav-link">Menu</NavLink>
                     </li>

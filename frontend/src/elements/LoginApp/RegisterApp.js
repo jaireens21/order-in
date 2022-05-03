@@ -77,6 +77,7 @@ export default function RegisterApp(){
                 
                 <button type="submit" className="btn btn-primary my-3 me-2">Register</button>
                 <button className="btn btn-danger my-3 me-2" onClick={handleClear}>Clear Form</button>
+                <p>Already have an account? <a href="/owner/login">Click here</a> to login!</p>
                 
             </form>
 

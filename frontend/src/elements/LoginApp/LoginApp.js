@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import OrderListApp from "../OrderApp/OrderListApp";
 import DishApp from "../DishApp/DishApp";
 import LoginForm from "./LoginForm";
-import NavbarOwner from "../NavbarOwner";
 
 
-export default function LoginApp(){
+export default function LoginApp(props){
+    const {isLoggedIn,setIsLoggedIn}=props;
     const alert = useAlert();
     const navigate=useNavigate();
 
@@ -30,8 +30,7 @@ export default function LoginApp(){
     }
 
     const [user,setUser]=useState({});
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-
+    
     //handle change in login form fields
     const handleChange=(e)=>{
         setUser({...user,[e.target.id]:e.target.value});
@@ -51,6 +50,7 @@ export default function LoginApp(){
             // navigate(`/owner/${res.data.user._id}`);
         })
         .catch(err=>{
+            setIsLoggedIn(false);
             let text='Login error! '+ err.message;
             if(err.response && err.response.data.includes("Unauthorized")){
                 text="Incorrect username/ password !";
@@ -85,15 +85,13 @@ export default function LoginApp(){
     }
 
     return (
-        <div className="w-50 mx-auto mt-5">
+        <div>
             
             {isLoggedIn ? 
                 <div>
-                    <NavbarOwner />
                     <button className="btn btn-dark" onClick={handleLogout}>Logout</button>
                     {/* <ProfilePage /> */}
-                    <DishApp />
-                    <OrderListApp />
+                    
                 </div>
                 :<LoginForm handleChange={handleChange} handleClear={handleClear} handleLogin={handleLogin} user={user}/>
 

@@ -13,10 +13,15 @@ import LoginApp from './elements/LoginApp/LoginApp';
 import RegisterApp from './elements/LoginApp/RegisterApp';
 // import OwnerApp from './elements/LoginApp/OwnerApp';
 import ShowMenu from './elements/ShowMenu';
+import {useState} from 'react';
+import ProtectedRoutes from './ProtectedRoutes';
 
 
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn]=useState(false); //this state is exposed in the browser & can be changed --Redux might be a better solution
+  //but we have login-protected backend routes too
   
   return (
     <BrowserRouter>
@@ -27,20 +32,28 @@ function App() {
           <Route path='menu' element={<ShowMenu/>}/>
           <Route path='orderonline' element={<MenuApp/>}/>
           <Route path='orderonline/success' element={<OrderPlacedSuccess/>}/>
-          <Route path='owner/login' element={<LoginApp/>}/>
-          <Route path='owner/register' element={<RegisterApp/>}/>
+          
           
         </Route>
 
 
-
-        <Route path="/owner" element={<NavbarOwner />}>
-          <Route path=":id" element={<LoginApp/>}/>
-          {/* <Route path='dishes' element={<DishApp/>}/>
-          <Route path='orders' element={<OrderListApp/>} /> */}
+        
+        <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn}/>}>
+          <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
+          <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
+          <Route path='register' element={<RegisterApp/>}/>
+          <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
+            <Route path='dishes' element={<DishApp/>}/>
+            <Route path='orders' element={<OrderListApp/>} /> 
+          </Route>
         </Route>
         
- 
+        <Route path="*" element={
+            <main style={{ padding: "1rem" }}>
+              <p>There's nothing here!</p>
+            </main>
+          }
+        />
       </Routes>
     </BrowserRouter>
     

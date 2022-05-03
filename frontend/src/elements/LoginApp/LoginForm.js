@@ -4,10 +4,10 @@ export default function LoginForm(props){
     const {handleChange, handleClear, handleLogin, user} =props;
     
     return (
-        <div>
+        <div  className="w-50 mx-auto mt-5">
             
             <form className="mx-auto needs-validation" noValidate onSubmit={handleLogin}>
-                <h1 className="text-center">Enter login details:</h1>
+                <h1 className="text-center">Owner login</h1>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="username">Email:</label>
                     <input className="form-control " type="email" id="username"  required onChange={handleChange}/>
@@ -27,6 +27,7 @@ export default function LoginForm(props){
                 <button type="submit" className="btn btn-primary my-3 me-2">Login</button>
                 <button className="btn btn-primary my-3 me-2" onClick={handleClear}>Clear Form</button>
                 <button className="btn btn-danger my-3 me-3">Forgot Password?</button>
+                
             </form>
         </div>
     )
