@@ -19,8 +19,9 @@ import {useState} from 'react';
 
 function App() {
 
-  const [isLoggedIn, setIsLoggedIn]=useState(false); //this state is exposed in the browser & can be changed --Redux might be a better solution
-  //but we have login-protected backend routes too
+  const [isLoggedIn, setIsLoggedIn]=useState(false); //this state is exposed in the browser & can be changed on client-side
+  //it resets to default whenever the browser is refreshed --Redux might be a better solution
+  //but we do have login-protected backend routes 
   
   return (
     <BrowserRouter>
@@ -36,10 +37,10 @@ function App() {
         <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
           <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
-          <Route path='register' element={<RegisterApp/>}/>
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
             <Route path='dishes' element={<DishApp/>}/>
             <Route path='orders' element={<OrderListApp/>} /> 
+            <Route path='register' element={<RegisterApp/>}/>
           </Route>
         </Route>
         

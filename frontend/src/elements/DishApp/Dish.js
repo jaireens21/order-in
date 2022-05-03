@@ -26,8 +26,6 @@ export default function Dish(props){
         //if not editing, simply display the dish
         <div className="Dish">
             
-            
-
             <div className="card mb-3 me-3" style={{width: 18 + 'rem'}}>
                 <div className="card-body">
                     <h5 className="card-title">{dish.name}</h5>

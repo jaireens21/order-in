@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import "./EditDish.css";
 
 export default function EditDish(props){
 
@@ -20,10 +21,11 @@ export default function EditDish(props){
         toggleIsEditing();
     }
     return(
-        <div className="w-50 my-5">
-            <h2>Edit dish</h2>
+        <div className="EditDishForm me-3" style={{width: 18 + 'rem'}}>
+            {/* <h2>Edit dish</h2> */}
             
             <form onSubmit={handleSubmit}>
+                
                 <label className="form-label" htmlFor="name">Name:</label>
                 <input className="form-control mb-3" type="text" id="name" value={editedDish.name} required onChange={handleChange}/>
 
@@ -37,11 +39,11 @@ export default function EditDish(props){
                     <option value="dessert">Dessert</option>
                 </select>
                 
-                <label className="form-label" htmlFor="price">Enter price of dish (CAD):</label>
+                <label className="form-label" htmlFor="price">Price (CAD):</label>
                 <input className="form-control mb-3" type="number" id="price" min="0" max="99" step="0.01" required value={editedDish.price} onChange={handleChange}/>
 
                 <label className="form-label" htmlFor="description">Description:</label>
-                <input className="form-control mb-3" type="text" id="description" value={editedDish.description} required onChange={handleChange}/>
+                <textarea className="form-control mb-3" rows="5" cols="5" id="description" value={editedDish.description} required onChange={handleChange}/>
                 
                 <button type="submit" className="btn btn-success me-3">Save</button>
                 <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>

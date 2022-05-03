@@ -65,7 +65,9 @@ export default function OrderListApp(){
             setUpcomingOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")>today.toLocaleDateString("en-CA"))); //comparing strings of same format
             
             setTodaysOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")===today.toLocaleDateString("en-CA"))); //since objects can not be equal, we check equality by converting to date strings 
-            setPastOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")<today.toLocaleDateString("en-CA")));   
+            
+            setPastOrders(sortedOrders.filter(order=>order.date.toLocaleDateString("en-CA")<today.toLocaleDateString("en-CA")).sort((a,b)=>b.date.toLocaleDateString("en-CA").localeCompare(a.date.toLocaleDateString("en-CA")) || a.time - b.time));
+            //past orders sorted-most recent date first, time in increasing order   
         })
         .catch(err=>{
             setError(err);//to display error to user

@@ -17,6 +17,7 @@ import { useAlert } from 'react-alert';
 
     const [isAdding, toggleIsAdding]=useToggleState(false);
     
+    
     const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
     //function to display error details on console
@@ -143,7 +144,7 @@ import { useAlert } from 'react-alert';
             //there is no error, & loadSuccess is true
             //we show the data
             return (
-                <div className="ms-5">
+                <div className="DishApp ms-5">
                     <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
@@ -160,17 +161,17 @@ import { useAlert } from 'react-alert';
 
                     <h2>Breads</h2>
                     <div className="d-flex flex-wrap">
-                    {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
 
                     <h2>Drinks</h2>
                     <div className="d-flex flex-wrap">
-                    {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
 
                     <h2>Desserts</h2>
                     <div className="d-flex flex-wrap">
-                    {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
+                    {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
                 </div>
             )

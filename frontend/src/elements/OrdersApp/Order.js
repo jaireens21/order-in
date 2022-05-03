@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Order(props){
-    const{order,toggleB}=props;
+    const{order,toggleB,heading}=props;
     let date=order.date;//an object
     let dateStr=date.toLocaleDateString();
     let time=order.time; //a number
@@ -23,7 +23,9 @@ export default function Order(props){
             <table className="table mb-0 text-start">
                 <thead>
                     <tr>
-                    <th scope="col"><input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/></th>
+                    <th scope="col">
+                        {heading!=="Past" && <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> } 
+                    </th>
                     <th scope="col">{order.name.toUpperCase()}, {order.method.toUpperCase()}</th>
                     </tr>
                 </thead>

@@ -15,7 +15,7 @@ export default function OrderList(props){
         <h2>{heading} Orders</h2>
         {orders.length>0?
             <div className="d-flex flex-wrap" id={id}>
-                {orders.map(order=><Order key={order._id} order={order} toggleB={toggleB}/>)}
+                {orders.map(order=><Order key={order._id} order={order} toggleB={toggleB} heading={heading}/>)}
             </div>
             :<h3>No Orders yet!</h3>
         }
