@@ -2,12 +2,13 @@ require('dotenv').config();
 const express=require('express');
 const app=express();
 const mongoose=require('mongoose');
-const cors=require('cors');
+const cors=require('cors');//since frotend & backend are running on diff servers
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
+//connecting to DB
 const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
 mongoose.connect(dbUrl,{
     useNewUrlParser: true, 
@@ -19,13 +20,96 @@ mongoose.connect(dbUrl,{
     process.exit(1);
 })
 
+//express-session config----needed with passport & to maintain owner's login session
+const session= require('express-session');
+const MongoDBStore=require('connect-mongo');//using mongo session store
+const secret=process.env.SECRET;
+const sessionConfig={
+//   store:MongoDBStore.create({ 
+//     mongoUrl:dbUrl, 
+//     touchAfter: 24*60*60, //Lazy session update , time in seconds
+//   }),
+  name:'parleg', //changing cookie name from connect.ssid
+  secret,
+  resave: false, //don't save session if unmodified
+  saveUninitialized: true,
+  cookie: { 
+    httpOnly:true,// helps mitigate the risk of client side script accessing the protected cookie
+    //secure:true, //use when deploying, httpS will be reqd to set cookies
+    expires: Date.now() + (1000*60*60*24*7), //cookie will expire after a week (in milliseconds)
+    maxAge: 1000*60*60*24*7,     // cookie expires in a week
+  }
+}
+app.use(session(sessionConfig));
+
+const User=require("./models/user");
+const catchAsync=require('./utils/catchAsync');
+
+//passport config
+const passport=require('passport'); 
+const LocalStrategy=require('passport-local');
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 //ROUTES 
 app.use("/api", require('./routes/dishRoutes'));
 app.use("/orders", require('./routes/orderRoutes'));
 
 
-//custom error handler (called whenever there is an error or when next(error) is encountered)
+
+//create a new owner account
+app.post('/owner/register', catchAsync(async(req,res,next)=>{
+    //add middleware to validate email & password before submission
+    const {email,password}=req.body;
+    const foundUser= await User.findOne({email});
+    if(foundUser){
+        return res.json({
+            success:false, //redirect in react based on this
+            message: "Looks like you already have an account with us! Please sign in.",
+            data:foundUser
+        });
+    }else{
+        const username=email;//we are using email id as the username
+        const user=new User({email,username});
+        const newUser= await User.register(user,password);
+        req.login(newUser, err=>{ 
+            if (err) {
+            return next(err);}
+        });
+        return res.status(201).json({
+            success:true, //redirect in react based on this
+            message:"registered & logged in",
+            user:newUser,
+        });
+    }
+     
+}));
+
+//login the owner
+app.post("/owner/login", passport.authenticate('local'),(req,res)=>{
+    //when authentication succeeds, the req.user property is set to the authenticated user, a session is established, and the next function in the stack is called. 
+    return res.status(201).json({
+        success: true,
+        message:"logged in",
+        user:req.user,
+    });
+})
+
+//logout the user
+app.get('/owner/logout',(req,res)=>{
+    req.logout();
+    // req.session.destroy(); // clear the session data
+    return res.status(201).json({
+        success:true,
+        message:"logged out"
+    });
+})
+
+//custom error handler (called whenever there is an error or whenever next(error) is encountered)
 app.use((err,req,res,next)=>{
            
     return res.status(err.statusCode||500).json({
