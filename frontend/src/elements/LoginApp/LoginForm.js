@@ -10,7 +10,7 @@ export default function LoginForm(props){
                 <h1 className="text-center">Enter login details:</h1>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="username">Email:</label>
-                    <input className="form-control " type="email" id="username" value={user.username} required onChange={handleChange}/>
+                    <input className="form-control " type="email" id="username"  required onChange={handleChange}/>
                     <div className="invalid-feedback">
                         Required!
                     </div>
@@ -18,7 +18,7 @@ export default function LoginForm(props){
                 
                 <div className="mb-3">
                     <label className="form-label" htmlFor="password">Password:</label>
-                    <input className="form-control" type="password" id="password" value={user.password} required onChange={handleChange} />
+                    <input className="form-control" type="password" id="password" required onChange={handleChange} />
                     <div className="invalid-feedback">
                         Required!
                     </div>

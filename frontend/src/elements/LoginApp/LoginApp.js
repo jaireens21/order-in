@@ -41,7 +41,8 @@ export default function LoginApp(){
     const handleLogin=(e)=>{
         e.preventDefault();
         //send login details over to node for authenticating via passport
-        axios.post('http://localhost:8010/owner/login', user)
+        axios.post('http://localhost:8010/owner/login', user, { withCredentials: true })
+        //withCredentials:true--- tells Axios to send the cookie alongside the request 
         .then(res=>{
             setIsLoggedIn(true);
             // console.log(res.data);//res.data.success will be true if user has been logged in
@@ -67,7 +68,7 @@ export default function LoginApp(){
 
     //handle click on logout button
     const handleLogout=()=>{
-        axios.get('http://localhost:8010/owner/logout')
+        axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
         .then(res=>{
             if(res.data.success){
                 setIsLoggedIn(false);

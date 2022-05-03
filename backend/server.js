@@ -2,11 +2,14 @@ require('dotenv').config();
 const express=require('express');
 const app=express();
 const mongoose=require('mongoose');
-const cors=require('cors');//since frotend & backend are running on diff servers
+const cors=require('cors');//since frontend & backend are running on diff ports
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:3000', //to allow server to accept requests from a different origin (the frontend server)
+    credentials:true //to allow the session cookie from the browser(front-end) to pass through
+}));
 
 //connecting to DB
 const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
@@ -20,7 +23,7 @@ mongoose.connect(dbUrl,{
     process.exit(1);
 })
 
-//express-session config----needed with passport & to maintain owner's login session
+//express-session config----to stay authenticated after logging in
 const session= require('express-session');
 const MongoDBStore=require('connect-mongo');//using mongo session store
 const secret=process.env.SECRET;
@@ -29,15 +32,14 @@ const sessionConfig={
 //     mongoUrl:dbUrl, 
 //     touchAfter: 24*60*60, //Lazy session update , time in seconds
 //   }),
-  name:'parleg', //changing cookie name from connect.ssid
-  secret,
+  name:'parleg', //changing name of the session ID cookie (default name: connect.ssid)
+  secret, //used to sign the session ID cookie
   resave: false, //don't save session if unmodified
-  saveUninitialized: true,
-  cookie: { 
-    httpOnly:true,// helps mitigate the risk of client side script accessing the protected cookie
-    //secure:true, //use when deploying, httpS will be reqd to set cookies
-    expires: Date.now() + (1000*60*60*24*7), //cookie will expire after a week (in milliseconds)
-    maxAge: 1000*60*60*24*7,     // cookie expires in a week
+  saveUninitialized: true,//non-compliant with laws that require permission before setting a cookie
+  cookie: { //Session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
+    httpOnly:true,// helps mitigate the risk of client-side-scripting by preventing access to the cookie
+    //secure:true, //use when deploying //httpS will be reqd to set cookies
+    maxAge: 1000*60*60*24*7,   //a week (in milliseconds)  
   }
 }
 app.use(session(sessionConfig));

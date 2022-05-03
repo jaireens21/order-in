@@ -4,14 +4,15 @@ const myError=require('../utils/myError');
 const nodemailer = require('nodemailer');
 
 exports.getAllOrders=catchAsync(async(req,res,next)=>{
- const orders=await Order.find({});
- if(!orders){
-    return next (new myError(404,"Error! No orders found!")); //calling the custom error handler defined in server.js
- }
- return res.status(201).json({
-    success:true,
-    data:orders
-    });
+    const orders=await Order.find({});
+    if(!orders){
+        return next (new myError(404,"Error! No orders found!")); //calling the custom error handler defined in server.js
+    }else{
+        return res.status(201).json({
+        success:true,
+        data:orders
+        });
+    }
 });
 
 exports.addNewOrder=catchAsync(async(req,res,next)=>{
@@ -68,9 +69,10 @@ exports.updateOrderById=catchAsync(async(req,res,next)=>{
     const order=await Order.findByIdAndUpdate(req.params.id, req.body);
     if(!order){
         return next (new myError(404,"Error! Order not found!")); 
-    }
-    return res.status(201).json({
+    }else {
+        return res.status(201).json({
         success:true,
         //data:order//the found,unmodified order
-    });
+        });
+    }
 });
