@@ -38,7 +38,7 @@ function App() {
 
 
         
-        <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn}/>}>
+        <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
           <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
           <Route path='register' element={<RegisterApp/>}/>

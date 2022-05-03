@@ -5,7 +5,7 @@ const {validateNewDishData,validateEditDishData}=require("../middleware/joiValid
 const {isLoggedIn}=require("../middleware/isLoggedIn");
 
 
-router.route('/').get(isLoggedIn, dishControllers.getAllDishes).post(isLoggedIn, validateNewDishData, dishControllers.addNewDish);
+router.route('/').get(dishControllers.getAllDishes).post(isLoggedIn, validateNewDishData, dishControllers.addNewDish);
 
 router.route('/:id').put(isLoggedIn, validateEditDishData, dishControllers.updateDishById).delete(isLoggedIn, dishControllers.deleteDishById);
 

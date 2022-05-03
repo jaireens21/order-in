@@ -47,7 +47,7 @@ export default function LoginApp(props){
             // console.log(res.data);//res.data.success will be true if user has been logged in
             alert.success(res.data.message);
             setUser(res.data.user);
-            // navigate(`/owner/${res.data.user._id}`);
+            navigate(`/owner/orders`);
         })
         .catch(err=>{
             setIsLoggedIn(false);
@@ -66,34 +66,28 @@ export default function LoginApp(props){
         setUser({username:"", password:""});
     }
 
-    //handle click on logout button
-    const handleLogout=()=>{
-        axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
-        .then(res=>{
-            if(res.data.success){
-                setIsLoggedIn(false);
-                setUser({});
-                alert.success("Logged Out!");
-                navigate('/owner/login');
-            }
-        }).catch(err=>{
-            let text='Logout error! '+ err.message;
-            alert.error(text);
-            console.log("logout error");
-            displayError(err);//show error details in console
-        });
-    }
+    //handle click on logout button----moved to NavbarOwner
+    // const handleLogout=()=>{
+    //     axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
+    //     .then(res=>{
+    //         if(res.data.success){
+    //             setIsLoggedIn(false);
+    //             setUser({});
+    //             alert.success("Logged Out!");
+    //             navigate('/owner/login');
+    //         }
+    //     }).catch(err=>{
+    //         let text='Logout error! '+ err.message;
+    //         alert.error(text);
+    //         console.log("logout error");
+    //         displayError(err);//show error details in console
+    //     });
+    // }
 
     return (
         <div>
             
-            {isLoggedIn ? 
-                <div>
-                    <button className="btn btn-dark" onClick={handleLogout}>Logout</button>
-                    {/* <ProfilePage /> */}
-                    
-                </div>
-                :<LoginForm handleChange={handleChange} handleClear={handleClear} handleLogin={handleLogin} user={user}/>
+            {!isLoggedIn && <LoginForm handleChange={handleChange} handleClear={handleClear} handleLogin={handleLogin} user={user}/>
 
             }
 

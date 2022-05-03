@@ -6,7 +6,7 @@ export default function ProtectedRoutes(props){
     
     if(!isLoggedIn){ //if the owner is not logged in, redirect to login page
         return <Navigate to='/owner/login' replace/>;
-    }else{
+    }else{ //if loggedin, give access to protected routes
         return <Outlet/>
     }
 }
