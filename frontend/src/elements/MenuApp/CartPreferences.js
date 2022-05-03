@@ -5,13 +5,13 @@ export default function CartPreferences(props){
     const alert = useAlert();
     const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots}=props;
 
-    //add cart preferences to 'order'
+    //add cart preferences to 'order' state
     const handleChange=(e)=>{
         setOrder({...order,[e.target.id]:e.target.value});
     }
 
     //When user clicks on "place order",
-    //validate phone number & email.
+    //first validate phone number & email.
     //If validation goes through, save order details to DB
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -26,8 +26,8 @@ export default function CartPreferences(props){
 
         if(emailRegex.test(emailID)){
             if (phoneRegex.test(phoneNumber)) {
-                let formattedPhoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3"); //convert it to standard format, (123) 456-7890
-                saveOrdertoDB({...order, phone:formattedPhoneNumber}); //save order details to DB via parent-menuapp
+                let formattedPhoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3"); //convert phone number to a standard format, (123) 456-7890
+                saveOrdertoDB({...order, phone:formattedPhoneNumber}); //save order details to DB via parent(menuapp)
             }else{
              alert.error("Invalid phone number!");}
         }else {
@@ -35,11 +35,10 @@ export default function CartPreferences(props){
         }
     };
 
-    //Display time slot options depending on the day selected by user
-    //If day selected is today, current time has to be taken into consideration
+    //Display time slot options, depending on the day selected by the user
     let options=[];
     let orderDateStr=new Date(order.date).toLocaleDateString("en-CA");
-    if(orderDateStr===todayStr){
+    if(orderDateStr===todayStr){ //If the day selected is today, current time has to be taken into consideration
         options=slots.map(slot=>(slot>=(currentTimeInHours + currentMinutes/60 + 0.5))?
         // assuming restaurant  needs 30 minutes (0.5 hours)to prepare a meal
             <option key={slot}value={slot}>
@@ -47,7 +46,7 @@ export default function CartPreferences(props){
             </option>
             :null
         );
-    }else{
+    }else{//if selected day is NOT today, show all slots
         options=slots.map(slot=>(<option key={slot}value={slot}>
                 { slot>12.5? ((slot-12)%1===0?(slot-12):(slot-12.5)): (slot%1===0?slot:slot-0.5)}:{slot%1===0? "00":"30"} {slot>=12?"pm":"am"}
             </option>));

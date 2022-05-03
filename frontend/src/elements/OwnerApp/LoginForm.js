@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function LoginForm(props){
-    const {handleChange, handleClear, handleLogin, user} =props;
+    const {handleChange, handleLogin} =props;
     
     return (
         <div  className="w-50 mx-auto mt-5">
@@ -25,7 +25,6 @@ export default function LoginForm(props){
                 </div>
                 
                 <button type="submit" className="btn btn-primary my-3 me-2">Login</button>
-                <button className="btn btn-primary my-3 me-2" onClick={handleClear}>Clear Form</button>
                 <button className="btn btn-danger my-3 me-3">Forgot Password?</button>
                 
             </form>

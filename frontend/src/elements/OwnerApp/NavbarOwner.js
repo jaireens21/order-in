@@ -45,7 +45,6 @@ export default function NavbarOwner(props){
    const loggedInOptions=()=>{
         return(
             <div className="navbar-nav ms-auto">
-                    
                 <li className="nav-item">
                     <NavLink to={"/owner/orders"} className="nav-link">Orders</NavLink>
                 </li>
@@ -55,7 +54,6 @@ export default function NavbarOwner(props){
                 <li className="nav-item">
                     <Link to={""} onClick={handleLogout} className="nav-link">Logout</Link>
                 </li>
-                
                 <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Register</NavLink>
                 </li>
@@ -66,11 +64,9 @@ export default function NavbarOwner(props){
     const loggedOutOptions=()=>{
         return(
             <div className="navbar-nav ms-auto">
-                    
                 <li className="nav-item">
                     <NavLink to={"/owner/login"} className="nav-link">Login</NavLink>
                 </li>
-                
                 <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Register</NavLink>
                 </li>

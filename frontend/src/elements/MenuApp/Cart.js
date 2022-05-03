@@ -11,6 +11,7 @@ export default function Cart(props){
                 </div>
                 <ul className="list-group list-group-flush">
                     {items.some(item=>item.qty>0)?
+                        //if there is some item in the cart
                         <div>
                             {items.map(item=>(
                                 item.qty>0 && //donot show item if qty=0
@@ -21,7 +22,8 @@ export default function Cart(props){
                             <li className="list-group-item" key="total">Total : $ {(subtotal*1.13).toFixed(2)}</li>
                         </div>
                         
-                        :<li className="list-group-item">Cart is empty!</li>
+                        : //if there is no item in the cart
+                        <li className="list-group-item">Cart is empty!</li>
                     }
                     
                     

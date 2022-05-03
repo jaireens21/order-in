@@ -2,8 +2,6 @@ import axios from "axios";
 import React,{useState} from "react";
 import { useAlert } from 'react-alert';
 import { useNavigate } from "react-router-dom";
-import OrderListApp from "../OrderApp/OrderListApp";
-import DishApp from "../DishApp/DishApp";
 import LoginForm from "./LoginForm";
 
 
@@ -61,11 +59,6 @@ export default function LoginApp(props){
         }) 
     };
 
-    //clear the login form
-    const handleClear=()=>{
-        setUser({username:"", password:""});
-    }
-
     //handle click on logout button----moved to NavbarOwner
     // const handleLogout=()=>{
     //     axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
@@ -87,7 +80,7 @@ export default function LoginApp(props){
     return (
         <div>
             
-            {!isLoggedIn && <LoginForm handleChange={handleChange} handleClear={handleClear} handleLogin={handleLogin} user={user}/>
+            {!isLoggedIn && <LoginForm handleChange={handleChange} handleLogin={handleLogin} user={user}/>
 
             }
 

@@ -4,7 +4,7 @@ import React, {useState} from "react";
 export default function MenuItem(props){
     const{item,handleIncreaseButton,handleDecreaseButton,handleAddToOrder}=props;
     
-    const [isAdding, setIsAdding]=useState(false);
+    const [isAdding, setIsAdding]=useState(false);//state to help show/hide + - buttons
 
     const handleClick=(id)=>{
         setIsAdding(true);

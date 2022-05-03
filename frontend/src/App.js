@@ -2,21 +2,20 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
-import DishApp from "./elements/DishApp/DishApp";
 import Navbar from './elements/Navbar';
-import NavbarOwner from './elements/NavbarOwner';
-import MenuApp from './elements/MenuApp/MenuApp';
-import OrderListApp from './elements/OrderApp/OrderListApp';
 import Home from './pages/Home';
-import OrderPlacedSuccess from './elements/MenuApp/OrderPlacedSuccess';
-import LoginApp from './elements/LoginApp/LoginApp';
-import RegisterApp from './elements/LoginApp/RegisterApp';
-// import OwnerApp from './elements/LoginApp/OwnerApp';
 import ShowMenu from './elements/ShowMenu';
+import MenuApp from './elements/MenuApp/MenuApp';
+import CartSuccess from './elements/MenuApp/CartSuccess';
+
+import NavbarOwner from './elements/OwnerApp/NavbarOwner';
+import LoginApp from './elements/OwnerApp/LoginApp';
+import RegisterApp from './elements/OwnerApp/RegisterApp';
+import ProtectedRoutes from './elements/OwnerApp/ProtectedRoutes';
+import DishApp from "./elements/DishApp/DishApp";
+import OrderListApp from './elements/OrdersApp/OrderListApp';
+
 import {useState} from 'react';
-import ProtectedRoutes from './ProtectedRoutes';
-
-
 
 function App() {
 
@@ -31,13 +30,9 @@ function App() {
           <Route index element={<Home />}/>
           <Route path='menu' element={<ShowMenu/>}/>
           <Route path='orderonline' element={<MenuApp/>}/>
-          <Route path='orderonline/success' element={<OrderPlacedSuccess/>}/>
-          
-          
+          <Route path='orderonline/success' element={<CartSuccess/>}/>
         </Route>
 
-
-        
         <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
           <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
@@ -48,6 +43,7 @@ function App() {
           </Route>
         </Route>
         
+        {/* catch-all for non-existent routes */}
         <Route path="*" element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>

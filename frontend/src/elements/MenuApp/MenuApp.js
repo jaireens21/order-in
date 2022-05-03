@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, {useState,useEffect,useCallback} from "react";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from 'react-alert';
 import MenuItem from "./MenuItem";
 import Cart from "./Cart";
 import CartPreferences from "./CartPreferences";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from 'react-alert';
 
 
 export default function MenuApp(){
@@ -19,7 +19,7 @@ export default function MenuApp(){
     const taxes=0.13; //current taxes in ontario,Canada
     const [isCheckingOut, setIsCheckingOut]=useState(false);
 
-    const[order,setOrder]=useState([]);//saving entire order in a state called 'order' after user clicks the checkout button
+    const[order,setOrder]=useState([]);//saving entire cart in a state called 'order' after user clicks the checkout button
 
     let navigate = useNavigate();
 
@@ -55,14 +55,15 @@ export default function MenuApp(){
     }
    
 
-    //get all items from server/db
+    //get all menu items from server/db
     const loadData=useCallback(()=>{ 
         axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
             let dishes=res.data.data;
-            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item, this will help creating the order later
+            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item
+            //this will help in creating the order later
         })
         .catch(err=>{
             setLoadError(err);
@@ -115,26 +116,24 @@ export default function MenuApp(){
     }
        
 
-    //save order details to db
-    const saveOrdertoDB=(order)=>{//add total to the order before saving to db
+    //save order to db
+    const saveOrdertoDB=(order)=>{//add total  price to the order before saving to db
         axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
             alert.success("Order placed!")
-            navigate('/menu/orderonline/success',{state: {emailSent:res.data.emailSent}});//passing data through
+
+            //navigate to success page
+            navigate('/menu/orderonline/success',{state: {emailSent:res.data.emailSent}}); // passing data through to success page
         })
         .catch(err=>{
-            // let message=err.message;
-            // if(err.response){
-            //     message=err.response.data.error;
-            // }
             alert.error(`Oh No! Order could not be placed. ${err.message}`)
             console.log("error while saving cart/order details to db");
             displayError(err);//show error details in console
         })
     }
 
-    //display the data (readingfrom db using axios)
+    //display the data (reading from db using axios)
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
             return (
@@ -157,10 +156,11 @@ export default function MenuApp(){
             )
         }else {
             //there is no error, & loadSuccess is true
-            //we show the data
+            //we display the data
             return (
                 <div className="d-flex justify-content-between">
                     <div>
+                        <h1 className="text-center">DISHES</h1>
                         <h2>Appetizers</h2>
                         <div className="d-flex flex-wrap">
                         {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
