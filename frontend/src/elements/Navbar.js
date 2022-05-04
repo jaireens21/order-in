@@ -1,11 +1,13 @@
 import React from "react";
 import {NavLink, Outlet} from "react-router-dom";
+import Footer from "./Footer";
+import "./Navbar.css";
 
 export default function Navbar(){
     return(
         <div>
             <nav className="navbar navbar-expand navbar-dark bg-dark">
-                <NavLink to="/" className="navbar-brand ms-3">Home Brand</NavLink>
+                <NavLink to="/" className="navbar-brand ms-3">Order-In</NavLink>
 
                 <div className="navbar-nav ms-auto">
                     {/* <li className="nav-item">
@@ -15,6 +17,9 @@ export default function Navbar(){
                         <NavLink to={"/owner/register"} className="nav-link">Owner register</NavLink>
                     </li> */}
                     <li className="nav-item">
+                        <NavLink to="/" className="nav-link">Home</NavLink>
+                    </li>
+                    <li className="nav-item">
                         <NavLink to={"/menu"} className="nav-link">Menu</NavLink>
                     </li>
                     <li className="nav-item">
@@ -23,7 +28,8 @@ export default function Navbar(){
                     
                 </div>
             </nav>
-            <Outlet/>
+            <Outlet />
+            <Footer />
         </div>
     )
     

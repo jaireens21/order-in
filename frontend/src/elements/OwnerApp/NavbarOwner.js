@@ -2,6 +2,7 @@ import React from "react";
 import {NavLink,Link, Outlet,useNavigate} from "react-router-dom";
 import { useAlert } from 'react-alert';
 import axios from "axios";
+import FooterOwner from "./FooterOwner";
 
 export default function NavbarOwner(props){
    const {isLoggedIn,setIsLoggedIn}=props;
@@ -82,6 +83,7 @@ export default function NavbarOwner(props){
                 
             </nav>
             <Outlet/>
+            <FooterOwner />
         </div>
     )
     
