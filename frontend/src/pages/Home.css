@@ -1,6 +1,9 @@
-/* .Home{
-    height:70vh;
-} */
+.Home{
+    margin:0 auto;
+}
+*{
+    box-sizing: border-box;
+}
 a{
     text-decoration: none;
     color:inherit;
@@ -86,11 +89,36 @@ background-image:url(https://images.unsplash.com/photo-1600552677073-c345cfd75ee
     }
     
 }
-
+#nameDiv{
+    z-index: 1;
+    position: relative;
+    top:-75vh;
+    left:0;
+    width:100%;
+    margin: 0 auto;
+    /* border:2px solid red; */
+    padding: 1rem;
+    
+}
+#nameDiv>svg{
+    width:80%;
+    height: auto;
+}
+#nameDiv path {
+    stroke-width: 2px;
+    animation: draw 15s forwards;
+    /* forwards so that the final state remains how the animation ends. */
+  }
+@keyframes draw {
+to {
+    stroke-dashoffset: 0;
+    /* The stroke-dashoffset property defines the location along an SVG path where the dash of a stroke will begin. The higher the offset, the further along the path the dashes will begin. We start with a very high offset & then bring it to zero to animate as if the path is being drawn */
+}
+}
 #heroText{
     z-index: 1;
     position: relative;
-    top:-70vh;
+    top:-20vh;
     text-align: center;
     margin:auto;
     padding: 0 1.7rem;
@@ -119,8 +147,8 @@ background-image:url(https://images.unsplash.com/photo-1600552677073-c345cfd75ee
     align-items: center;
     text-align: center;
     margin:0 auto;
-    padding:2rem 0;
-    width:50%;
+    padding:4rem 0;
+    width:70%;
     
 }
 
@@ -134,19 +162,11 @@ background-image:url(https://images.unsplash.com/photo-1600552677073-c345cfd75ee
     text-align: start;
     min-width:30%;
 }
-@media (min-width:1200px){
-    #history{
-       flex-direction: row;
-    }
-    #history>img{
-        max-width:60%;
-        margin-right: 3rem;
-    }
-}
+
 #reviewSection{
     text-align: center;
     /* border:2px solid red; */
-    padding-top: 1rem;
+    padding: 3rem 0;
     background-image: url(https://images.unsplash.com/photo-1515674213736-54d14b4285b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80);
     background-size: cover;
     
@@ -157,18 +177,61 @@ background-image:url(https://images.unsplash.com/photo-1600552677073-c345cfd75ee
 
 #reviews{
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    margin-bottom: 3rem;
-    margin-top: 3rem;
+    margin:3rem auto;
     
 }
 
 #reviews > div{
- width:25%;
+ width:50%;
  text-align: start;
  padding: 1rem 2rem;
+ margin: 1rem auto;
 }
 
 #readMore{
-    margin-bottom: 1rem;
+    margin-bottom: 0;
+}
+
+
+
+@media (min-width:768px){
+    #reviews > div{
+        width:40%;
+    } 
+    #nameDiv{
+        top:-85vh;
+    }
+    #history{
+        width:55%;
+    }
+}
+
+@media (min-width:1200px){
+    #history{
+       flex-direction: row;
+       padding:6rem 0;
+       width:50%;
+    }
+    #history>img{
+        max-width:70%;
+        margin-right: 3rem;
+    }
+    #nameDiv{
+        top:-95vh;
+    }
+    #nameDiv path {
+        stroke-width: 4px;
+    }
+    #reviewSection{
+        padding: 5rem 0;
+    }
+    #reviews{
+        flex-direction: row;
+        
+    }
+    #reviews > div{
+        width:25%;
+    }
 }
