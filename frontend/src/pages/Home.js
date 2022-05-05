@@ -69,7 +69,7 @@ import {IoIosStar} from 'react-icons/io';
                         <p>George K, Google Review</p>
                     </div>
                 </div>
-                <a id="readMore" href="link_to_google_reviews" target="_blank" rel="nofollow noreferrer noopener" className="btn btn-danger">Read More Reviews</a>
+                <a id="readMore" href="http://www.google.com" target="_blank" rel="nofollow noreferrer noopener" className="btn btn-danger">Read More Reviews</a>
             </div>
 
             

@@ -4,7 +4,7 @@ import { useAlert } from 'react-alert';
 import axios from "axios";
 import FooterOwner from "./FooterOwner";
 
-export default function NavbarOwner(props){
+export default function LayoutOwner(props){
    const {isLoggedIn,setIsLoggedIn}=props;
    const alert = useAlert();
    const navigate=useNavigate();
@@ -82,8 +82,11 @@ export default function NavbarOwner(props){
                 {isLoggedIn? loggedInOptions(): loggedOutOptions()}
                 
             </nav>
+
             <Outlet/>
+
             <FooterOwner />
+            
         </div>
     )
     

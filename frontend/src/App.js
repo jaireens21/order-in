@@ -2,13 +2,13 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
-import Navbar from './elements/Navbar';
+import Layout from './elements/Layout';
 import Home from './pages/Home';
 import ShowMenu from './elements/ShowMenu';
 import MenuApp from './elements/MenuApp/MenuApp';
 import CartSuccess from './elements/MenuApp/CartSuccess';
 
-import NavbarOwner from './elements/OwnerApp/NavbarOwner';
+import LayoutOwner from './elements/OwnerApp/LayoutOwner';
 import LoginApp from './elements/OwnerApp/LoginApp';
 import RegisterApp from './elements/OwnerApp/RegisterApp';
 import ProtectedRoutes from './elements/OwnerApp/ProtectedRoutes';
@@ -27,14 +27,14 @@ function App() {
     <BrowserRouter>
     
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />}/>
           <Route path='menu' element={<ShowMenu/>}/>
           <Route path='orderonline' element={<MenuApp/>}/>
           <Route path='orderonline/success' element={<CartSuccess/>}/>
         </Route>
 
-        <Route path="/owner" element={<NavbarOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
+        <Route path="/owner" element={<LayoutOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
           <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
