@@ -1,9 +1,198 @@
-import React from "react";
+import React, {useState,useEffect,useCallback} from "react";
+import axios from "axios";
+import "./ShowMenu.css";
+
 
 export default function ShowMenu(){
+
+    
+
+    const [items,setItems]=useState(null);
+    const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
+    const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
+
+    const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
+
+    //function to display error details on console
+    const displayError=(err)=>{
+        if (err.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(err.response.status, err.response.data, err.response.headers);
+        } else if (err.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(err.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', err.message);
+        }
+    }
+
+    //get all menu items from server/db
+    const loadData=useCallback(()=>{ 
+        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        .then(res=>{
+            setLoadSuccess(true);//to decide whether to show spinning loader or data
+            setLoadError(null);
+            let dishes=res.data.data;
+            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item
+            //this will help in creating the order later
+        })
+        .catch(err=>{
+            setLoadError(err);
+            setLoadSuccess(false);
+            console.log("error while fetching menu items");
+            displayError(err); //show error on console
+        })
+    },[TIMEOUT_INTERVAL]);
+
+    //read data from db
+    useEffect(()=>{
+        loadData();
+    },[loadData])
+
+    
+    const handleClick=(e)=>{
+        
+        if(e.target.innerHTML==="Appetizers"){
+            document.getElementById("appetizers").classList.toggle("hidden");
+            e.target.classList.toggle("red");
+        }
+        if(e.target.innerHTML.includes("Main")){
+            document.getElementById("mainCourse").classList.toggle("hidden");
+            e.target.classList.toggle("red");
+        }
+        if(e.target.innerHTML==="Breads"){
+            document.getElementById("breads").classList.toggle("hidden");
+            e.target.classList.toggle("red");
+        }
+        if(e.target.innerHTML==="Drinks"){
+            document.getElementById("drinks").classList.toggle("hidden");
+            e.target.classList.toggle("red");
+        }
+        if(e.target.innerHTML==="Desserts"){
+            document.getElementById("dessert").classList.toggle("hidden");
+            e.target.classList.toggle("red");
+        }
+    }
+
+    //display the data (reading from db using axios)
+    const getItems = () => {
+        if(loadError){ //if there was an error in reading data using axios, show the error
+            return (
+                <div className="text-center ">
+                    <h1 className="text-danger mb-5">Oh no! Something went wrong. {loadError.message}! </h1>
+                    <h2> Please try refreshing the page.</h2>
+                </div>
+            );
+        }
+        else if(!loadSuccess) {
+            //if there is no error but loadSuccess is not true yet
+            //means we are still waiting for data
+            //so we show a spinner to the user
+            return (
+                <div className="text-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            )
+        }else {
+            //there is no error, & loadSuccess is true
+            //we display the data
+            return (
+                
+                <div className="menu">
+                    <h2 className="" onClick={handleClick}>Appetizers</h2>
+                    <div className="categoryItems" id="appetizers">
+                        {items.map(item=>(item.category==="appetizer" && 
+                            <div key={item._id}>
+                                <div className="d-flex justify-content-between">
+                                    <p><strong>{item.name}</strong></p>
+                                    <p><strong>${item.price}</strong></p> 
+                                </div>
+                                
+                                <p>{item.description}</p>
+                                <hr/>
+                            </div>))
+                        }
+                    </div>
+                    
+                    
+                    <h2 className="red" onClick={handleClick}>Main Course</h2>
+                    <div className="categoryItems hidden" id="mainCourse">
+                        {items.map(item=>(item.category==="mainCourse" && 
+                            <div key={item._id}>
+                            <div className="d-flex justify-content-between">
+                                <p><strong>{item.name}</strong></p>
+                                <p><strong>${item.price}</strong></p> 
+                            </div>
+                            
+                            <p>{item.description}</p>
+                            <hr/>
+                            </div>))
+                        }
+                    </div>
+                    
+                    <h2 className="red" onClick={handleClick}>Breads</h2>
+                    <div className="categoryItems hidden" id="breads">
+                        {items.map(item=>(item.category==="breads" && 
+                            <div key={item._id}>
+                            <div className="d-flex justify-content-between">
+                                <p><strong>{item.name}</strong></p>
+                                <p><strong>${item.price}</strong></p> 
+                            </div>
+                            
+                            <p>{item.description}</p>
+                            <hr/>
+                            </div>))
+                        }
+                    </div>
+                    
+                    <h2 className="red" onClick={handleClick}>Drinks</h2>
+                    <div className="categoryItems hidden" id="drinks">
+                        {items.map(item=>(item.category==="drinks" && 
+                            <div key={item._id}>
+                            <div className="d-flex justify-content-between">
+                                <p><strong>{item.name}</strong></p>
+                                <p><strong>${item.price}</strong></p> 
+                            </div>
+                            
+                            <p>{item.description}</p>
+                            <hr/>
+                            </div>))
+                        }
+                    </div>
+                    
+                    <h2 className="red" onClick={handleClick}>Desserts</h2>
+                    <div className="categoryItems hidden" id="dessert">
+                        {items.map(item=>(item.category==="dessert" && 
+                            <div key={item._id}>
+                            <div className="d-flex justify-content-between">
+                                <p><strong>{item.name}</strong></p>
+                                <p><strong>${item.price}</strong></p> 
+                            </div>
+                            
+                            <p>{item.description}</p>
+                            <hr/>
+                            </div>))
+                        }
+                    </div>
+                    
+                </div>
+                
+            )
+        };
+    }
+
     return(
-        <div>
-            <h1>Show Menu pictures here</h1>
+        <div className="ShowMenu">
+            
+            <h1>Menu</h1>
+            {getItems()} 
+            
         </div>
     )
 }
