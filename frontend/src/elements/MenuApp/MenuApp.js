@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from 'react-alert';
 import MenuItem from "./MenuItem";
 import Cart from "./Cart";
-import CartPreferences from "./CartPreferences";
+import CartForm from "./CartForm";
+import "./MenuApp.css";
 
 
 export default function MenuApp(){
@@ -133,6 +134,32 @@ export default function MenuApp(){
         })
     }
 
+    const handleClick=(e)=>{
+        // console.log("p clicked");
+        document.querySelectorAll(".list").forEach(list=>list.classList.add("hidden"));
+        document.querySelectorAll(".sideNav p").forEach(para=>para.classList.remove("clicked"));
+        e.target.classList.add("clicked");
+        switch (e.target.innerHTML) {
+            case 'Appetizers':
+                document.getElementById("appetizers").classList.remove("hidden");
+                break;
+            case 'Main Course':
+                document.getElementById("mainCourse").classList.remove("hidden");
+                break;
+            case 'Drinks':
+                document.getElementById("drinks").classList.remove("hidden");
+                break;
+            case 'Breads':
+                document.getElementById("breads").classList.remove("hidden");
+                break;
+            case 'Desserts':
+                document.getElementById("desserts").classList.remove("hidden");
+                break;
+            default:
+                document.querySelectorAll(".list").forEach(list=>list.classList.remove("hidden"));
+        }
+    }
+
     //display the data (reading from db using axios)
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
@@ -158,42 +185,55 @@ export default function MenuApp(){
             //there is no error, & loadSuccess is true
             //we display the data
             return (
-                <div className="d-flex justify-content-between">
-                    <div>
-                        <h1 className="text-center">DISHES</h1>
-                        <h2>Appetizers</h2>
-                        <div className="d-flex flex-wrap">
-                        {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
-                        </div>
-
-                        <h2>Main Course</h2>
-                        <div className="d-flex flex-wrap">
-                        {items.map(item=>(item.category==="mainCourse" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
-                        </div>
-
-                        <h2>Breads</h2>
-                        <div className="d-flex flex-wrap">
-                        {items.map(item=>(item.category==="breads" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
-                        </div>
-
-                        <h2>Drinks</h2>
-                        <div className="d-flex flex-wrap">
-                        {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
-                        </div>
-
-                        <h2>Desserts</h2>
-                        <div className="d-flex flex-wrap">
-                        {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
-                        </div>
+                <div className="flexContainer">
+                    <div className="sideNav">
+                        <p onClick={handleClick}>Appetizers</p>
+                        <p onClick={handleClick}>Main Course</p>
+                        <p onClick={handleClick}>Breads</p>
+                        <p onClick={handleClick}>Drinks</p>
+                        <p onClick={handleClick}>Desserts</p>
+                        {/* <p onClick={handleClick}>View All</p> */}
+                        
                     </div>
-                    
-                    <div className="mt-5 me-2 w-50 d-flex flex-column align-items-end">
+                    <div className="itemList">
+                        <div className="list" id="appetizers">
+                            <h2>Appetizers</h2>
+                            <div className="d-flex flex-wrap">
+                            {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            </div>
+                        </div>
+                        <div className="list" id="mainCourse">
+                            <h2>Main Course</h2>
+                            <div className="d-flex flex-wrap">
+                            {items.map(item=>(item.category==="mainCourse" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            </div>
+                        </div>
+                        <div className="list" id="breads">
+                            <h2>Breads</h2>
+                            <div className="d-flex flex-wrap">
+                            {items.map(item=>(item.category==="breads" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                            </div>
+                        </div>
+                        <div className="list" id="drinks">
+                            <h2>Drinks</h2>
+                            <div className="d-flex flex-wrap">
+                            {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            </div>
+                        </div>
+                        <div className="list" id="desserts">
+                            <h2>Desserts</h2>
+                            <div className="d-flex flex-wrap">
+                            {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="cart">
                         <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
-                    
-                        {isCheckingOut && <CartPreferences order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots}/>}
+                
+                        {isCheckingOut && <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots}/>}
                     </div>
 
-                    
                 </div>
             )
         }
@@ -201,7 +241,7 @@ export default function MenuApp(){
 
     
     return(
-        <div className="MenuApp mx-5 mt-5">
+        <div className="MenuApp">
             
             <h1 className="text-center">Order Online</h1>
             {getItems()} 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAlert } from 'react-alert';
 
-export default function CartPreferences(props){
+export default function CartForm(props){
     const alert = useAlert();
     const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots}=props;
 
-    //add cart preferences to 'order' state
+    //add cart form' details to 'order' state
     const handleChange=(e)=>{
         setOrder({...order,[e.target.id]:e.target.value});
     }
@@ -54,8 +54,8 @@ export default function CartPreferences(props){
     
 
     return(
-        <div className="CartPreferences w-100">
-            <h2>Please fill in details & preferences</h2>
+        <div className="CartForm">
+            <h2>Please fill in:</h2>
             <form  onSubmit={handleSubmit} >
                 <label className="form-label" htmlFor="name">Name:</label>
                 <input className="form-control mb-3" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
@@ -67,7 +67,7 @@ export default function CartPreferences(props){
                 <input className="form-control mb-3" type="tel" id="phone" aria-label="enter phone number"  placeholder="10 digit phone number" required onChange={handleChange} />  
 
                 <label className="form-label" htmlFor="comments">Comments (optional):</label>
-                <textarea className="form-control mb-3" rows="5" cols="5" id="comments" aria-label='enter optional comments' placeholder='Example: No Cutlery' onChange={handleChange} />
+                <textarea className="form-control mb-3" rows="1" cols="3" id="comments" aria-label='enter optional comments' placeholder='Example: No Cutlery' onChange={handleChange} />
 
                 <label className="form-label" htmlFor="category">Ordering method:</label>
                 <select className="form-control mb-3" id="method" required onChange={handleChange}>
