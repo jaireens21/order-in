@@ -3,7 +3,7 @@ import { useAlert } from 'react-alert';
 
 export default function CartForm(props){
     const alert = useAlert();
-    const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots}=props;
+    const {order,setOrder,saveOrdertoDB, today, todayStr, tomorrow, tomorrowStr, currentTimeInHours, currentMinutes, slots, handleGoBackBtn}=props;
 
     //add cart form' details to 'order' state
     const handleChange=(e)=>{
@@ -56,6 +56,7 @@ export default function CartForm(props){
     return(
         <div className="CartForm">
             <h2>Please fill in:</h2>
+            
             <form  onSubmit={handleSubmit} >
                 <label className="form-label" htmlFor="name">Name:</label>
                 <input className="form-control mb-3" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
@@ -89,8 +90,8 @@ export default function CartForm(props){
                     
                 </select>
 
-                <button type="submit" className="btn btn-primary">Place Order</button>
-                
+                <button type="submit" className="placeOrderBtn btn btn-primary">Place Order</button>
+                <button className="goBackBtn btn btn-secondary" onClick={handleGoBackBtn}>Go Back</button>         
             </form>
             
         </div>

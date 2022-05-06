@@ -115,7 +115,12 @@ export default function MenuApp(){
         }
         setOrder({items:items.filter(item=>item.qty>0)}); //save all items with qty>0 to a state called 'order'
     }
-       
+    
+    //when user clicks on "go back" on cart form
+    const handleGoBackBtn=()=>{
+        setIsCheckingOut(false);
+        document.querySelector(".cartForm").classList.add("hidden");
+    }
 
     //save order to db
     const saveOrdertoDB=(order)=>{//add total  price to the order before saving to db
@@ -134,7 +139,7 @@ export default function MenuApp(){
         })
     }
 
-    const handleClick=(e)=>{
+    const handleCategoryClick=(e)=>{
         // console.log("p clicked");
         document.querySelectorAll(".list").forEach(list=>list.classList.add("hidden"));
         document.querySelectorAll(".sideNav p").forEach(para=>para.classList.remove("clicked"));
@@ -156,7 +161,7 @@ export default function MenuApp(){
                 document.getElementById("desserts").classList.remove("hidden");
                 break;
             default:
-                document.querySelectorAll(".list").forEach(list=>list.classList.remove("hidden"));
+                document.getElementById("appetizers").classList.remove("hidden");
         }
     }
 
@@ -187,11 +192,11 @@ export default function MenuApp(){
             return (
                 <div className="flexContainer">
                     <div className="sideNav">
-                        <p onClick={handleClick}>Appetizers</p>
-                        <p onClick={handleClick}>Main Course</p>
-                        <p onClick={handleClick}>Breads</p>
-                        <p onClick={handleClick}>Drinks</p>
-                        <p onClick={handleClick}>Desserts</p>
+                        <p onClick={handleCategoryClick}>Appetizers</p>
+                        <p onClick={handleCategoryClick}>Main Course</p>
+                        <p onClick={handleCategoryClick}>Breads</p>
+                        <p onClick={handleCategoryClick}>Drinks</p>
+                        <p onClick={handleCategoryClick}>Desserts</p>
                         {/* <p onClick={handleClick}>View All</p> */}
                         
                     </div>
@@ -231,7 +236,7 @@ export default function MenuApp(){
                     <div className="cart">
                         <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                 
-                        {isCheckingOut && <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots}/>}
+                        {isCheckingOut && <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots} handleGoBackBtn={handleGoBackBtn}/>}
                     </div>
 
                 </div>

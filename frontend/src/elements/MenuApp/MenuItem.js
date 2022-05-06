@@ -38,7 +38,7 @@ export default function MenuItem(props){
             </div>
             <div className="rightSide d-flex">
                 <p><strong>${item.price}</strong></p>
-                <p>
+                <div>
                     {(!isAdding || item.qty===0)? //do not show + - buttons if qty=0
                     <button className="btn btn-success" onClick={()=>handleClick(item._id)}>Add to Order</button>
                     :<div>
@@ -47,7 +47,7 @@ export default function MenuItem(props){
                         <button className="btn btn-dark ms-3" onClick={()=>handleDecreaseButton(item._id)}>-</button>
                     </div>
                     }
-                </p> 
+                </div> 
             </div>
                     
                     

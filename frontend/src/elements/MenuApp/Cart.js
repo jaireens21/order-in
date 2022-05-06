@@ -6,7 +6,7 @@ export default function Cart(props){
    
     return(
         <div className="Cart">
-            <div className="card">
+            {/* <div className="card">
                 <div className="card-header text-center fw-bold fs-5">
                     CART
                 </div>
@@ -30,8 +30,9 @@ export default function Cart(props){
                     
                 </ul>
                 <button className="btn btn-danger" onClick={handleCheckoutClick}>Checkout</button>
-            </div>
-            <table className="table">
+            </div> */}
+            <h2 className="text-center">CART</h2>
+            <table className="cartTable table">
                 <thead>
                     <tr>
                     <th scope="col">Qty</th>
@@ -46,11 +47,11 @@ export default function Cart(props){
                     <>
                     {items.map(item=>(
                         item.qty>0 && 
-                        <tr>
+                        <tr key={item._id}>
                         <td>{item.qty}</td>
                         <td>{item.name}</td>
                         <td>{(item.price * item.qty).toFixed(2)}</td>
-                        <td><button onClick={()=>handleXClick(item._id)} className="btn"><RiDeleteBin6Line/></button></td>
+                        <td><button onClick={()=>handleXClick(item._id)} className="btn"><RiDeleteBin6Line className="removeBtn"/></button></td>
                         </tr>
                     ))}
                     <tr>
@@ -65,9 +66,7 @@ export default function Cart(props){
                         <td colSpan="2"><strong>TOTAL :</strong></td>
                         <td colSpan="2"><strong>$ {(subtotal*1.13).toFixed(2)}</strong></td>
                     </tr>
-                    <tr>
-                        <td colSpan="4"><button className="checkout btn btn-danger" onClick={handleCheckoutClick}>Checkout</button></td>
-                    </tr>
+                    
                     </>
                     : <tr><td colSpan="4" className="text-center">Cart is empty!</td></tr>
                     }
@@ -76,6 +75,7 @@ export default function Cart(props){
                     
                 </tbody>
             </table>
+            <button className="checkoutBtn btn btn-danger" onClick={handleCheckoutClick}>Checkout</button>
         </div>
     )
 
