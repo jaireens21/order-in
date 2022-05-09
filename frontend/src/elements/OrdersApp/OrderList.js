@@ -2,7 +2,7 @@ import React from "react";
 import Order from "./Order";
 
 export default function OrderList(props){
-    const{orders,heading,toggleTick,id}=props;
+    const{orders,toggleTick,id,heading}=props;
 
     
     const toggleB=(id)=>{
@@ -11,15 +11,9 @@ export default function OrderList(props){
     }
 
     return (
-    <div className="mt-3">
-        <h2>{heading} Orders</h2>
-        {orders.length>0?
-            <div className="d-flex flex-wrap" id={id}>
-                {orders.map(order=><Order key={order._id} order={order} toggleB={toggleB} heading={heading}/>)}
-            </div>
-            :<h3>No Orders yet!</h3>
-        }
-    </div>
+        <div className="OrderList" id={id}>
+            {orders.length>0? orders.map(order=><Order key={order._id} order={order} toggleB={toggleB} heading={heading}/>) :<><h3 className="red mt-5 mb-3 mx-auto border-bottom">No Orders yet!</h3>  </>}
+        </div>
         
     )
 }

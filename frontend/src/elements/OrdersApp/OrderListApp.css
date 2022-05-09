@@ -1,0 +1,63 @@
+.OrderListApp{
+    width:98%;
+    margin:1rem auto;
+    text-align: center;
+    height:83vh;
+}
+.orderContainer{
+    display: flex;
+    justify-content: space-between;
+    height:100%;
+    /* border: 2px solid black; */
+    padding:0 10px;
+   
+}
+
+.leftNav{
+    display:flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-around;
+    width:22%;
+    margin: 2rem 0;
+    padding-top: 2rem;
+    
+}
+.leftNav>p{
+    cursor:pointer;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+
+.rightOrders{
+    width:75%;
+    border-left:2px solid black;
+    height:100%;
+    overflow: auto;
+    
+}
+.rightOrders h2{
+    text-transform: uppercase;
+}
+.OrderList{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-left: 1rem;
+   
+    justify-content: flex-start;
+}
+
+.Order{
+    margin-bottom:1rem ;
+    margin-right: 1rem;
+    width:18rem;
+}
+
+.red{
+    color:red;
+}
+.hidden{
+    display: none;
+}

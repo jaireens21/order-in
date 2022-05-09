@@ -1,6 +1,7 @@
 import axios from "axios";
 import React,{useState} from "react";
 import { useAlert } from 'react-alert';
+import "./RegisterApp.css";
 
 
 export default function RegisterApp(){
@@ -48,16 +49,11 @@ export default function RegisterApp(){
         }) 
     };
 
-    //clear the form
-    const handleClear=()=>{
-        setUser({email:"", password:""});
-    }
-
-
+    
     return (
-        <div className="w-50 mx-auto mt-5">
+        <div className="RegisterApp ">
             
-            <form className="mx-auto needs-validation" noValidate onSubmit={handleLogin}>
+            <form className="RegisterForm needs-validation" noValidate onSubmit={handleLogin}>
                 <h1 className="text-center">Register</h1>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="email">Email:</label>
@@ -76,8 +72,8 @@ export default function RegisterApp(){
                 </div>
                 
                 <button type="submit" className="btn btn-primary my-3 me-2">Register</button>
-                <button className="btn btn-danger my-3 me-2" onClick={handleClear}>Clear Form</button>
-                <p>Already have an account? <a href="/owner/login">Click here</a> to login!</p>
+                
+                {/* <p>Already have an account? <a href="/owner/login">Click here</a> to login!</p> */}
                 
             </form>
 

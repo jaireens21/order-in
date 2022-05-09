@@ -119,6 +119,21 @@ import "./DishApp.css";
             displayError(err);//show error details in console
         })
     }
+
+    const handleCategoryClick=(e)=>{
+        e.target.innerHTML= (e.target.innerHTML.includes("▼") ? e.target.innerHTML.replace("▼", "▲"): e.target.innerHTML.replace("▲","▼"));
+        if(e.target.innerHTML.includes('Appetizers')){
+            document.getElementById("appetizers").classList.toggle("hidden");
+        }else if(e.target.innerHTML.includes('Main Course')){
+            document.getElementById("mainCourse").classList.toggle("hidden");
+        }else if(e.target.innerHTML.includes('Breads')){
+            document.getElementById("breads").classList.toggle("hidden");
+        }else if(e.target.innerHTML.includes('Drinks')){
+            document.getElementById("drinks").classList.toggle("hidden");
+        }else if(e.target.innerHTML.includes('Desserts')){
+            document.getElementById("desserts").classList.toggle("hidden");
+        }
+    }
     
     const getDishes = () => {
         if(loadError){//if there was an error in reading data using axios, show the error
@@ -149,29 +164,29 @@ import "./DishApp.css";
                     <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
-                    <h2>Appetizers</h2>
-                    <div className="d-flex flex-wrap">
+                    <h2 onClick={handleCategoryClick}>Appetizers ▼</h2>
+                    <div className="d-flex flex-wrap hidden" id="appetizers">
                     {dishes.map(dish=>(dish.category==="appetizer" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
                     </div>
                     
 
-                    <h2>Main Course</h2>
-                    <div className="d-flex flex-wrap">
+                    <h2 onClick={handleCategoryClick}>Main Course ▼</h2>
+                    <div className="d-flex flex-wrap hidden" id="mainCourse">
                     {dishes.map(dish=>(dish.category==="mainCourse" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish}/>))}
                     </div>
 
-                    <h2>Breads</h2>
-                    <div className="d-flex flex-wrap">
+                    <h2 onClick={handleCategoryClick}>Breads ▼</h2>
+                    <div className="d-flex flex-wrap hidden" id="breads">
                     {dishes.map(dish=>(dish.category==="breads" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
 
-                    <h2>Drinks</h2>
-                    <div className="d-flex flex-wrap">
+                    <h2 onClick={handleCategoryClick}>Drinks ▼</h2>
+                    <div className="d-flex flex-wrap hidden" id="drinks">
                     {dishes.map(dish=>(dish.category==="drinks" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
 
-                    <h2>Desserts</h2>
-                    <div className="d-flex flex-wrap">
+                    <h2 onClick={handleCategoryClick}>Desserts ▼</h2>
+                    <div className="d-flex flex-wrap hidden" id="desserts">
                     {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
                 </div>

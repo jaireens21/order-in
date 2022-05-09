@@ -25,7 +25,7 @@ export default function LoginForm(props){
                 </div>
                 
                 <button type="submit" className="btn btn-primary my-3 me-2">Login</button>
-                <button className="btn btn-danger my-3 me-3">Forgot Password?</button>
+                {/* <button className="btn btn-danger my-3 me-3">Forgot Password?</button> */}
                 
             </form>
         </div>

@@ -22,4 +22,12 @@
 
 .DishApp{
     margin-left: 3rem;
+    min-height: 83vh;;
+}
+.DishApp >h2{
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
 }

@@ -12,19 +12,20 @@ export default function Order(props){
         // console.log("going to order-list from order");
         toggleB(id);
     };
-    let name="Order card me-3 mb-3";
+    let name="Order card";
     if(order.completed){
-       name="text-decoration-line-through Order card me-3 mb-3";
+       name="text-decoration-line-through Order card";
     }
 
     return(
-        <div className={name} style={{width: 18+'rem'}}>
+        <div className={name}>
             
             <table className="table mb-0 text-start">
                 <thead>
                     <tr>
                     <th scope="col">
-                        {heading!=="Past" && <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> } 
+                        {heading!=="past" && <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> } 
+                        {/* { <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> }  */}
                     </th>
                     <th scope="col">{order.name.toUpperCase()}, {order.method.toUpperCase()}</th>
                     </tr>

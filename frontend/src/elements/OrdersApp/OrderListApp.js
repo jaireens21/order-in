@@ -4,6 +4,7 @@ import React, {useState,useEffect, useCallback} from "react";
 import useToggleState from "../../hooks/useToggleState";
 import OrderList from "./OrderList";
 import { useAlert } from 'react-alert';
+import "./OrderListApp.css";
 
 
 export default function OrderListApp(){
@@ -140,16 +141,21 @@ export default function OrderListApp(){
         }else {
             //no error, success is true->display the data
             return (
-                <div>
-                    <h1>ORDERS</h1>
+                <div className="orderContainer">
                     
-                    <button className="btn btn-primary me-3" onClick={handleTodaysClick}>Hide Today's orders</button>
-                    <button className="btn btn-success me-3" onClick={handleUpcomingClick}>Show Upcoming orders</button>
-                    <button className="btn btn-dark me-3" onClick={handlePastClick}>Show Past orders</button>
+                    <div className="leftNav">
+                        <button className="btn btn-primary " onClick={handleTodaysClick}>Hide Today's orders</button>
+                        <button className="btn btn-success " onClick={handleUpcomingClick}>Show Upcoming orders</button>
+                        <button className="btn btn-dark " onClick={handlePastClick}>Show Past orders</button>
+                    </div>
                     
-                    {showTodays && <OrderList id="todays" orders={todaysOrders} toggleTick={toggleTick} heading="Today's" />}
-                    {showUpcoming && <OrderList id="upcoming" orders={upcomingOrders} toggleTick={toggleTick} heading="Upcoming" />}
-                    {showPast && <OrderList id="past" orders={pastOrders} toggleTick={toggleTick} heading="Past" />}
+                    <div className="rightOrders">
+                        {showTodays && <> <h2>Today's Orders</h2> <OrderList id="todays" orders={todaysOrders} toggleTick={toggleTick} heading="todays" /> </> }
+                        {showUpcoming && <> <h2>Upcoming Orders</h2> <OrderList id="upcoming" orders={upcomingOrders} toggleTick={toggleTick} heading="upcoming" /> </>}
+                        {showPast && <> <h2>Past Orders</h2> <OrderList id="past" orders={pastOrders} toggleTick={toggleTick} heading="past" /> </>}
+                    </div>
+                    
+                    
     
                 </div>
             )
@@ -157,7 +163,8 @@ export default function OrderListApp(){
     }
     return(
        
-        <div className="w-75 mx-auto my-5 text-center">
+        <div className="OrderListApp">
+            
             {getItems()} 
         </div>
     )
