@@ -76,7 +76,7 @@ export default function LayoutOwner(props){
 
     return(
         <div>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <nav className="navbar navbar-expand navbar-dark bg-dark" style={{height:7+"vh"}}>
                 
                 <NavLink to="/owner" className="navbar-brand ms-3">Home Brand</NavLink>
                 {isLoggedIn? loggedInOptions(): loggedOutOptions()}

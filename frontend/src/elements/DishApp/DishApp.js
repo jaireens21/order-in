@@ -160,7 +160,8 @@ import "./DishApp.css";
             //there is no error, & loadSuccess is true
             //we show the data
             return (
-                <div className="DishApp">
+                <>
+                    <h1 className="text-center">DISHES</h1>
                     <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
@@ -189,14 +190,14 @@ import "./DishApp.css";
                     <div className="d-flex flex-wrap hidden" id="desserts">
                     {dishes.map(dish=>(dish.category==="dessert" && <Dish key={dish._id} dish={dish} saveDish={saveDish} removeDish={removeDish} />))}
                     </div>
-                </div>
+                </>
             )
         }
     }
 
     
     return(
-        <div className="DishApp w-75 mt-5">
+        <div className="DishApp">
             
             {getDishes()} 
             

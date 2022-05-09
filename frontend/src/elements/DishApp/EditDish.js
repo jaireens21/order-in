@@ -21,10 +21,10 @@ export default function EditDish(props){
         toggleIsEditing();
     }
     return(
-        <div className="EditDishForm">
+        < >
             {/* <h2>Edit dish</h2> */}
             
-            <form onSubmit={handleSubmit}>
+            <form className="EditDishForm" onSubmit={handleSubmit}>
                 
                 <label className="form-label" htmlFor="name">Name:</label>
                 <input className="form-control mb-3" type="text" id="name" value={editedDish.name} required onChange={handleChange}/>
@@ -45,10 +45,10 @@ export default function EditDish(props){
                 <label className="form-label" htmlFor="description">Description:</label>
                 <textarea className="form-control mb-3" rows="5" cols="5" id="description" value={editedDish.description} required onChange={handleChange}/>
                 
-                <button type="submit" className="btn btn-success me-3">Save</button>
-                <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                <button type="submit" className="btn btn-success me-3" aria-label="save changes">Save</button>
+                <button className="btn btn-danger" onClick={handleCancel} aria-label="cancel changes">Cancel</button>
             </form>
             
-        </div>
+        </>
     )
 }

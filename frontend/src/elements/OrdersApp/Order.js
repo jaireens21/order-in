@@ -24,8 +24,8 @@ export default function Order(props){
                 <thead>
                     <tr>
                     <th scope="col">
-                        {heading!=="past" && <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> } 
-                        {/* { <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed}/> }  */}
+                        {heading!=="past" && <input className="form-check-input" type="checkbox" onChange={()=>toggleBtn(order._id)} checked={order.completed} aria-label="mark order as completed"/> } 
+                        
                     </th>
                     <th scope="col">{order.name.toUpperCase()}, {order.method.toUpperCase()}</th>
                     </tr>

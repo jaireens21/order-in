@@ -31,8 +31,8 @@ export default function Dish(props){
                     <h5 className="card-title">{dish.name}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">$ {dish.price}</h6>
                     <p className="card-text">{dish.description}</p>
-                    <button className="btn btn-primary me-3" onClick={toggleIsEditing}>Edit</button>
-                    <button className="btn btn-danger" onClick={(e)=>confirmDeleteDish(dish._id,e)}>Delete</button>
+                    <button className="btn btn-primary me-3" onClick={toggleIsEditing} aria-label="edit this dish">Edit</button>
+                    <button className="btn btn-danger" onClick={(e)=>confirmDeleteDish(dish._id,e)} aria-label="delete this dish">Delete</button>
                 </div>
             </div>
          

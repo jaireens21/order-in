@@ -1,3 +1,13 @@
+
+.DishApp{
+    margin: 0 auto;
+    min-height: 88vh;
+    padding:2rem 5rem;
+}
+.DishApp >h2{
+    cursor: pointer;
+}
+
 .EditDishForm{
     margin-right: 1rem;
     width:18rem;
@@ -20,13 +30,6 @@
     margin-right: 1rem;;
 }
 
-.DishApp{
-    margin-left: 3rem;
-    min-height: 83vh;;
-}
-.DishApp >h2{
-    cursor: pointer;
-}
 
 .hidden{
     display: none;

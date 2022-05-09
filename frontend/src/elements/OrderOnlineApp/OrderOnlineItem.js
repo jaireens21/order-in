@@ -24,9 +24,9 @@ export default function OrderOnlineItem(props){
                     {(!isAdding || item.qty===0)? //do not show + - buttons if qty=0
                     <button className="addBtn btn btn-success" onClick={()=>handleClick(item._id)}>Add to Order</button>
                     :<div>
-                        <button className="qtyBtn btn btn-dark" onClick={()=>handleIncreaseButton(item._id)}>+</button>
+                        <button className="qtyBtn btn btn-dark" onClick={()=>handleIncreaseButton(item._id)} aria-label="click to increase quantity">+</button>
                         {item.qty}
-                        <button className="qtyBtn btn btn-dark" onClick={()=>handleDecreaseButton(item._id)}>-</button>
+                        <button className="qtyBtn btn btn-dark" onClick={()=>handleDecreaseButton(item._id)} aria-label="click to decrease quantity">-</button>
                     </div>
                     }
                 </div> 

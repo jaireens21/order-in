@@ -59,16 +59,16 @@ export default function CartForm(props){
             
             <form  onSubmit={handleSubmit} >
                 <label className="form-label" htmlFor="name">Name:</label>
-                <input className="form-control" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
+                <input className="form-control" type="text" id="name" required onChange={handleChange} />
                 
                 <label className="form-label" htmlFor="email">Email:</label>
-                <input className="form-control" type="email" id="email" aria-label="enter email address" required onChange={handleChange} />
+                <input className="form-control" type="email" id="email" required onChange={handleChange} />
 
                 <label className="form-label" htmlFor="phone">Phone:</label>
-                <input className="form-control" type="tel" id="phone" aria-label="enter phone number"  placeholder="10 digit phone number" required onChange={handleChange} />  
+                <input className="form-control" type="tel" id="phone" placeholder="10 digit phone number" required onChange={handleChange} />  
 
                 <label className="form-label" htmlFor="comments">Comments (optional):</label>
-                <textarea className="form-control" rows="1" cols="3" id="comments" aria-label='enter optional comments' placeholder='Example: No Cutlery' onChange={handleChange} />
+                <textarea className="form-control" rows="1" cols="3" id="comments" placeholder='Example: No Cutlery' onChange={handleChange} />
 
                 <label className="form-label" htmlFor="category">Ordering method:</label>
                 <select className="form-control" id="method" required onChange={handleChange}>
@@ -90,8 +90,8 @@ export default function CartForm(props){
                     
                 </select>
 
-                <button type="submit" className="placeOrderBtn btn btn-primary">Place Order</button>
-                <button className="goBackBtn btn btn-secondary" onClick={handleGoBackBtn}>Go Back</button>         
+                <button type="submit" className="placeOrderBtn btn btn-primary" >Place Order</button>
+                <button className="goBackBtn btn btn-secondary" onClick={handleGoBackBtn} >Go Back</button>         
             </form>
             
         </div>

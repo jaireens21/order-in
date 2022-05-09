@@ -14,11 +14,11 @@ import {IoIosStar} from 'react-icons/io';
                 <p>With overlay of resto name , phone number and online order link</p> */}
                  
                 <ul className="slideshow">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
+                    <li role="img" alt="image of dimsums in a steamer "></li>
+                    <li role="img" alt="image of apple pie on a table"></li>
+                    <li role="img" alt="image of spring rolls on a platter "></li>
+                    <li role="img" alt="image of cool, refreshing drinks with mint & lime "></li>
+                    <li role="img" alt="image of hamburger with hand-cut fries "></li>
                 </ul>
 
                 <div id="heroText" >

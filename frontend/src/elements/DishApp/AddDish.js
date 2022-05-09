@@ -46,7 +46,7 @@ export default function AddDish(props){
                 <input className="form-control mb-3" type="text" id="description" value={newDish.description} required onChange={handleChange}/>
 
                 <button type="submit" className="btn btn-success me-3">Add dish</button>
-                <button onClick={handleCancel} className="btn btn-danger">Cancel</button>
+                <button onClick={handleCancel} className="btn btn-danger" aria-label="cancel adding a new dish">Cancel</button>
             </form>
             
          </div>

@@ -120,7 +120,7 @@ export default function ShowMenu(){
             return (
                 
                 <div className="menu">
-                    <h2 className="" onClick={handleClick}>Appetizers</h2>
+                    <h2 className="" onClick={handleClick} aria-label="click here to see/hide appetizers">Appetizers</h2>
                     <div className="categoryItems" id="appetizers">
                         {items.map(item=>(item.category==="appetizer" && 
                             displayItems(item)))
@@ -128,28 +128,28 @@ export default function ShowMenu(){
                     </div>
                     
                     
-                    <h2 className="red" onClick={handleClick}>Main Course</h2>
+                    <h2 className="red" onClick={handleClick} aria-label="click here to see/hide main course">Main Course</h2>
                     <div className="categoryItems hidden" id="mainCourse">
                         {items.map(item=>(item.category==="mainCourse" && 
                             displayItems(item)))
                         }
                     </div>
                     
-                    <h2 className="red" onClick={handleClick}>Breads</h2>
+                    <h2 className="red" onClick={handleClick} aria-label="click here to see/hide breads">Breads</h2>
                     <div className="categoryItems hidden" id="breads">
                         {items.map(item=>(item.category==="breads" && 
                             displayItems(item)))
                         }
                     </div>
                     
-                    <h2 className="red" onClick={handleClick}>Drinks</h2>
+                    <h2 className="red" onClick={handleClick} aria-label="click here to see/hide drinks">Drinks</h2>
                     <div className="categoryItems hidden" id="drinks">
                         {items.map(item=>(item.category==="drinks" && 
                             displayItems(item)))
                         }
                     </div>
                     
-                    <h2 className="red" onClick={handleClick}>Desserts</h2>
+                    <h2 className="red" onClick={handleClick} aria-label="click here to see/hide desserts">Desserts</h2>
                     <div className="categoryItems hidden" id="dessert">
                         {items.map(item=>(item.category==="dessert" && 
                             displayItems(item)))

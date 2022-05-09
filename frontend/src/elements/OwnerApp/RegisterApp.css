@@ -1,14 +1,18 @@
+
+.RegisterApp{
+    min-height:88vh; 
+    /* (100-navbar ht of 7vh - footer ht of 5 vh) */
+    margin:0 auto;
+    padding:2rem 0;
+}
+
 .RegisterForm{
     width:50%;
-    margin:2rem auto;
+    margin:0 auto;
 }
 @media (min-width:992px){
     .RegisterForm{
         width:35%;
         
     }
-}
-
-.RegisterApp{
-    height:83vh;
 }
