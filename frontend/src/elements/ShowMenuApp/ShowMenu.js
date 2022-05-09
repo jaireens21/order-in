@@ -78,6 +78,21 @@ export default function ShowMenu(){
         }
     }
 
+    //display details of an item on the menu
+    const displayItems=(item)=>{
+        return(
+            <div key={item._id}>
+                <div className="d-flex justify-content-between">
+                    <p><strong>{item.name}</strong></p>
+                    <p><strong>${item.price}</strong></p> 
+                </div>
+                
+                <p>{item.description}</p>
+                <hr/>
+            </div>
+        )
+    }
+
     //display the data (reading from db using axios)
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
@@ -108,15 +123,7 @@ export default function ShowMenu(){
                     <h2 className="" onClick={handleClick}>Appetizers</h2>
                     <div className="categoryItems" id="appetizers">
                         {items.map(item=>(item.category==="appetizer" && 
-                            <div key={item._id}>
-                                <div className="d-flex justify-content-between">
-                                    <p><strong>{item.name}</strong></p>
-                                    <p><strong>${item.price}</strong></p> 
-                                </div>
-                                
-                                <p>{item.description}</p>
-                                <hr/>
-                            </div>))
+                            displayItems(item)))
                         }
                     </div>
                     
@@ -124,60 +131,28 @@ export default function ShowMenu(){
                     <h2 className="red" onClick={handleClick}>Main Course</h2>
                     <div className="categoryItems hidden" id="mainCourse">
                         {items.map(item=>(item.category==="mainCourse" && 
-                            <div key={item._id}>
-                            <div className="d-flex justify-content-between">
-                                <p><strong>{item.name}</strong></p>
-                                <p><strong>${item.price}</strong></p> 
-                            </div>
-                            
-                            <p>{item.description}</p>
-                            <hr/>
-                            </div>))
+                            displayItems(item)))
                         }
                     </div>
                     
                     <h2 className="red" onClick={handleClick}>Breads</h2>
                     <div className="categoryItems hidden" id="breads">
                         {items.map(item=>(item.category==="breads" && 
-                            <div key={item._id}>
-                            <div className="d-flex justify-content-between">
-                                <p><strong>{item.name}</strong></p>
-                                <p><strong>${item.price}</strong></p> 
-                            </div>
-                            
-                            <p>{item.description}</p>
-                            <hr/>
-                            </div>))
+                            displayItems(item)))
                         }
                     </div>
                     
                     <h2 className="red" onClick={handleClick}>Drinks</h2>
                     <div className="categoryItems hidden" id="drinks">
                         {items.map(item=>(item.category==="drinks" && 
-                            <div key={item._id}>
-                            <div className="d-flex justify-content-between">
-                                <p><strong>{item.name}</strong></p>
-                                <p><strong>${item.price}</strong></p> 
-                            </div>
-                            
-                            <p>{item.description}</p>
-                            <hr/>
-                            </div>))
+                            displayItems(item)))
                         }
                     </div>
                     
                     <h2 className="red" onClick={handleClick}>Desserts</h2>
                     <div className="categoryItems hidden" id="dessert">
                         {items.map(item=>(item.category==="dessert" && 
-                            <div key={item._id}>
-                            <div className="d-flex justify-content-between">
-                                <p><strong>{item.name}</strong></p>
-                                <p><strong>${item.price}</strong></p> 
-                            </div>
-                            
-                            <p>{item.description}</p>
-                            <hr/>
-                            </div>))
+                            displayItems(item)))
                         }
                     </div>
                     

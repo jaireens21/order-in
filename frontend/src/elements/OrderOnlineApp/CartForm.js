@@ -59,32 +59,32 @@ export default function CartForm(props){
             
             <form  onSubmit={handleSubmit} >
                 <label className="form-label" htmlFor="name">Name:</label>
-                <input className="form-control mb-3" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
+                <input className="form-control" type="text" id="name" aria-label="enter name" required onChange={handleChange} />
                 
                 <label className="form-label" htmlFor="email">Email:</label>
-                <input className="form-control mb-3" type="email" id="email" aria-label="enter email address" required onChange={handleChange} />
+                <input className="form-control" type="email" id="email" aria-label="enter email address" required onChange={handleChange} />
 
                 <label className="form-label" htmlFor="phone">Phone:</label>
-                <input className="form-control mb-3" type="tel" id="phone" aria-label="enter phone number"  placeholder="10 digit phone number" required onChange={handleChange} />  
+                <input className="form-control" type="tel" id="phone" aria-label="enter phone number"  placeholder="10 digit phone number" required onChange={handleChange} />  
 
                 <label className="form-label" htmlFor="comments">Comments (optional):</label>
-                <textarea className="form-control mb-3" rows="1" cols="3" id="comments" aria-label='enter optional comments' placeholder='Example: No Cutlery' onChange={handleChange} />
+                <textarea className="form-control" rows="1" cols="3" id="comments" aria-label='enter optional comments' placeholder='Example: No Cutlery' onChange={handleChange} />
 
                 <label className="form-label" htmlFor="category">Ordering method:</label>
-                <select className="form-control mb-3" id="method" required onChange={handleChange}>
+                <select className="form-control" id="method" required onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     <option value="pickup">Pickup</option>
                     <option value="dinein">Dine-in</option>
                 </select>
                 <label className="form-label" htmlFor="date">Date</label>
-                <select className="form-control mb-3" id="date" required onChange={handleChange}>
+                <select className="form-control" id="date" required onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     <option value={today}>Today: {todayStr}</option>
                     <option value={tomorrow}>Tomorrow: {tomorrowStr}</option>
                     
                 </select>
                 <label className="form-label" htmlFor="time">Time</label>
-                <select className="form-control mb-3" id="time" required onChange={handleChange}>
+                <select className="form-control" id="time" required onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     {options}
                     

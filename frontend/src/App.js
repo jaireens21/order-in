@@ -4,9 +4,9 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
 import Layout from './elements/Layout';
 import Home from './pages/Home';
-import ShowMenu from './elements/ShowMenu';
-import MenuApp from './elements/MenuApp/MenuApp';
-import CartSuccess from './elements/MenuApp/CartSuccess';
+import ShowMenu from './elements/ShowMenuApp/ShowMenu';
+import OrderOnlineApp from './elements/OrderOnlineApp/OrderOnlineApp';
+import CartSuccess from './elements/OrderOnlineApp/CartSuccess';
 
 import LayoutOwner from './elements/OwnerApp/LayoutOwner';
 import LoginApp from './elements/OwnerApp/LoginApp';
@@ -30,7 +30,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />}/>
           <Route path='menu' element={<ShowMenu/>}/>
-          <Route path='orderonline' element={<MenuApp/>}/>
+          <Route path='orderonline' element={<OrderOnlineApp/>}/>
           <Route path='orderonline/success' element={<CartSuccess/>}/>
         </Route>
 

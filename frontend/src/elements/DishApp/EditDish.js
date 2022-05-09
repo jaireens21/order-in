@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import "./EditDish.css";
+
 
 export default function EditDish(props){
 
@@ -21,7 +21,7 @@ export default function EditDish(props){
         toggleIsEditing();
     }
     return(
-        <div className="EditDishForm me-3" style={{width: 18 + 'rem'}}>
+        <div className="EditDishForm">
             {/* <h2>Edit dish</h2> */}
             
             <form onSubmit={handleSubmit}>

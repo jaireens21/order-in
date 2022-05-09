@@ -2,13 +2,13 @@ import axios from "axios";
 import React, {useState,useEffect,useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from 'react-alert';
-import MenuItem from "./MenuItem";
+import OrderOnlineItem from "./OrderOnlineItem";
 import Cart from "./Cart";
 import CartForm from "./CartForm";
-import "./MenuApp.css";
+import "./OrderOnlineApp.css";
 
 
-export default function MenuApp(){
+export default function OrderOnlineApp(){
     const alert = useAlert();
 
     const [items,setItems]=useState(null);
@@ -139,11 +139,15 @@ export default function MenuApp(){
         })
     }
 
+    //when user clicks on a category in the left pane
     const handleCategoryClick=(e)=>{
-        // console.log("p clicked");
-        document.querySelectorAll(".list").forEach(list=>list.classList.add("hidden"));
+        
+        //reset so that only the para actually clicked has a class of clicked
         document.querySelectorAll(".sideNav p").forEach(para=>para.classList.remove("clicked"));
         e.target.classList.add("clicked");
+
+        //reset so that only the category actually clicked is not hidden
+        document.querySelectorAll(".list").forEach(list=>list.classList.contains("hidden")? list : list.classList.add("hidden"));
         switch (e.target.innerHTML) {
             case 'Appetizers':
                 document.getElementById("appetizers").classList.remove("hidden");
@@ -161,7 +165,7 @@ export default function MenuApp(){
                 document.getElementById("desserts").classList.remove("hidden");
                 break;
             default:
-                document.getElementById("appetizers").classList.remove("hidden");
+                document.getElementById("appetizers").classList.toggle("hidden");
         }
     }
 
@@ -192,7 +196,7 @@ export default function MenuApp(){
             return (
                 <div className="flexContainer">
                     <div className="sideNav">
-                        <p onClick={handleCategoryClick}>Appetizers</p>
+                        <p className="clicked" onClick={handleCategoryClick}>Appetizers</p>
                         <p onClick={handleCategoryClick}>Main Course</p>
                         <p onClick={handleCategoryClick}>Breads</p>
                         <p onClick={handleCategoryClick}>Drinks</p>
@@ -201,39 +205,39 @@ export default function MenuApp(){
                         
                     </div>
                     <div className="itemList">
-                        <div className="list" id="appetizers">
+                        <div className="list " id="appetizers">
                             <h2>Appetizers</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="appetizer"&&<MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            {items.map(item=>(item.category==="appetizer"&&<OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
-                        <div className="list" id="mainCourse">
+                        <div className="list hidden" id="mainCourse">
                             <h2>Main Course</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="mainCourse" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            {items.map(item=>(item.category==="mainCourse" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
-                        <div className="list" id="breads">
+                        <div className="list hidden" id="breads">
                             <h2>Breads</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="breads" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                            {items.map(item=>(item.category==="breads" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
                             </div>
                         </div>
-                        <div className="list" id="drinks">
+                        <div className="list hidden" id="drinks">
                             <h2>Drinks</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="drinks" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            {items.map(item=>(item.category==="drinks" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
-                        <div className="list" id="desserts">
+                        <div className="list hidden" id="desserts">
                             <h2>Desserts</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="dessert" && <MenuItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                            {items.map(item=>(item.category==="dessert" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
                             </div>
                         </div>
 
                     </div>
-                    <div className="cart">
+                    <div className="cartDiv">
                         <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                 
                         {isCheckingOut && <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots} handleGoBackBtn={handleGoBackBtn}/>}
@@ -246,7 +250,7 @@ export default function MenuApp(){
 
     
     return(
-        <div className="MenuApp">
+        <div className="OrderOnlineApp">
             
             <h1 className="text-center">Order Online</h1>
             {getItems()} 

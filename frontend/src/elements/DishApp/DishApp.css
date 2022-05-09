@@ -1,0 +1,25 @@
+.EditDishForm{
+    margin-right: 1rem;
+    width:18rem;
+    border:2px solid red;
+    border-radius: 10px;
+    padding:5px;
+}
+
+.AddDish{
+    width:50%;
+    margin:1rem 0.5rem;
+    border:2px solid green;
+    border-radius: 10px;
+    padding:5px 10px;
+}
+
+.dishCard{
+    width:18rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;;
+}
+
+.DishApp{
+    margin-left: 3rem;
+}

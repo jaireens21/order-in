@@ -3,6 +3,7 @@ import React,{useState} from "react";
 import { useAlert } from 'react-alert';
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
+import "./LoginApp.css";
 
 
 export default function LoginApp(props){
@@ -78,7 +79,7 @@ export default function LoginApp(props){
     // }
 
     return (
-        <div>
+        <div className="LoginApp">
             
             {!isLoggedIn && <LoginForm handleChange={handleChange} handleLogin={handleLogin} user={user}/>
 

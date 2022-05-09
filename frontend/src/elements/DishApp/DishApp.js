@@ -4,6 +4,7 @@ import useToggleState from "../../hooks/useToggleState";
 import Dish from "./Dish";
 import AddDish from "./AddDish";
 import { useAlert } from 'react-alert';
+import "./DishApp.css";
 
 
 
@@ -144,7 +145,7 @@ import { useAlert } from 'react-alert';
             //there is no error, & loadSuccess is true
             //we show the data
             return (
-                <div className="DishApp ms-5">
+                <div className="DishApp">
                     <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 

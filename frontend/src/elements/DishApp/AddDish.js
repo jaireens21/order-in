@@ -23,7 +23,7 @@ export default function AddDish(props){
     }
 
      return(
-         <div className="AddDish my-3 w-50">
+         <div className="AddDish">
             <h2>Add a new dish</h2>
             <form onSubmit={handleSubmit}>
                 <label className="form-label" htmlFor="name">Enter name of dish:</label>

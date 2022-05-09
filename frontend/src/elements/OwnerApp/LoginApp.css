@@ -1,0 +1,14 @@
+.LoginForm{
+    width:50%;
+    margin:2rem auto;
+}
+@media (min-width:992px){
+    .LoginForm{
+        width:35%;
+        
+    }
+}
+
+.LoginApp{
+    height:83vh;
+}

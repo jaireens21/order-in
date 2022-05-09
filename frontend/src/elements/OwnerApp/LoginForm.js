@@ -4,9 +4,9 @@ export default function LoginForm(props){
     const {handleChange, handleLogin} =props;
     
     return (
-        <div  className="w-50 mx-auto mt-5">
+        <div  className="LoginForm">
             
-            <form className="mx-auto needs-validation" noValidate onSubmit={handleLogin}>
+            <form className="needs-validation" noValidate onSubmit={handleLogin}>
                 <h1 className="text-center">Owner login</h1>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="username">Email:</label>
