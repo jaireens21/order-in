@@ -40,7 +40,8 @@ export default function LoginApp(props){
     const handleLogin=(e)=>{
         e.preventDefault();
         //send login details over to node for authenticating via passport
-        axios.post('http://localhost:8010/owner/login', user, { withCredentials: true })
+        // axios.post('http://localhost:8010/owner/login', user, { withCredentials: true })
+        axios.post('/owner/login', user, { withCredentials: true })
         //withCredentials:true--- tells Axios to send the cookie alongside the request 
         .then(res=>{
             setIsLoggedIn(true);

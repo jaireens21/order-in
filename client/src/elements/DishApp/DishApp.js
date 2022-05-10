@@ -41,7 +41,8 @@ import "./DishApp.css";
     
     //read existing data from server/db
     const loadData=useCallback(()=>{ 
-        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL, withCredentials: true })
+        // axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL, withCredentials: true })
+        axios.get('/api', { timeout: TIMEOUT_INTERVAL, withCredentials: true })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
@@ -66,7 +67,8 @@ import "./DishApp.css";
 
     const saveNewDish=(newDish)=>{
         //send to server for updating DB
-        axios.post('http://localhost:8010/api',newDish,{ withCredentials: true })
+        // axios.post('http://localhost:8010/api',newDish,{ withCredentials: true })
+        axios.post('/api',newDish,{ withCredentials: true })
         .then(res=>{
             // window.alert("The dish was added successfully!");
             alert.success("Dish added successfully!");
@@ -85,7 +87,8 @@ import "./DishApp.css";
     }
 
     const removeDish=(id)=>{
-        axios.delete(`http://localhost:8010/api/${id}`,{ withCredentials: true })
+        // axios.delete(`http://localhost:8010/api/${id}`,{ withCredentials: true })
+        axios.delete(`/api/${id}`,{ withCredentials: true })
         .then(res=>{
             alert.success("Dish deleted!");
             //setDishes(dishes.filter(dish=>dish._id!==id));//update local state to re-render list of dishes
@@ -103,7 +106,8 @@ import "./DishApp.css";
 
 
     const saveDish=(editedDish,id)=>{
-        axios.put(`http://localhost:8010/api/${id}`,editedDish,{ withCredentials: true })
+        // axios.put(`http://localhost:8010/api/${id}`,editedDish,{ withCredentials: true })
+        axios.put(`/api/${id}`,editedDish,{ withCredentials: true })
         .then(res=>{
             alert.success("Dish updated!");
 

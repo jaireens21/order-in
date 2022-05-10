@@ -44,7 +44,8 @@ export default function RegisterApp(){
             return;
         }
         //send registration details over to node for authenticating via passport
-        axios.post('http://localhost:8010/owner/register', user,{ withCredentials: true })
+        // axios.post('http://localhost:8010/owner/register', user,{ withCredentials: true })
+        axios.post('/owner/register', user,{ withCredentials: true })
         .then(res=>{
             console.log(res.data);
             console.log(res.data.success);

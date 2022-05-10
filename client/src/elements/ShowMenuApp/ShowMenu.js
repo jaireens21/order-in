@@ -32,7 +32,8 @@ export default function ShowMenu(){
 
     //get all menu items from server/db
     const loadData=useCallback(()=>{ 
-        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        // axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        axios.get('/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);

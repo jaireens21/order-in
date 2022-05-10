@@ -58,7 +58,8 @@ export default function OrderOnlineApp(){
 
     //get all menu items from server/db
     const loadData=useCallback(()=>{ 
-        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        // axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        axios.get('/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
@@ -124,7 +125,8 @@ export default function OrderOnlineApp(){
 
     //save order to db
     const saveOrdertoDB=(order)=>{//add total  price to the order before saving to db
-        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
+        // axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
+        axios.post('/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
             alert.success("Order placed!")
