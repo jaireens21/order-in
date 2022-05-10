@@ -44,11 +44,16 @@ export default function LoginApp(props){
         axios.post('/owner/login', user, { withCredentials: true })
         //withCredentials:true--- tells Axios to send the cookie alongside the request 
         .then(res=>{
-            setIsLoggedIn(true);
             // console.log(res.data);//res.data.success will be true if user has been logged in
-            alert.success(res.data.message);
-            setUser(res.data.user);
-            navigate(`/owner/orders`);
+            if(res.data.success){
+                setIsLoggedIn(true);
+                alert.success(res.data.message);
+                setUser(res.data.user);
+                return navigate(`/owner/orders`);
+            }else{ //res.data.success will be false if user could not be logged in
+                alert.error(res.data.error);
+                return navigate(`/owner/login`);
+            }
         })
         .catch(err=>{
             setIsLoggedIn(false);
