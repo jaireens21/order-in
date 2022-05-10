@@ -17,7 +17,8 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, "client", "build"))); //filesystem path of the files being served
 
 //connecting to DB
-const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
+// const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
+const dbUrl=process.env.DB_URL;
 mongoose.connect(dbUrl,{
     useNewUrlParser: true, 
     useUnifiedTopology: true 
