@@ -71,7 +71,7 @@ export default function RegisterApp(){
         <div className="RegisterApp ">
             
             <form className="RegisterForm needs-validation" noValidate onSubmit={handleLogin}>
-                <h1 className="text-center">Register Another Owner</h1>
+                <h1 className="text-center">Register New Owner</h1>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="email">Email:</label>
                     <input className="form-control " type="text" id="email" value={user.email} required onChange={handleChange}/>

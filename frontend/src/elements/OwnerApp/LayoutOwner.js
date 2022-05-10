@@ -52,9 +52,9 @@ export default function LayoutOwner(props){
                 <li className="nav-item">
                     <NavLink to={"/owner/dishes"} className="nav-link">Dishes</NavLink>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Register</NavLink>
-                </li>
+                </li> */}
                 <li className="nav-item">
                     <Link to={""} onClick={handleLogout} className="nav-link me-5">Logout</Link>
                 </li>

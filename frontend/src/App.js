@@ -40,9 +40,11 @@ function App() {
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
             <Route path='dishes' element={<DishApp/>}/>
             <Route path='orders' element={<OrderListApp/>} /> 
-            <Route path='register' element={<RegisterApp/>}/>
           </Route>
+          
         </Route>
+
+        <Route path='/admin/register' element={<RegisterApp/>}/>
         
         {/* catch-all for non-existent routes */}
         <Route path="*" element={
