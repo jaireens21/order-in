@@ -46,7 +46,9 @@ const sessionConfig={
     httpOnly:true,// helps mitigate the risk of client-side-scripting by preventing access to the cookie
     secure:true, //use when deploying //httpS will be reqd to set cookies
     maxAge: 1000*60*60*24*7,   //a week (in milliseconds)  
-  }
+    sameSite:'none',// allows chrome to set cookies with cross domains which is disabled by default in all modern browsers
+  },
+  proxy: true,//since client (frontend) sends request via proxy (defined in package.json) 
 }
 app.use(session(sessionConfig));
 
