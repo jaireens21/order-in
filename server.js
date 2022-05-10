@@ -4,12 +4,16 @@ const app=express();
 const mongoose=require('mongoose');
 const cors=require('cors');//since frontend & backend are running on diff ports
 
+const path = require("path");
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
     origin:'http://localhost:3000', //to allow server to accept requests from a different origin (the frontend server)
     credentials:true //to allow the session cookie from the browser(front-end) to pass through
 }));
+
+app.use(express.static(path.join(__dirname, "client", "build"))); //filesystem path of the files being served
 
 //connecting to DB
 const dbUrl=process.env.DB_URL || 'mongodb://127.0.0.1:27017/order-in';
@@ -28,10 +32,10 @@ const session= require('express-session');
 const MongoDBStore=require('connect-mongo');//using mongo session store
 const secret=process.env.SECRET;
 const sessionConfig={
-//   store:MongoDBStore.create({ 
-//     mongoUrl:dbUrl, 
-//     touchAfter: 24*60*60, //Lazy session update , time in seconds
-//   }),
+  store:MongoDBStore.create({ 
+    mongoUrl:dbUrl, 
+    touchAfter: 24*60*60, //Lazy session update , time in seconds
+  }),
   name:'parleg', //changing name of the session ID cookie (default name: connect.ssid)
   secret, //used to sign the session ID cookie
   resave: false, //don't save session if unmodified
@@ -120,6 +124,10 @@ app.use((err,req,res,next)=>{
     });
 })
 
+//a catchall; will send index.html to client if the request didnot match any specified routes
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 const port=process.env.PORT || 8010;
 app.listen(port, ()=>{

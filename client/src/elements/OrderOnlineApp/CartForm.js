@@ -22,6 +22,7 @@ export default function CartForm(props){
         //permitted formats: 1234567890, 123-456-7890, 123.456.7890, 123 456 7890, (123) 456 7890
 
         let emailID=document.getElementById("email").value;
+        // eslint-disable-next-line
         let emailRegex=/(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}/;
 
         if(emailRegex.test(emailID)){

@@ -75,6 +75,7 @@ export default function OrderListApp(){
             console.log("error while fetching orders");
             displayError(err); //show error details on console
         })
+        // eslint-disable-next-line
     },[TIMEOUT_INTERVAL]);
 
     //read data from db
