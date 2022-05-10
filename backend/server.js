@@ -84,8 +84,8 @@ app.post('/owner/register', catchAsync(async(req,res,next)=>{
         });
         return res.status(201).json({
             success:true, //redirect in react based on this
-            message:"registered & logged in",
-            user:newUser,
+            message:"Registered & logged in!",
+            // user:newUser,
         });
     }
      

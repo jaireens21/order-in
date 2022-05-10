@@ -29,6 +29,9 @@
 .menu p{
     line-height: 0.5rem;
 }
+#dishDescription{
+    line-height: normal;
+}
 .categoryItems{
     text-align: start;
     margin-left: 20%;

@@ -161,6 +161,7 @@ to {
 #history>p{
     text-align: start;
     min-width:30%;
+    
 }
 
 #reviewSection{
@@ -217,6 +218,10 @@ to {
     #history>img{
         max-width:70%;
         margin-right: 3rem;
+    }
+    #history>p{
+        font-size:1.1rem;
+        
     }
     #nameDiv{
         top:-95vh;

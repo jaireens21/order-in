@@ -5,7 +5,7 @@ export default function CartSuccess(){
     const {state} = useLocation();
     const {emailSent}= state;
     return(
-        <div className="mt-5 text-center">
+        <div className="CartSuccess text-center">
             <h1 className="mb-5">Your order has been placed successfully!</h1>
            
             {emailSent ? 

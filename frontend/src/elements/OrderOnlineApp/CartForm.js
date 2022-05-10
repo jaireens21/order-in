@@ -27,7 +27,7 @@ export default function CartForm(props){
         if(emailRegex.test(emailID)){
             if (phoneRegex.test(phoneNumber)) {
                 let formattedPhoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3"); //convert phone number to a standard format, (123) 456-7890
-                saveOrdertoDB({...order, phone:formattedPhoneNumber}); //save order details to DB via parent(menuapp)
+                saveOrdertoDB({...order, phone:formattedPhoneNumber}); //save order details to DB via parent(orderonlineapp)
             }else{
              alert.error("Invalid phone number!");}
         }else {

@@ -34,8 +34,8 @@ export default function AddDish(props){
                     <option value="">--Please choose an option--</option>
                     <option value="appetizer">Appetizer</option>
                     <option value="mainCourse">Main Course</option>
-                    <option value="breads">Breads</option>
-                    <option value="drinks">Drinks</option>
+                    <option value="bread">Breads</option>
+                    <option value="drink">Drinks</option>
                     <option value="dessert">Dessert</option>
                 </select>
                 

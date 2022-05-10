@@ -130,7 +130,7 @@ export default function OrderOnlineApp(){
             alert.success("Order placed!")
 
             //navigate to success page
-            navigate('/menu/orderonline/success',{state: {emailSent:res.data.emailSent}}); // passing data through to success page
+            navigate('/orderonline/success',{state: {emailSent:res.data.emailSent}}); // passing data through to success page
         })
         .catch(err=>{
             alert.error(`Oh No! Order could not be placed. ${err.message}`)
@@ -150,22 +150,22 @@ export default function OrderOnlineApp(){
         document.querySelectorAll(".list").forEach(list=>list.classList.contains("hidden")? list : list.classList.add("hidden"));
         switch (e.target.innerHTML) {
             case 'Appetizers':
-                document.getElementById("appetizers").classList.remove("hidden");
+                document.getElementById("appetizer").classList.remove("hidden");
                 break;
             case 'Main Course':
                 document.getElementById("mainCourse").classList.remove("hidden");
                 break;
             case 'Drinks':
-                document.getElementById("drinks").classList.remove("hidden");
+                document.getElementById("drink").classList.remove("hidden");
                 break;
             case 'Breads':
-                document.getElementById("breads").classList.remove("hidden");
+                document.getElementById("bread").classList.remove("hidden");
                 break;
             case 'Desserts':
-                document.getElementById("desserts").classList.remove("hidden");
+                document.getElementById("dessert").classList.remove("hidden");
                 break;
             default:
-                document.getElementById("appetizers").classList.toggle("hidden");
+                document.getElementById("appetizer").classList.toggle("hidden");
         }
     }
 
@@ -205,7 +205,7 @@ export default function OrderOnlineApp(){
                         
                     </div>
                     <div className="itemList">
-                        <div className="list " id="appetizers">
+                        <div className="list " id="appetizer">
                             <h2>Appetizers</h2>
                             <div className="d-flex flex-wrap">
                             {items.map(item=>(item.category==="appetizer"&&<OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
@@ -217,19 +217,19 @@ export default function OrderOnlineApp(){
                             {items.map(item=>(item.category==="mainCourse" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
-                        <div className="list hidden" id="breads">
+                        <div className="list hidden" id="bread">
                             <h2>Breads</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="breads" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                            {items.map(item=>(item.category==="bread" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
                             </div>
                         </div>
-                        <div className="list hidden" id="drinks">
+                        <div className="list hidden" id="drink">
                             <h2>Drinks</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="drinks" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                            {items.map(item=>(item.category==="drink" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
-                        <div className="list hidden" id="desserts">
+                        <div className="list hidden" id="dessert">
                             <h2>Desserts</h2>
                             <div className="d-flex flex-wrap">
                             {items.map(item=>(item.category==="dessert" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}

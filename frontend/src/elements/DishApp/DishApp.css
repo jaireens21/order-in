@@ -3,6 +3,7 @@
     margin: 0 auto;
     min-height: 88vh;
     padding:2rem 5rem;
+    padding-bottom: 5vh;
 }
 .DishApp >h2{
     cursor: pointer;

@@ -57,7 +57,7 @@ export default function ShowMenu(){
     const handleClick=(e)=>{
         
         if(e.target.innerHTML==="Appetizers"){
-            document.getElementById("appetizers").classList.toggle("hidden");
+            document.getElementById("appetizer").classList.toggle("hidden");
             e.target.classList.toggle("red");
         }
         if(e.target.innerHTML.includes("Main")){
@@ -65,11 +65,11 @@ export default function ShowMenu(){
             e.target.classList.toggle("red");
         }
         if(e.target.innerHTML==="Breads"){
-            document.getElementById("breads").classList.toggle("hidden");
+            document.getElementById("bread").classList.toggle("hidden");
             e.target.classList.toggle("red");
         }
         if(e.target.innerHTML==="Drinks"){
-            document.getElementById("drinks").classList.toggle("hidden");
+            document.getElementById("drink").classList.toggle("hidden");
             e.target.classList.toggle("red");
         }
         if(e.target.innerHTML==="Desserts"){
@@ -87,8 +87,11 @@ export default function ShowMenu(){
                     <p><strong>${item.price}</strong></p> 
                 </div>
                 
-                <p>{item.description}</p>
+                <p id="dishDescription">{item.description}</p>
+               
                 <hr/>
+
+                
             </div>
         )
     }
@@ -121,7 +124,7 @@ export default function ShowMenu(){
                 
                 <div className="menu">
                     <h2 className="" onClick={handleClick} aria-label="click here to see/hide appetizers">Appetizers</h2>
-                    <div className="categoryItems" id="appetizers">
+                    <div className="categoryItems" id="appetizer">
                         {items.map(item=>(item.category==="appetizer" && 
                             displayItems(item)))
                         }
@@ -136,15 +139,15 @@ export default function ShowMenu(){
                     </div>
                     
                     <h2 className="red" onClick={handleClick} aria-label="click here to see/hide breads">Breads</h2>
-                    <div className="categoryItems hidden" id="breads">
-                        {items.map(item=>(item.category==="breads" && 
+                    <div className="categoryItems hidden" id="bread">
+                        {items.map(item=>(item.category==="bread" && 
                             displayItems(item)))
                         }
                     </div>
                     
                     <h2 className="red" onClick={handleClick} aria-label="click here to see/hide drinks">Drinks</h2>
-                    <div className="categoryItems hidden" id="drinks">
-                        {items.map(item=>(item.category==="drinks" && 
+                    <div className="categoryItems hidden" id="drink">
+                        {items.map(item=>(item.category==="drink" && 
                             displayItems(item)))
                         }
                     </div>

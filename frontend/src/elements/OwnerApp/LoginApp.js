@@ -4,6 +4,7 @@ import { useAlert } from 'react-alert';
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import "./LoginApp.css";
+import OwnerHome from "./OwnerHome";
 
 
 export default function LoginApp(props){
@@ -60,7 +61,7 @@ export default function LoginApp(props){
         }) 
     };
 
-    //handle click on logout button----moved to NavbarOwner
+    //handle click on logout button----moved to LayoutOwner
     // const handleLogout=()=>{
     //     axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
     //     .then(res=>{
@@ -81,9 +82,10 @@ export default function LoginApp(props){
     return (
         <div className="LoginApp">
             
-            {!isLoggedIn && <LoginForm handleChange={handleChange} handleLogin={handleLogin} user={user}/>
+            {!isLoggedIn && <LoginForm handleChange={handleChange} handleLogin={handleLogin} user={user}/>}
+            {isLoggedIn && <OwnerHome/>}
 
-            }
+            
 
         </div>
     )

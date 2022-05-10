@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import './App.css';
 import Layout from './elements/Layout';
-import Home from './pages/Home';
+import Home from './elements/Home';
 import ShowMenu from './elements/ShowMenuApp/ShowMenu';
 import OrderOnlineApp from './elements/OrderOnlineApp/OrderOnlineApp';
 import CartSuccess from './elements/OrderOnlineApp/CartSuccess';
@@ -21,7 +21,7 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn]=useState(false); //this state is exposed in the browser & can be changed on client-side
   //it resets to default whenever the browser is refreshed --Redux might be a better solution
-  //but we do have login-protected backend routes 
+  //but we do have login-protected backend routes for accessing orders,dishes
   
   return (
     <BrowserRouter>
@@ -35,7 +35,7 @@ function App() {
         </Route>
 
         <Route path="/owner" element={<LayoutOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
-          <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
+          <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
             <Route path='dishes' element={<DishApp/>}/>

@@ -2,8 +2,6 @@
     position: relative;
     bottom:0;
     /* border:2px solid red; */
-    display: flex;
-    flex-direction: column;
     height:5vh;
     width: 100%;
     background-color: black;
