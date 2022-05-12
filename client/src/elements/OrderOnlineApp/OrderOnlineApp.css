@@ -35,7 +35,7 @@
 }
 .sideNav>p.clicked{
     border:2px solid grey;
-    border-right:none;
+    border-right:2px solid white;
 }
 .sideNav>p:hover{
     color:red;
@@ -45,7 +45,7 @@
 .itemList{
     width:50%;
     border:2px solid grey;
-    border-left:none;
+    /* border-left:none; */
     padding: 1rem 1rem;
     margin-right: 1rem;;
     margin-left:-2px;
