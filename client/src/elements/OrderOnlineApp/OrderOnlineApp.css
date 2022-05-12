@@ -22,6 +22,7 @@
     line-height: 2.2rem;
     /* padding-top: 1rem; */
     margin-bottom: 2rem;;
+    z-index:100;    /* so that right border of sidenav overlaps left border of itemlist */
 }
 
 .sideNav>p{
@@ -33,24 +34,26 @@
     border-right:2px solid grey;
     overflow: auto;
 }
+
 .sideNav>p.clicked{
     border:2px solid grey;
-    border-right:2px solid white;
+    border-right:2px solid white ; /* right white border of sidenav will overlap left grey border of itemlist */
+   
 }
 .sideNav>p:hover{
     color:red;
 }
 
-
 .itemList{
     width:50%;
     border:2px solid grey;
-    /* border-left:none; */
+   
     padding: 1rem 1rem;
     margin-right: 1rem;;
     margin-left:-2px;
     margin-bottom: 2rem;
 }
+
 .list>h2{
     text-transform: uppercase;
     margin-bottom: 1.5rem;;
