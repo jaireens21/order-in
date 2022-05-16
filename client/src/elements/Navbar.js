@@ -8,7 +8,7 @@ export default function Navbar(){
         <nav className="navbar navbar-expand navbar-dark bg-dark" style={{height:7+"vh"}}>
             <NavLink to="/" className="navbar-brand ms-2">Order-In</NavLink>
 
-            <div className="navbar-nav ms-auto me-2 align-items-center text-center w-50">
+            <div className="navbar-nav ms-auto me-2 align-items-center justify-content-end text-center w-50">
                 
                 {/* <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Owner register</NavLink>

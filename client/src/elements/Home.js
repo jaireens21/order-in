@@ -23,8 +23,7 @@ import {IoIosStar} from 'react-icons/io';
 
                 <div id="heroText" >
                      
-                    <p><a href="/orderonline">Order Online</a></p>
-                    <p>OR Call at: <a href="tel:(123) 456-7890">(123) 456-7890</a></p>
+                    <p><a href="/orderonline">Order Online</a><br/> OR <br/> Call : <a href="tel:(123) 456-7890">(123) 456-7890</a></p>
                 </div>
                 <div id="nameDiv">
                     <svg viewBox="0 0 405.801 76.801" xmlns="http://www.w3.org/2000/svg" alignmentBaseline="central" data-tip="false" strokeDasharray="2000" strokeDashoffset="2000">
