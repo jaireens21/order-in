@@ -1,8 +1,10 @@
 
 .DishApp{
+    width:100%;
     margin: 0 auto;
-    min-height: 88vh;
-    padding:2rem 5rem;
+    height: 86vh;
+    overflow-x: auto;
+    padding:2rem 2rem;
     padding-bottom: 5vh;
 }
 .DishApp >h2{
@@ -34,4 +36,10 @@
 
 .hidden{
     display: none;
+}
+
+@media(min-width:1200px){
+    .DishApp{
+       padding:2rem 5rem;
+    }
 }

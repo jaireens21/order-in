@@ -22,7 +22,7 @@
     line-height: 2.2rem;
     /* padding-top: 1rem; */
     margin-bottom: 2rem;;
-    z-index:100;    /* so that right border of sidenav overlaps left border of itemlist */
+    z-index:50;    /* so that right border of sidenav overlaps left border of itemlist */
 }
 
 .sideNav>p{
@@ -134,7 +134,7 @@
     position:fixed;
     top:0;
     left:15vw;
-    z-index:9;
+    z-index:100;
     background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(0,0,0,0.9));
     border:2px solid black;
     border-radius: 15px;

@@ -92,7 +92,7 @@ background-image:url(https://images.unsplash.com/photo-1626776878483-7f13d79094b
 #nameDiv{
     z-index: 1;
     position: relative;
-    top:-75vh;
+    top:-100%;
     left:0;
     width:100%;
     margin: 0 auto;
@@ -118,7 +118,7 @@ to {
 #heroText{
     z-index: 1;
     position: relative;
-    top:-20vh;
+    top:-30vh;
     text-align: center;
     margin:auto;
     padding: 0 1.7rem;
@@ -185,10 +185,11 @@ to {
 }
 
 #reviews > div{
- width:50%;
+ width:70%;
  text-align: start;
  padding: 1rem 2rem;
  margin: 1rem auto;
+ padding:auto 0;
 }
 
 #readMore{
@@ -223,8 +224,8 @@ to {
         font-size:1.1rem;
         
     }
-    #nameDiv{
-        top:-95vh;
+    #heroText{
+        top:-20vh;
     }
     #nameDiv path {
         stroke-width: 4px;
@@ -237,6 +238,6 @@ to {
         
     }
     #reviews > div{
-        width:25%;
+        width:20%;
     }
 }

@@ -46,7 +46,7 @@ export default function LayoutOwner(props){
 
    const loggedInOptions=()=>{
         return(
-            <div className="navbar-nav ms-auto">
+            <div className="navbar-nav ms-auto align-items-center" style={{height:7+"vh"}}>
                 <li className="nav-item">
                     <NavLink to={"/owner/orders"} className="nav-link">Orders</NavLink>
                 </li>
@@ -57,7 +57,7 @@ export default function LayoutOwner(props){
                     <NavLink to={"/owner/register"} className="nav-link">Register</NavLink>
                 </li> */}
                 <li className="nav-item">
-                    <Link to={""} onClick={handleLogout} className="nav-link me-5">Logout</Link>
+                    <Link to={""} onClick={handleLogout} className="nav-link me-2">Logout</Link>
                 </li>
             </div>
         )

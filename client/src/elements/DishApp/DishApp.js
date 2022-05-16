@@ -166,7 +166,7 @@ import "./DishApp.css";
             return (
                 <>
                     <h1 className="text-center">DISHES</h1>
-                    <button className="btn btn-success mb-3" onClick={toggleIsAdding}>Add A New Dish</button>         
+                    <button className="btn btn-success my-3" onClick={toggleIsAdding}>Add A New Dish</button>         
                     {isAdding && <AddDish saveNewDish={saveNewDish} toggleIsAdding={toggleIsAdding}/>}
 
                     <h2 onClick={handleCategoryClick}>Appetizers ▼</h2>

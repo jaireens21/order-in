@@ -8,7 +8,7 @@ export default function Navbar(){
         <nav className="navbar navbar-expand navbar-dark bg-dark">
             <NavLink to="/" className="navbar-brand ms-3">Order-In</NavLink>
 
-            <div className="navbar-nav ms-auto">
+            <div className="navbar-nav ms-auto align-items-center">
                 
                 {/* <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Owner register</NavLink>
@@ -23,7 +23,7 @@ export default function Navbar(){
                     <NavLink to={"/orderonline"} className="nav-link">Order Online</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to={"/owner"} className="nav-link me-5">Owner login</NavLink>
+                    <NavLink to={"/owner"} className="nav-link me-2">Owner login</NavLink>
                 </li>
                 
             </div>
