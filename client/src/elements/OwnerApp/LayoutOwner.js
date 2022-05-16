@@ -46,7 +46,7 @@ export default function LayoutOwner(props){
 
    const loggedInOptions=()=>{
         return(
-            <div className="navbar-nav ms-auto align-items-center me-2" style={{height:7+"vh"}}>
+            <div className="navbar-nav ms-auto align-items-center text-center me-2 w-50">
                 <li className="nav-item">
                     <NavLink to={"/owner/orders"} className="nav-link">Orders</NavLink>
                 </li>
@@ -65,10 +65,10 @@ export default function LayoutOwner(props){
 
     const loggedOutOptions=()=>{
         return(
-            <div className="navbar-nav align-items-center ms-auto me-2">
-                <li className="nav-item">
+            <div className="navbar-nav align-items-center text-center ms-auto me-2 w-50">
+                {/* <li className="nav-item">
                     <NavLink to="/" className="nav-link">Home</NavLink>
-                </li>
+                </li> */}
                 <li className="nav-item">
                     <NavLink to={"/menu"} className="nav-link">Menu</NavLink>
                 </li>
@@ -89,7 +89,7 @@ export default function LayoutOwner(props){
         <div>
             <nav className="navbar navbar-expand navbar-dark bg-dark" style={{height:7+"vh"}}>
                 
-                <NavLink to="/" className="navbar-brand ms-3">Order-In</NavLink>
+                <NavLink to="/" className="navbar-brand ms-2">Order-In</NavLink>
                 {isLoggedIn? loggedInOptions(): loggedOutOptions()}
                 
             </nav>
