@@ -21,6 +21,7 @@
 
 .AddDish{
     width:50%;
+    min-width:18rem;
     margin:1rem 0.5rem;
     border:2px solid green;
     border-radius: 10px;

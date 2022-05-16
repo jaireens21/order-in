@@ -54,18 +54,18 @@ import {IoIosStar} from 'react-icons/io';
                 <div id="reviews">
                     <div className="card">
                         <p><IoIosStar/><IoIosStar/><IoIosStar/><IoIosStar/></p>
-                        <p>I cannot rave enough about the quality of food. My new favorite restaurant. The food is absolutely delicious and the service outstanding. Love love love this place.</p>
+                        <p className="text-start">I cannot rave enough about the quality of food. My new favorite restaurant. The food is absolutely delicious and the service outstanding. Love love love this place.</p>
                         <p>M Kramer, Google Review</p>
                         
                     </div>
                     <div className="card">
                         <p><IoIosStar/><IoIosStar/><IoIosStar/><IoIosStar/><IoIosStar/></p>
-                        <p>This place is the real deal! I tried it based on the recommendation of a friend and I have never looked back. </p>
+                        <p className="text-start">This place is the real deal! I tried it based on the recommendation of a friend and I have never looked back. </p>
                         <p>Jerry S, Google Review</p>
                     </div>
                     <div className="card">
                         <p><IoIosStar/><IoIosStar/><IoIosStar/><IoIosStar/></p>
-                        <p>Highly recommended! Love all their dishes. Food portions are amazing, taste is scrumptious!</p>
+                        <p className="text-start">Highly recommended! Love all their dishes. Food portions are amazing, taste is scrumptious!</p>
                         <p>George K, Google Review</p>
                     </div>
                 </div>

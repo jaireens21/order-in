@@ -184,12 +184,12 @@ to {
     
 }
 
-#reviews > div{
+.card{
  width:70%;
  text-align: start;
- padding: 1rem 2rem;
+ padding: 1rem 1rem;
  margin: 1rem auto;
- padding:auto 0;
+ 
 }
 
 #readMore{
@@ -199,7 +199,7 @@ to {
 
 
 @media (min-width:768px){
-    #reviews > div{
+    .card{
         width:40%;
     } 
     #nameDiv{
@@ -237,7 +237,7 @@ to {
         flex-direction: row;
         
     }
-    #reviews > div{
+    .card{
         width:20%;
     }
 }

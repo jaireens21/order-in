@@ -6,9 +6,9 @@ import "./Navbar.css";
 export default function Navbar(){
     return(
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <NavLink to="/" className="navbar-brand ms-3">Order-In</NavLink>
+            <NavLink to="/" className="navbar-brand ms-2">Order-In</NavLink>
 
-            <div className="navbar-nav ms-auto align-items-center">
+            <div className="navbar-nav ms-auto me-2 align-items-center">
                 
                 {/* <li className="nav-item">
                     <NavLink to={"/owner/register"} className="nav-link">Owner register</NavLink>
@@ -23,7 +23,7 @@ export default function Navbar(){
                     <NavLink to={"/orderonline"} className="nav-link">Order Online</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to={"/owner"} className="nav-link me-2">Owner login</NavLink>
+                    <NavLink to={"/owner"} className="nav-link">Owner login</NavLink>
                 </li>
                 
             </div>
