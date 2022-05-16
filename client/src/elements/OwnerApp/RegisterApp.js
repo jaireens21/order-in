@@ -1,3 +1,6 @@
+//to register a new email id as an additional owner
+//link to this page is not visible to anyone
+
 import axios from "axios";
 import React,{useState} from "react";
 import { useAlert } from 'react-alert';

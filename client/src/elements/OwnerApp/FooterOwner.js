@@ -1,3 +1,5 @@
+//footer for owner website
+
 import React from "react";
 import "./FooterOwner.css";
 

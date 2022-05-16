@@ -1,3 +1,7 @@
+//shows menu to the customer, with a pretty background image
+//fetches dishes from DB, so any changes made by owner in the dishes are reflected here immediately
+//plugs into outlet in layout.js
+
 import React, {useState,useEffect,useCallback} from "react";
 import axios from "axios";
 import "./ShowMenu.css";

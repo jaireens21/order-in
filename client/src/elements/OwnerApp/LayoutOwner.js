@@ -1,3 +1,7 @@
+//layout for owner website
+//has a built-in navbar that will show different options depending on whether owner is logged in or logged out
+//has an outlet where different elements will plug in
+
 import React from "react";
 import {NavLink,Link, Outlet,useNavigate} from "react-router-dom";
 import { useAlert } from 'react-alert';

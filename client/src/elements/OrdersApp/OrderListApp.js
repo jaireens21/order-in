@@ -1,3 +1,7 @@
+//showing orders to a logged in owner
+//plus into outlet on LayoutOwner.js
+//connected to elements: order,orderList
+
 
 import axios from "axios";
 import React, {useState,useEffect, useCallback} from "react";

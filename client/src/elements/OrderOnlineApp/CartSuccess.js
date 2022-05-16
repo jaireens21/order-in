@@ -1,3 +1,7 @@
+//when order is placed successfully, cust is redirected to /orderonline/success and this element is displayed
+//displays confirmation that order has been placed & email has been sent
+//if email could not be sent, asks customer to call resto to confirm order.
+
 import React from "react";
 import { useLocation } from "react-router-dom";
 

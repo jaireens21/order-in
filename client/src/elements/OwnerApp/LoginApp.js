@@ -1,3 +1,7 @@
+//login logic for owner website
+//will plug into outlet in LayoutOwner.js
+//calls element LoginForm.js
+
 import axios from "axios";
 import React,{useState} from "react";
 import { useAlert } from 'react-alert';

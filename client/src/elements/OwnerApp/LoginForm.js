@@ -1,3 +1,6 @@
+//form to collect login info for owner
+//connected to LoginApp.js
+
 import React from "react";
 
 export default function LoginForm(props){

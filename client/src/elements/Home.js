@@ -1,3 +1,6 @@
+//home page for customer website
+//this will plug into outlet in layout.js
+
 import React from "react";
 import "./Home.css";
 import {IoIosStar} from 'react-icons/io';

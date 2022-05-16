@@ -1,3 +1,6 @@
+//homepage for owner website, if owner is logged in
+//if not logged in, owner will be redirected to login page
+
 import React from "react";
 import './OwnerHome.css';
 

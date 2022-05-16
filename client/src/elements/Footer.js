@@ -1,3 +1,5 @@
+//footer for customer website
+
 import React from "react";
 import "./Footer.css";
 import { AiFillFacebook } from 'react-icons/ai';

@@ -1,3 +1,6 @@
+//protects access to dishes, orders routes
+//only if the owner is logged in , can they access these routes
+
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 

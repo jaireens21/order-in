@@ -1,3 +1,6 @@
+//displays detials of every order, alongwith a checkbox to mark order as completed
+//checkbox is not visible for past orders
+
 import React from "react";
 
 export default function Order(props){

@@ -1,3 +1,9 @@
+//customer interface for ordering food on the website
+//plugs into outlet on layout.js
+//reads dishes from db , so is always current with any changes to dishes that the owner makes
+//calls smaller elements like orderOnlineItem (each dish with a button for qty), cart, cartPreferences and cartSuccess
+
+
 import axios from "axios";
 import React, {useState,useEffect,useCallback} from "react";
 import { useNavigate } from "react-router-dom";

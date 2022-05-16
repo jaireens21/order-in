@@ -1,3 +1,6 @@
+//show dishes with qty>0 and total price of order
+//click on checkout button brings up a form "cartPreferences" to fill in customer details & select date & time of order
+
 import React from "react";
 import { RiDeleteBin6Line } from 'react-icons/ri';
 

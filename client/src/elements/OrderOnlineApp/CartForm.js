@@ -1,3 +1,6 @@
+//a form that collects customer info , special requests & date/time of order (after customer clicks on "checkout" in Cart)
+//when customer clicks on place order, order is written to db, email is sent to customer & customer is redirected to /success where "cartSuccess.js" is displayed
+
 import React from 'react';
 import { useAlert } from 'react-alert';
 
