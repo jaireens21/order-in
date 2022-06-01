@@ -55,8 +55,8 @@ export default function OrderListApp(){
     
     //read data using axios on every render
     const loadData=useCallback(()=>{
-        // axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
-        axios.get('/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
+        axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
+        // axios.get('/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
             setError(null);//explicitly set error to null to make sure user sees the data & not errorView
@@ -110,8 +110,8 @@ export default function OrderListApp(){
         else completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
         // console.log("in orderlistapp, order details:",completedOrder);
         //update DB
-        // axios.put(`http://localhost:8010/orders/${id}`,completedOrder,{ withCredentials: true })
-        axios.put(`/orders/${id}`,completedOrder,{ withCredentials: true })
+        axios.put(`http://localhost:8010/orders/${id}`,completedOrder,{ withCredentials: true })
+        // axios.put(`/orders/${id}`,completedOrder,{ withCredentials: true })
         .then(res=>{
             loadData();//reload data from db to have the most updated data in state
         })

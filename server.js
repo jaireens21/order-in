@@ -9,8 +9,8 @@ const path = require("path");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    // origin:'http://localhost:3000', //to allow server to accept requests from a different origin (the frontend server)
-    origin:'https://intense-cliffs-60179.herokuapp.com', 
+    origin:'http://localhost:3000', //to allow server to accept requests from a different origin (the frontend server)
+    // origin:'https://intense-cliffs-60179.herokuapp.com', 
     credentials:true //to allow the session cookie from the browser(front-end) to pass through
 }));
 
@@ -44,11 +44,11 @@ const sessionConfig={
   saveUninitialized: true,//non-compliant with laws that require permission before setting a cookie
   cookie: { //Session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
     httpOnly:true,// helps mitigate the risk of client-side-scripting by preventing access to the cookie
-    secure:true, //use when deploying //httpS will be reqd to set cookies
+    // secure:true, //use when deploying //httpS will be reqd to set cookies
     maxAge: 1000*60*60*24*7,   //a week (in milliseconds)  
     sameSite:'none',// allows chrome to set cookies with cross domains which is disabled by default in all modern browsers
   },
-  proxy: true,//since client (frontend) sends request via proxy (defined in package.json) 
+  proxy: true,//since client (frontend) sends request via proxy (defined in client's package.json) 
 }
 app.use(session(sessionConfig));
 

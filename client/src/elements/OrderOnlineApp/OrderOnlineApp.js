@@ -17,7 +17,10 @@ import "./OrderOnlineApp.css";
 export default function OrderOnlineApp(){
     const alert = useAlert();
 
-    const [items,setItems]=useState(null);
+    //read cart from existing sessionStorage (if browser was refreshed in the middle of placing order)
+    const initialState= JSON.parse(window.sessionStorage.getItem("items")) || null;
+
+    const [items,setItems]=useState(initialState);
     const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
@@ -64,8 +67,8 @@ export default function OrderOnlineApp(){
 
     //get all menu items from server/db
     const loadData=useCallback(()=>{ 
-        // axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
-        axios.get('/api', { timeout: TIMEOUT_INTERVAL })
+        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
+        // axios.get('/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
@@ -105,8 +108,11 @@ export default function OrderOnlineApp(){
         setItems(items.map(item=>item._id===id?({...item,qty:0}):item));
     }
 
-    //find subtotal price of cart(without taxes), as and when the items in the cart change.
+    //As and when the items in the cart change:
+    //1. find subtotal price of cart(without taxes)
+    //2. store the items in sessionStorage to persist cart if browser refreshes
     useEffect(()=>{
+        window.sessionStorage.setItem('items', JSON.stringify(items));
         if(items){
             setSubtotal(items.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
             if(!items.some(item=>item.qty>0)){
@@ -131,8 +137,8 @@ export default function OrderOnlineApp(){
 
     //save order to db
     const saveOrdertoDB=(order)=>{//add total  price to the order before saving to db
-        // axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
-        axios.post('/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
+        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
+        // axios.post('/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
             alert.success("Order placed!")

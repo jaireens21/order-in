@@ -31,8 +31,8 @@ export default function LayoutOwner(props){
     }
    //handle click on logout button
    const handleLogout=()=>{
-        // axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
-        axios.get('/owner/logout',{ withCredentials: true })
+        axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
+        // axios.get('/owner/logout',{ withCredentials: true })
         .then(res=>{
             if(res.data.success){
                 setIsLoggedIn(false);

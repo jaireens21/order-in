@@ -15,13 +15,21 @@ import ProtectedRoutes from './elements/OwnerApp/ProtectedRoutes';
 import DishApp from "./elements/DishApp/DishApp";
 import OrderListApp from './elements/OrdersApp/OrderListApp';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 function App() {
-
-  const [isLoggedIn, setIsLoggedIn]=useState(false); //this state is exposed in the browser & can be changed on client-side
-  //it resets to default whenever the browser is refreshed --Redux might be a better solution
+  let initialLoginStatus= JSON.parse(window.sessionStorage.getItem("loginStatus")) || false;
+  const [isLoggedIn, setIsLoggedIn]=useState(initialLoginStatus); 
+  //it does NOT reset to default whenever the browser is refreshed thanks to sessionStorage 
+  //this state is exposed in the browser & can be changed on client-side
   //but we do have login-protected backend routes for accessing orders,dishes
+
+  useEffect(()=>{
+    window.sessionStorage.setItem("loginStatus", isLoggedIn);
+  }, [isLoggedIn]);
+  //if loggedIn status changes, reflect in the sessionStorage too
+  
+  
   
   return (
     <BrowserRouter>
