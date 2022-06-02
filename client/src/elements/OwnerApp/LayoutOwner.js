@@ -5,34 +5,20 @@
 import React from "react";
 import {NavLink,Link, Outlet,useNavigate} from "react-router-dom";
 import { useAlert } from 'react-alert';
-import axios from "axios";
 import FooterOwner from "./FooterOwner";
+import displayError from "../../utils/displayError";
+import { axiosInstance} from "../../utils/axiosInstance";
+
 
 export default function LayoutOwner(props){
    const {isLoggedIn,setIsLoggedIn}=props;
    const alert = useAlert();
    const navigate=useNavigate();
 
-   //function to display error details on console
-   const displayError=(err)=>{
-        if (err.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(err.response.status, err.response.data, err.response.headers);
-        } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error: ', err.message);
-        }
-    }
+   
    //handle click on logout button
    const handleLogout=()=>{
-        axios.get('http://localhost:8010/owner/logout',{ withCredentials: true })
-        // axios.get('/owner/logout',{ withCredentials: true })
+        axiosInstance.get('/owner/logout',{ withCredentials: true })
         .then(res=>{
             if(res.data.success){
                 setIsLoggedIn(false);

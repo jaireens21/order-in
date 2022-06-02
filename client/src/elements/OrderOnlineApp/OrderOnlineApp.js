@@ -1,34 +1,54 @@
 //customer interface for ordering food on the website
 //plugs into outlet on layout.js
 //reads dishes from db , so is always current with any changes to dishes that the owner makes
-//calls smaller elements like orderOnlineItem (each dish with a button for qty), cart, cartPreferences and cartSuccess
+//calls smaller elements like orderOnlineItem (each dish with a button for qty), cart, cartForm and cartSuccess
 
-
-import axios from "axios";
 import React, {useState,useEffect,useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from 'react-alert';
+import displayError from '../../utils/displayError';
 import OrderOnlineItem from "./OrderOnlineItem";
 import Cart from "./Cart";
 import CartForm from "./CartForm";
 import "./OrderOnlineApp.css";
-
+import { axiosInstance, TIMEOUT_INTERVAL} from "../../utils/axiosInstance";
 
 export default function OrderOnlineApp(){
     const alert = useAlert();
 
-    //read cart from existing sessionStorage (if browser was refreshed in the middle of placing order)
-    const initialState= JSON.parse(window.sessionStorage.getItem("items")) || null;
-
-    const [items,setItems]=useState(initialState);
+    const [items,setItems]=useState(null);
     const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
-    const[subtotal,setSubtotal]=useState(0);//subtotal price of order
-    
-    const taxes=0.13; //current taxes in ontario,Canada
-    const [isCheckingOut, setIsCheckingOut]=useState(false);
+    //get all menu items from server/db
+    const loadData=useCallback(()=>{ 
+        axiosInstance.get('/api', { timeout: TIMEOUT_INTERVAL })
+        .then(res=>{
+            setLoadSuccess(true);//to decide whether to show spinning loader or data
+            setLoadError(null);
+            let dishes=res.data.data;
+            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item
+            //this will help in creating the order later
+        })
+        .catch(err=>{
+            setLoadError(err);
+            setLoadSuccess(false);
+            console.log("error while fetching menu items");
+            displayError(err); //show error on console
+        })
+    },[]);
 
+    //read data from db
+    useEffect(()=>{
+        loadData();
+    },[loadData])
+
+
+    const[subtotal,setSubtotal]=useState(0);//subtotal price of order
+    const taxes=0.13; //current taxes in ontario,Canada
+
+    const [isCheckingOut, setIsCheckingOut]=useState(false);
+    
     const[order,setOrder]=useState([]);//saving entire cart in a state called 'order' after user clicks the checkout button
 
     let navigate = useNavigate();
@@ -45,51 +65,8 @@ export default function OrderOnlineApp(){
         slots.push(i);
     };
 
-    const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
 
-    //function to display error details on console
-    const displayError=(err)=>{
-        if (err.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(err.response.status, err.response.data, err.response.headers);
-        } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', err.message);
-        }
-    }
-   
 
-    //get all menu items from server/db
-    const loadData=useCallback(()=>{ 
-        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
-        // axios.get('/api', { timeout: TIMEOUT_INTERVAL })
-        .then(res=>{
-            setLoadSuccess(true);//to decide whether to show spinning loader or data
-            setLoadError(null);
-            let dishes=res.data.data;
-            setItems(dishes.map(dish=>({...dish,qty:0}))); //store all the dishes in a state called 'items' with qty set to 0 for each item
-            //this will help in creating the order later
-        })
-        .catch(err=>{
-            setLoadError(err);
-            setLoadSuccess(false);
-            console.log("error while fetching menu items");
-            displayError(err); //show error on console
-        })
-    },[TIMEOUT_INTERVAL]);
-
-    //read data from db
-    useEffect(()=>{
-        loadData();
-    },[loadData])
-
-       
     //update item qty to 1 when user clicks on "add to order" button
     const handleAddToOrder=(id)=>{
         setItems(items.map(item=>item._id===id?({...item,qty:1}):item));
@@ -102,25 +79,26 @@ export default function OrderOnlineApp(){
     const handleDecreaseButton=(id)=>{
         setItems(items.map(item=>item._id===id?({...item,qty:item.qty-1}):item));
     }
-
     //set item qty to 0 if user clicks on X next to item in cart
     const handleXClick=(id)=>{
         setItems(items.map(item=>item._id===id?({...item,qty:0}):item));
     }
 
+
     //As and when the items in the cart change:
-    //1. find subtotal price of cart(without taxes)
-    //2. store the items in sessionStorage to persist cart if browser refreshes
+    //find subtotal price of cart(without taxes)
     useEffect(()=>{
-        window.sessionStorage.setItem('items', JSON.stringify(items));
-        if(items){
+       if(items){
             setSubtotal(items.reduce((res,item)=>res + (item.price*item.qty),0).toFixed(2)); 
             if(!items.some(item=>item.qty>0)){
-                setIsCheckingOut(false); //hide cart preference form if there is no item in the cart
+                setIsCheckingOut(false); //hide cart form if there is no item in the cart
+               
             }
         }
     },[items])
 
+    
+    
     //when user clicks on the checkout button 
     const handleCheckoutClick=()=>{
         if(items.some(item=>item.qty>0)){//if there are some items with qty>0
@@ -129,16 +107,17 @@ export default function OrderOnlineApp(){
         setOrder({items:items.filter(item=>item.qty>0)}); //save all items with qty>0 to a state called 'order'
     }
     
+
     //when user clicks on "go back" on cart form
     const handleGoBackBtn=()=>{
         setIsCheckingOut(false);
         document.querySelector(".cartForm").classList.add("hidden");
     }
 
+
     //save order to db
     const saveOrdertoDB=(order)=>{//add total  price to the order before saving to db
-        axios.post('http://localhost:8010/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
-        // axios.post('/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
+        axiosInstance.post('/orders', {...order, total:((subtotal*(1+taxes)).toFixed(2)),completed:false})
         .then(res=>{
             // console.log(res.data.data);
             alert.success("Order placed!")
@@ -152,6 +131,7 @@ export default function OrderOnlineApp(){
             displayError(err);//show error details in console
         })
     }
+
 
     //when user clicks on a category in the left pane
     const handleCategoryClick=(e)=>{
@@ -183,6 +163,7 @@ export default function OrderOnlineApp(){
         }
     }
 
+    
     //display the data (reading from db using axios)
     const getItems = () => {
         if(loadError){ //if there was an error in reading data using axios, show the error
@@ -222,31 +203,31 @@ export default function OrderOnlineApp(){
                         <div className="list " id="appetizer">
                             <h2>Appetizers</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="appetizer"&&<OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                                {items.map(item=>(item.category==="appetizer"&&<OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
                         <div className="list hidden" id="mainCourse">
                             <h2>Main Course</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="mainCourse" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                                {items.map(item=>(item.category==="mainCourse" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
                         <div className="list hidden" id="bread">
                             <h2>Breads</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="bread" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                                {items.map(item=>(item.category==="bread" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
                             </div>
                         </div>
                         <div className="list hidden" id="drink">
                             <h2>Drinks</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="drink" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
+                                {items.map(item=>(item.category==="drink" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton} />))}
                             </div>
                         </div>
                         <div className="list hidden" id="dessert">
                             <h2>Desserts</h2>
                             <div className="d-flex flex-wrap">
-                            {items.map(item=>(item.category==="dessert" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
+                                {items.map(item=>(item.category==="dessert" && <OrderOnlineItem key={item._id} item={item} handleAddToOrder={handleAddToOrder} handleIncreaseButton={handleIncreaseButton} handleDecreaseButton={handleDecreaseButton}/>))}
                             </div>
                         </div>
 
@@ -254,7 +235,9 @@ export default function OrderOnlineApp(){
                     <div className="cartDiv">
                         <Cart items={items} subtotal={subtotal} handleCheckoutClick={handleCheckoutClick} handleXClick={handleXClick}/>
                 
-                        {isCheckingOut && <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots} handleGoBackBtn={handleGoBackBtn}/>}
+                        {isCheckingOut && 
+                        <CartForm order={order} setOrder={setOrder} items={items} saveOrdertoDB={saveOrdertoDB} today={today} todayStr={todayStr} tomorrow={tomorrow} tomorrowStr={tomorrowStr} currentTimeInHours={currentTimeInHours} currentMinutes={currentMinutes} slots={slots} handleGoBackBtn={handleGoBackBtn}/>
+                        }
                     </div>
 
                 </div>

@@ -9,7 +9,7 @@ import OrderOnlineApp from './elements/OrderOnlineApp/OrderOnlineApp';
 import CartSuccess from './elements/OrderOnlineApp/CartSuccess';
 
 import LayoutOwner from './elements/OwnerApp/LayoutOwner';
-import LoginApp from './elements/OwnerApp/LoginApp';
+import LoginApp from './elements/OwnerApp/LoginApp/LoginApp';
 import RegisterApp from './elements/OwnerApp/RegisterApp';
 import ProtectedRoutes from './elements/OwnerApp/ProtectedRoutes';
 import DishApp from "./elements/DishApp/DishApp";
@@ -42,9 +42,12 @@ function App() {
           <Route path='orderonline/success' element={<CartSuccess/>}/>
         </Route>
 
+
         <Route path="/owner" element={<LayoutOwner isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}>
+
           <Route index element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
           <Route path='login' element={<LoginApp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}/>
+
           <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect dish & order routes */}
             <Route path='dishes' element={<DishApp/>}/>
             <Route path='orders' element={<OrderListApp/>} /> 
@@ -52,15 +55,21 @@ function App() {
           
         </Route>
 
-        <Route path='/admin/register' element={<RegisterApp/>}/>
-        
+
+        <Route path='/admin/register' element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}> {/* login protect new user registration route */}
+          <Route index element={<RegisterApp/>}/>
+        </Route>
+
         {/* catch-all for non-existent routes */}
         <Route path="*" element={
-            <main style={{ padding: "1rem" }}>
-              <p>There's nothing here!</p>
+            <main style={{ padding: "1rem", marginLeft:"40%", marginTop:"20vh"}}>
+              <p>OOPS! There's nothing here!</p>
+              <a href="/" style={{color:"blue"}}>Click here to go to home page</a>
             </main>
           }
         />
+ 
+
       </Routes>
     </BrowserRouter>
     

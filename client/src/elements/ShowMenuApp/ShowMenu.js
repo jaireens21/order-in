@@ -3,41 +3,20 @@
 //plugs into outlet in layout.js
 
 import React, {useState,useEffect,useCallback} from "react";
-import axios from "axios";
 import "./ShowMenu.css";
-
+import displayError from "../../utils/displayError";
+import { axiosInstance, TIMEOUT_INTERVAL} from "../../utils/axiosInstance";
 
 export default function ShowMenu(){
-
-    
 
     const [items,setItems]=useState(null);
     const [loadSuccess,setLoadSuccess]=useState(false); //to decide whether to show spinning loader or data
     const [loadError,setLoadError]=useState(null); //for showing loading error to user with button to try reloading
 
-    const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
-
-    //function to display error details on console
-    const displayError=(err)=>{
-        if (err.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(err.response.status, err.response.data, err.response.headers);
-        } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', err.message);
-        }
-    }
-
+    
     //get all menu items from server/db
     const loadData=useCallback(()=>{ 
-        axios.get('http://localhost:8010/api', { timeout: TIMEOUT_INTERVAL })
-        // axios.get('/api', { timeout: TIMEOUT_INTERVAL })
+        axiosInstance.get('/api', { timeout: TIMEOUT_INTERVAL })
         .then(res=>{
             setLoadSuccess(true);//to decide whether to show spinning loader or data
             setLoadError(null);
@@ -51,7 +30,7 @@ export default function ShowMenu(){
             console.log("error while fetching menu items");
             displayError(err); //show error on console
         })
-    },[TIMEOUT_INTERVAL]);
+    },[]);
 
     //read data from db
     useEffect(()=>{

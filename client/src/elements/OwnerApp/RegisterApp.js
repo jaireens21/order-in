@@ -1,33 +1,17 @@
 //to register a new email id as an additional owner
 //link to this page is not visible to anyone
 
-import axios from "axios";
 import React,{useState} from "react";
 import { useAlert } from 'react-alert';
 import {useNavigate} from 'react-router-dom';
 import "./RegisterApp.css";
+import displayError from "../../utils/displayError";
+import { axiosInstance} from "../../utils/axiosInstance";
 
 
 export default function RegisterApp(){
     const alert = useAlert();
     const navigate=useNavigate();
-
-    //function to display error details on console
-    const displayError=(err)=>{
-        if (err.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(err.response.status, err.response.data, err.response.headers);
-        } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', err.message);
-        }
-    }
 
     const [user,setUser]=useState({email:"", password:""});
 
@@ -47,8 +31,7 @@ export default function RegisterApp(){
             return;
         }
         //send registration details over to node for authenticating via passport
-        // axios.post('http://localhost:8010/owner/register', user,{ withCredentials: true })
-        axios.post('/owner/register', user,{ withCredentials: true })
+        axiosInstance.post('/owner/register', user,{ withCredentials: true })
         .then(res=>{
             console.log(res.data);
             console.log(res.data.success);

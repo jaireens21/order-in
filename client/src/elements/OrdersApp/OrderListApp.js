@@ -3,12 +3,13 @@
 //connected to elements: order,orderList
 
 
-import axios from "axios";
 import React, {useState,useEffect, useCallback} from "react";
 import useToggleState from "../../hooks/useToggleState";
 import OrderList from "./OrderList";
 import { useAlert } from 'react-alert';
 import "./OrderListApp.css";
+import displayError from "../../utils/displayError";
+import { axiosInstance, TIMEOUT_INTERVAL} from "../../utils/axiosInstance";
 
 
 export default function OrderListApp(){
@@ -31,32 +32,10 @@ export default function OrderListApp(){
     
     const today=new Date();
     
-        
-    const TIMEOUT_INTERVAL = 60 * 1000; //for axios request
-
-    //function to display error details on console
-    const displayError=(err)=>{
-        if (err.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(err.response.status, err.response.data, err.response.headers);
-        } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', err.message);
-        }
-    }
-    
-
-    
+       
     //read data using axios on every render
     const loadData=useCallback(()=>{
-        axios.get('http://localhost:8010/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
-        // axios.get('/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
+        axiosInstance.get('/orders', { timeout: TIMEOUT_INTERVAL, withCredentials: true  })
         .then(res=>{
             setSuccess(true);//to decide whether to show spinning loader or data
             setError(null);//explicitly set error to null to make sure user sees the data & not errorView
@@ -81,7 +60,7 @@ export default function OrderListApp(){
             displayError(err); //show error details on console
         })
         // eslint-disable-next-line
-    },[TIMEOUT_INTERVAL]);
+    },[]);
 
     //read data from db
     useEffect(()=>{
@@ -110,13 +89,11 @@ export default function OrderListApp(){
         else completedOrder={...odr,completed:true};//using state here causes issues because setState does not necessarily execute in order
         // console.log("in orderlistapp, order details:",completedOrder);
         //update DB
-        axios.put(`http://localhost:8010/orders/${id}`,completedOrder,{ withCredentials: true })
-        // axios.put(`/orders/${id}`,completedOrder,{ withCredentials: true })
+        axiosInstance.put(`/orders/${id}`,completedOrder,{ withCredentials: true })
         .then(res=>{
             loadData();//reload data from db to have the most updated data in state
         })
         .catch(err=>{
-            //window.alert("Error! Please try again later!");
             alert.error(`Error! Could not mark order as completed.${err.message}`)
             console.log("error while marking order as completed");
             displayError(err);//show error details in console
